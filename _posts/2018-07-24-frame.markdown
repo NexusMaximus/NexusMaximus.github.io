@@ -1,0 +1,50 @@
+---
+layout: post
+title:  "Frames/Cheatsheet for Future Posts"
+date:   2018-07-24 14:43:45 -0600
+categories: jekyll documentation howto
+---
+
+In this initial post, I will be playing with different things that can be done in markdown and detailing exactly how to do them. Virtually all of the content here is taken directly from [the Jekyll post writing docs][jekyll-post-docs], but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.
+
+I also found a generic markdown cheatsheet [here][cheatsheet] but some things mentioned there don't appear to work. Another Jekyll-specific cheatsheet can be found [here][cheatsheet2] but it's not super comprehensive. 
+
+Formatting text
+===============
+
+Inserting: code snippets
+
+Inserting: links
+
+These require two lines of stuff:
+
+{% highlight c %}
+yadda yadda [link text][link tag] blah blah blahblah
+// at bottom of doc, place this as is:
+[link tag]: http://yourlinkhere.whatever/whatever
+{% endhighlight %}
+
+
+
+Inserting: pictures
+
+
+
+Jekyll also offers powerful support for code snippets:
+
+{% highlight ruby %}
+def print_hi(name)
+  puts "Hi, #{name}"
+end
+print_hi('Tom')
+#=> prints 'Hi, Tom' to STDOUT.
+{% endhighlight %}
+
+Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
+
+[jekyll-docs]: https://jekyllrb.com/docs/home
+[jekyll-gh]:   https://github.com/jekyll/jekyll
+[jekyll-talk]: https://talk.jekyllrb.com/
+[jekyll-post-docs]: https://jekyllrb.com/docs/posts/
+[cheatsheet]: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+[cheatsheet2]: https://gist.github.com/roachhd/779fa77e9b90fe945b0c
