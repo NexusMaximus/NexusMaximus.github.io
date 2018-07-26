@@ -27,7 +27,7 @@ yadda yadda [link text][link tag] blahblah
 //OR
 yadda yadda [link text](link) blahblah
 // at bottom of doc, place this as is:
-[link tag]: http://yourlinkhere.ru/GetGoodScrub
+[link tag]: http://yourlinkhere.ru/GettingGood
 {% endhighlight %}
 
 
