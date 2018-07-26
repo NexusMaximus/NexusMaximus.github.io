@@ -5,9 +5,11 @@ date:   2018-07-24 14:43:45 -0600
 categories: jekyll documentation howto
 ---
 
-In this initial post, I will be playing with different things that can be done in markdown and detailing exactly how to do them. Virtually all of the content here is taken directly from [the Jekyll post writing docs][jekyll-post-docs], but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.
+"Now, to get good at writing posts, I must figure out HOW to write posts in the first place." -- Kyle B to self
 
-I also found a generic markdown cheatsheet [here][cheatsheet] but some things mentioned there don't appear to work. Another Jekyll-specific cheatsheet can be found [here][cheatsheet2] but it's not super comprehensive. 
+Welcome to my first technical blog entry! This post will function as a technical cheatsheet for how to write posts. Much of the content here is taken directly from [the Jekyll post about writing docs][jekyll-post-docs], but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.
+
+I found a generic markdown cheatsheet [here][cheatsheet] but some things mentioned there don't appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found [here][cheatsheet2] but it's not super comprehensive-- thus the need for this post here. I'll be adding to it continuously over the next few days (probably weeks) as I learn more and more about what's possible and as I test my markdown, so if it seems a little small or improperly formatted, you know why. 
 
 Formatting text
 ===============
@@ -19,9 +21,9 @@ Inserting: links
 These require two lines of stuff:
 
 {% highlight c %}
-yadda yadda [link text][link tag] blah blah blahblah
+yadda yadda [link text][link tag] blahblah
 // at bottom of doc, place this as is:
-[link tag]: http://yourlinkhere.whatever/whatever
+[link tag]: http://yourlinkhere.ru/GetGoodScrub
 {% endhighlight %}
 
 
