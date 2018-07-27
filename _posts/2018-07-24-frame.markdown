@@ -1,23 +1,121 @@
 ---
 layout: post
-title:  "Frames/Cheatsheet for Future Posts"
+title:  "Markdown Cheatsheet for Github Pages/Jekyll Blog Posts"
 date:   2018-07-24 14:43:45 -0600
 categories: jekyll documentation howto
 ---
 
-"Now, to get good at writing posts, I must figure out HOW to write posts in the first place." -- Kyle B to self
-
-Welcome to my first technical blog entry! This post will function as a technical cheatsheet for how to write posts. 
+This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. 
 Much of the content here is taken directly from [the Jekyll docs about writing docs][jekyll-post-docs], but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.
 
-I found a generic markdown cheatsheet [here][cheatsheet] but some things mentioned there don't appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found [here][cheatsheet2] but it's not super comprehensive-- thus the need for this post here. I'll be adding to it continuously over the next few days (probably weeks) as I learn more and more about what's possible and as I test my markdown, so if it seems a little small or improperly formatted, you know why. 
+I found a generic markdown cheatsheet [here][cheatsheet] but some things mentioned there don't appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found [here][cheatsheet2] but it's not super comprehensive-- thus the need for this post here. 
+Yet another link [here](http://nestacms.com/docs/creating-content/markdown-cheat-sheet) proved itself very helpful in the creation of this cheatsheet, too. 
+[Wordpress official quick reference](https://en.support.wordpress.com/markdown-quick-reference/) has good info too
+I'll be adding to it continuously over the next few days (probably weeks) as I learn more and more about what's possible and as I test my markdown, so if it seems a little small or improperly formatted, you know why. 
 
 ## Formatting text
 
-## Comments
+To create headers, use pounds symbols/hashtags. 
 
-## Inserting: code snippets
+# One pound
 
+``` # One pound ```
+
+Question: Why does one pound result in smaller text than two? I don't know yet. 
+
+## Two pounds
+
+```## Two pounds```
+
+### Three pounds
+
+```### Three pounds```
+
+#### Four pounds
+
+```#### Four pounds```
+
+##### Five pounds
+
+```##### Five pounds```
+
+###### Six pounds
+
+```###### Six pounds```
+
+
+Italics: _italic text here_
+
+``` _italic text here_ ```
+or
+``` *italic text here* ```
+
+Bold/Emphasis: **bold text here**
+
+``` __bold text here__ ```
+or
+``` **bold text here** ```
+
+Combine the two: **B/I text _here_**
+
+``` **B/I text _here_** ```
+
+## Lists
+```
+* Bullet 1
+* Bullet 2
+  * Bullet 2a
+    * Bullet 2b
+* Bullet 3
+```
+Renders as:
+* Bullet 1
+* Bullet 2
+  * Bullet 2.1
+    * Bullet 2.1.1
+* Bullet 3
+
+
+```
+1. item 1
+2. item 2
+	1. Item 2a
+3. item 3
+```
+Renders as:
+
+1. item 1
+2. item 2
+	1. item 2a
+3. item 3
+
+Sadly, it seems that [markdown doesn't support numbered sublists](https://meta.stackexchange.com/questions/85474/how-to-write-nested-numbered-lists) (such as 1, 2, 2.1, 2.2, 3, etc).  
+
+
+## Markdown Comments
+
+To make a single line markdown comment:
+
+``` [/]: comment here ```
+
+[//]: comment here
+Note that you may need to add some blank lines above or below to get the comment to register as a comment. Also, I don't know why but things like ``` [asdf/]: comment text here``` register properly as comments too. 
+
+To make a multiline markdown comment, HTML comment tags seem to work:
+
+```
+<!--- 
+line 1 here
+line 2 here
+...
+line X here
+-->
+```
+
+## Inserting code snippets
+
+Jekyll makes use of something called Liquid to do [templates](https://stackoverflow.com/questions/4026597/what-is-a-templating-language). It looks like there's about a million and ten things you can do with this and they're all nicely organized on [Jekyll's Liquid docs](https://jekyllrb.com/docs/templates/), so check that out there. 
+If it ends up being super complex, I will write up another post explaining the basics of templating for noobs like myself. 
 {% highlight ruby %}
 def print_hi(name)
   puts "Hi, #{name}"
@@ -54,7 +152,8 @@ code stuff here
 {% endraw %}
 ```
 
-## Inserting: links
+## Inserting links
+
 
 These require two lines of stuff:
 

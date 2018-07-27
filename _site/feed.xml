@@ -1,15 +1,120 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-26T18:07:01-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Frames/Cheatsheet for Future Posts</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html" rel="alternate" type="text/html" title="Frames/Cheatsheet for Future Posts" /><published>2018-07-24T14:43:45-06:00</published><updated>2018-07-24T14:43:45-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html">&lt;p&gt;“Now, to get good at writing posts, I must figure out HOW to write posts in the first place.” – Kyle B to self&lt;/p&gt;
-
-&lt;p&gt;Welcome to my first technical blog entry! This post will function as a technical cheatsheet for how to write posts. 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-27T15:18:53-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Markdown Cheatsheet for Github Pages/Jekyll Blog Posts</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html" rel="alternate" type="text/html" title="Markdown Cheatsheet for Github Pages/Jekyll Blog Posts" /><published>2018-07-24T14:43:45-06:00</published><updated>2018-07-24T14:43:45-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html">&lt;p&gt;This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. 
 Much of the content here is taken directly from &lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;the Jekyll docs about writing docs&lt;/a&gt;, but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.&lt;/p&gt;
 
-&lt;p&gt;I found a generic markdown cheatsheet &lt;a href=&quot;https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet&quot;&gt;here&lt;/a&gt; but some things mentioned there don’t appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found &lt;a href=&quot;https://gist.github.com/roachhd/779fa77e9b90fe945b0c&quot;&gt;here&lt;/a&gt; but it’s not super comprehensive– thus the need for this post here. I’ll be adding to it continuously over the next few days (probably weeks) as I learn more and more about what’s possible and as I test my markdown, so if it seems a little small or improperly formatted, you know why.&lt;/p&gt;
+&lt;p&gt;I found a generic markdown cheatsheet &lt;a href=&quot;https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet&quot;&gt;here&lt;/a&gt; but some things mentioned there don’t appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found &lt;a href=&quot;https://gist.github.com/roachhd/779fa77e9b90fe945b0c&quot;&gt;here&lt;/a&gt; but it’s not super comprehensive– thus the need for this post here. 
+Yet another link &lt;a href=&quot;http://nestacms.com/docs/creating-content/markdown-cheat-sheet&quot;&gt;here&lt;/a&gt; proved itself very helpful in the creation of this cheatsheet, too. 
+&lt;a href=&quot;https://en.support.wordpress.com/markdown-quick-reference/&quot;&gt;Wordpress official quick reference&lt;/a&gt; has good info too
+I’ll be adding to it continuously over the next few days (probably weeks) as I learn more and more about what’s possible and as I test my markdown, so if it seems a little small or improperly formatted, you know why.&lt;/p&gt;
 
 &lt;h2 id=&quot;formatting-text&quot;&gt;Formatting text&lt;/h2&gt;
 
-&lt;h2 id=&quot;comments&quot;&gt;Comments&lt;/h2&gt;
+&lt;p&gt;To create headers, use pounds symbols/hashtags.&lt;/p&gt;
 
-&lt;h2 id=&quot;inserting-code-snippets&quot;&gt;Inserting: code snippets&lt;/h2&gt;
+&lt;h1 id=&quot;one-pound&quot;&gt;One pound&lt;/h1&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;# One pound&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Question: Why does one pound result in smaller text than two? I don’t know yet.&lt;/p&gt;
+
+&lt;h2 id=&quot;two-pounds&quot;&gt;Two pounds&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;## Two pounds&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;three-pounds&quot;&gt;Three pounds&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;### Three pounds&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;four-pounds&quot;&gt;Four pounds&lt;/h4&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;#### Four pounds&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;five-pounds&quot;&gt;Five pounds&lt;/h5&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;##### Five pounds&lt;/code&gt;&lt;/p&gt;
+
+&lt;h6 id=&quot;six-pounds&quot;&gt;Six pounds&lt;/h6&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;###### Six pounds&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Italics: &lt;em&gt;italic text here&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_italic text here_&lt;/code&gt;
+or
+&lt;code class=&quot;highlighter-rouge&quot;&gt;*italic text here*&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Bold/Emphasis: &lt;strong&gt;bold text here&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;__bold text here__&lt;/code&gt;
+or
+&lt;code class=&quot;highlighter-rouge&quot;&gt;**bold text here**&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Combine the two: &lt;strong&gt;B/I text &lt;em&gt;here&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;**B/I text _here_**&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;lists&quot;&gt;Lists&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;* Bullet 1
+* Bullet 2
+  * Bullet 2a
+    * Bullet 2b
+* Bullet 3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Renders as:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Bullet 1&lt;/li&gt;
+  &lt;li&gt;Bullet 2
+    &lt;ul&gt;
+      &lt;li&gt;Bullet 2.1
+        &lt;ul&gt;
+          &lt;li&gt;Bullet 2.1.1&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Bullet 3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. item 1
+2. item 2
+	1. Item 2a
+3. item 3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Renders as:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;item 1&lt;/li&gt;
+  &lt;li&gt;item 2
+    &lt;ol&gt;
+      &lt;li&gt;item 2a&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;item 3&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Sadly, it seems that &lt;a href=&quot;https://meta.stackexchange.com/questions/85474/how-to-write-nested-numbered-lists&quot;&gt;markdown doesn’t support numbered sublists&lt;/a&gt; (such as 1, 2, 2.1, 2.2, 3, etc).&lt;/p&gt;
+
+&lt;h2 id=&quot;markdown-comments&quot;&gt;Markdown Comments&lt;/h2&gt;
+
+&lt;p&gt;To make a single line markdown comment:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[/]: comment here&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Note that you may need to add some blank lines above or below to get the comment to register as a comment. Also, I don’t know why but things like &lt;code class=&quot;highlighter-rouge&quot;&gt;[asdf/]: comment text here&lt;/code&gt; register properly as comments too.&lt;/p&gt;
+
+&lt;p&gt;To make a multiline markdown comment, HTML comment tags seem to work:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!--- 
+line 1 here
+line 2 here
+...
+line X here
+--&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;inserting-code-snippets&quot;&gt;Inserting code snippets&lt;/h2&gt;
+
+&lt;p&gt;Jekyll makes use of something called Liquid to do &lt;a href=&quot;https://stackoverflow.com/questions/4026597/what-is-a-templating-language&quot;&gt;templates&lt;/a&gt;. It looks like there’s about a million and ten things you can do with this and they’re all nicely organized on &lt;a href=&quot;https://jekyllrb.com/docs/templates/&quot;&gt;Jekyll’s Liquid docs&lt;/a&gt;, so check that out there. 
+If it ends up being super complex, I will write up another post explaining the basics of templating for noobs like myself.&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
@@ -43,7 +148,7 @@ code stuff here
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;inserting-links&quot;&gt;Inserting: links&lt;/h2&gt;
+&lt;h2 id=&quot;inserting-links&quot;&gt;Inserting links&lt;/h2&gt;
 
 &lt;p&gt;These require two lines of stuff:&lt;/p&gt;
 
@@ -55,4 +160,4 @@ code stuff here
 
 &lt;h2 id=&quot;inserting-pictures&quot;&gt;Inserting: pictures&lt;/h2&gt;
 
-&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">“Now, to get good at writing posts, I must figure out HOW to write posts in the first place.” – Kyle B to self</summary></entry></feed>
+&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. Much of the content here is taken directly from the Jekyll docs about writing docs, but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.</summary></entry></feed>
