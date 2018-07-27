@@ -10,7 +10,7 @@ Much of the content here is taken directly from [the Jekyll docs about writing d
 
 I found a generic markdown cheatsheet [here][cheatsheet] but some things mentioned there don't appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found [here][cheatsheet2] but it's not super comprehensive-- thus the need for this post here. 
 Yet another link [here](http://nestacms.com/docs/creating-content/markdown-cheat-sheet) proved itself very helpful in the creation of this cheatsheet, too. 
-[Wordpress official quick reference](https://en.support.wordpress.com/markdown-quick-reference/) has good info too
+[Wordpress official quick reference](https://en.support.wordpress.com/markdown-quick-reference/) has good info too.
 I'll be adding to it continuously over the next few days (probably weeks) as I learn more and more about what's possible and as I test my markdown, so if it seems a little small or improperly formatted, you know why. 
 
 ## Formatting text
