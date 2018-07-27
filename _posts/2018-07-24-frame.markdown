@@ -7,36 +7,16 @@ categories: jekyll documentation howto
 
 "Now, to get good at writing posts, I must figure out HOW to write posts in the first place." -- Kyle B to self
 
-Welcome to my first technical blog entry! This post will function as a technical cheatsheet for how to write posts. Much of the content here is taken directly from [the Jekyll post about writing docs][jekyll-post-docs], but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.
+Welcome to my first technical blog entry! This post will function as a technical cheatsheet for how to write posts. 
+Much of the content here is taken directly from [the Jekyll docs about writing docs][jekyll-post-docs], but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.
 
 I found a generic markdown cheatsheet [here][cheatsheet] but some things mentioned there don't appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found [here][cheatsheet2] but it's not super comprehensive-- thus the need for this post here. I'll be adding to it continuously over the next few days (probably weeks) as I learn more and more about what's possible and as I test my markdown, so if it seems a little small or improperly formatted, you know why. 
 
-Formatting text
-===============
+## Formatting text
 
-Comments
+## Comments
 
-Inserting: code snippets
-
-Inserting: links
-
-These require two lines of stuff:
-
-{% highlight c %}
-yadda yadda [link text][link tag] blahblah
-//OR
-yadda yadda [link text](link) blahblah
-// at bottom of doc, place this as is:
-[link tag]: http://yourlinkhere.ru/GettingGood
-{% endhighlight %}
-
-
-
-Inserting: pictures
-
-
-
-Jekyll also offers powerful support for code snippets:
+## Inserting: code snippets
 
 {% highlight ruby %}
 def print_hi(name)
@@ -45,6 +25,54 @@ end
 print_hi('Tom')
 #=> prints 'Hi, Tom' to STDOUT.
 {% endhighlight %}
+
+created with:
+
+```
+{% raw %}
+{% highlight ruby %}
+def print_hi(name)
+  puts "Hi, #{name}"
+end
+print_hi('Tom')
+#=> prints 'Hi, Tom' to STDOUT.
+{% endhighlight %}
+{% endraw %}
+```
+
+## Posting raw/verbatim code blocks
+This one took me a while to figure out. Encapsulate your stuff as follows but remove the spaces on the closing tag, and replace the double-triple-double backticks with just triple backticks (tricking the parser is hard and I'm not good at it yet).
+
+```
+{% raw %}
+`` ``` `` 
+{% raw %}
+put your raw 
+code stuff here
+{ % endraw % }
+`` ``` ``
+{% endraw %}
+```
+
+## Inserting: links
+
+These require two lines of stuff:
+
+{% highlight c %}
+yadda yadda [link text][link tag] blahblah
+//OR
+yadda yadda [link text](http://yourlinkhere.com/GettingGood) blahblah
+// at bottom of doc, place this as is:
+[link tag]: http://yourlinkhere.com/GettingGood
+{% endhighlight %}
+
+
+
+## Inserting: pictures
+
+
+
+
 
 Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
 
