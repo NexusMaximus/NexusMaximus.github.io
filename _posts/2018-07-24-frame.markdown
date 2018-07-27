@@ -167,10 +167,13 @@ yadda yadda [link text](http://yourlinkhere.com/GettingGood) blahblah
 
 
 
-## Inserting: pictures
+## Inserting pictures from links
+
+```![sweet pic](http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg "caption here")```
+![sweet pic](http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg "caption here")
 
 
-
+Inserting local pictures (i.e. not via a link) is coming soon. The answer appears to be [here](https://jekyllrb.com/docs/static-files/). 
 
 
 Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
