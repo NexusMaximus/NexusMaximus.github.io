@@ -1,9 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-27T15:35:43-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Markdown Cheatsheet for Github Pages/Jekyll Blog Posts</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html" rel="alternate" type="text/html" title="Markdown Cheatsheet for Github Pages/Jekyll Blog Posts" /><published>2018-07-24T14:43:45-06:00</published><updated>2018-07-24T14:43:45-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html">&lt;p&gt;This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-30T17:32:00-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Playing with Liquid</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html" rel="alternate" type="text/html" title="Playing with Liquid" /><published>2018-07-30T13:37:00-06:00</published><updated>2018-07-30T13:37:00-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html">&lt;p&gt;Liquid is a templating language used with Jekyll, and it appears to have some significant power. This post will be dedicated to investigating just what’s possible using it. I started off by following the docs &lt;a href=&quot;https://shopify.github.io/liquid/basics/introduction/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Other resources:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;simple liquid PoC things&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/variables/&quot;&gt;global/site variable info&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Liquid is a templating language used with Jekyll, and it appears to have some significant power. This post will be dedicated to investigating just what’s possible using it. I started off by following the docs here.</summary></entry><entry><title type="html">Markdown Cheatsheet for Github Pages/Jekyll Blog Posts</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html" rel="alternate" type="text/html" title="Markdown Cheatsheet for Github Pages/Jekyll Blog Posts" /><published>2018-07-24T14:43:45-06:00</published><updated>2018-07-24T14:43:45-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html">&lt;p&gt;This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. 
 Much of the content here is taken directly from &lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;the Jekyll docs about writing docs&lt;/a&gt;, but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.&lt;/p&gt;
 
 &lt;p&gt;I found a generic markdown cheatsheet &lt;a href=&quot;https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet&quot;&gt;here&lt;/a&gt; but some things mentioned there don’t appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found &lt;a href=&quot;https://gist.github.com/roachhd/779fa77e9b90fe945b0c&quot;&gt;here&lt;/a&gt; but it’s not super comprehensive– thus the need for this post here. 
 Yet another link &lt;a href=&quot;http://nestacms.com/docs/creating-content/markdown-cheat-sheet&quot;&gt;here&lt;/a&gt; proved itself very helpful in the creation of this cheatsheet, too. 
-&lt;a href=&quot;https://en.support.wordpress.com/markdown-quick-reference/&quot;&gt;Wordpress official quick reference&lt;/a&gt; has good info too
+&lt;a href=&quot;https://en.support.wordpress.com/markdown-quick-reference/&quot;&gt;Wordpress official quick reference&lt;/a&gt; has good info too.
 I’ll be adding to it continuously over the next few days (probably weeks) as I learn more and more about what’s possible and as I test my markdown, so if it seems a little small or improperly formatted, you know why.&lt;/p&gt;
 
 &lt;h2 id=&quot;formatting-text&quot;&gt;Formatting text&lt;/h2&gt;
@@ -116,16 +123,21 @@ line X here
 &lt;p&gt;Jekyll makes use of something called Liquid to do &lt;a href=&quot;https://stackoverflow.com/questions/4026597/what-is-a-templating-language&quot;&gt;templates&lt;/a&gt;. It looks like there’s about a million and ten things you can do with this and they’re all nicely organized on &lt;a href=&quot;https://jekyllrb.com/docs/templates/&quot;&gt;Jekyll’s Liquid docs&lt;/a&gt;, so check that out there. 
 If it ends up being super complex, I will write up another post explaining the basics of templating for noobs like myself.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;created with:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-{% highlight ruby %}
+{% highlight ruby linenos %}
 def print_hi(name)
   puts &quot;Hi, #{name}&quot;
 end
@@ -152,17 +164,29 @@ code stuff here
 
 &lt;p&gt;These require two lines of stuff:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;yadda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yadda&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blahblah&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;yadda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yadda&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blahblah&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;//OR
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;yadda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yadda&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//yourlinkhere.com/GettingGood) blahblah
 // at bottom of doc, place this as is:
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;://&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;yourlinkhere&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GettingGood&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;://&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;yourlinkhere&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GettingGood&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h2 id=&quot;inserting-pictures-from-links&quot;&gt;Inserting pictures from links&lt;/h2&gt;
+&lt;h2 id=&quot;inserting-pictures&quot;&gt;Inserting pictures&lt;/h2&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;![sweet pic](http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg &quot;caption here&quot;)&lt;/code&gt;
-&lt;img src=&quot;http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg&quot; alt=&quot;sweet pic&quot; title=&quot;caption here&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;inserting-pictures-from-a-link&quot;&gt;Inserting pictures from a link&lt;/h4&gt;
 
-&lt;p&gt;Inserting local pictures (i.e. not via a link) is coming soon. The answer appears to be &lt;a href=&quot;https://jekyllrb.com/docs/static-files/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg&quot; alt=&quot;sweet pic&quot; title=&quot;caption here&quot; /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;![sweet pic](http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg &quot;caption here&quot;)&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;inserting-local-pictures&quot;&gt;Inserting local pictures&lt;/h4&gt;
+&lt;p&gt;Inserting local pictures can be done by identifying the path to the picture (treating the root part of the repo as the ‘root’ directory). The picture below is called ‘zz.jpeg’ and is in the ‘files’ directory.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/zz.jpeg&quot; alt=&quot;sweet pic&quot; title=&quot;caption here&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;![sweet pic](/files/zz.jpeg &quot;caption here&quot;)&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. Much of the content here is taken directly from the Jekyll docs about writing docs, but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.</summary></entry></feed>

@@ -30,7 +30,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/2018-07-24-welcome-to-jekyll.html">Welcome to Jekyll!</a><a class="page-link" href="/about/">About This Blog</a></div>
+        <div class="trigger"><a class="page-link" href="/about/">About This Blog</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -50,7 +50,7 @@ Much of the content here is taken directly from <a href="https://jekyllrb.com/do
 
 <p>I found a generic markdown cheatsheet <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">here</a> but some things mentioned there don’t appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found <a href="https://gist.github.com/roachhd/779fa77e9b90fe945b0c">here</a> but it’s not super comprehensive– thus the need for this post here. 
 Yet another link <a href="http://nestacms.com/docs/creating-content/markdown-cheat-sheet">here</a> proved itself very helpful in the creation of this cheatsheet, too. 
-<a href="https://en.support.wordpress.com/markdown-quick-reference/">Wordpress official quick reference</a> has good info too
+<a href="https://en.support.wordpress.com/markdown-quick-reference/">Wordpress official quick reference</a> has good info too.
 I’ll be adding to it continuously over the next few days (probably weeks) as I learn more and more about what’s possible and as I test my markdown, so if it seems a little small or improperly formatted, you know why.</p>
 
 <h2 id="formatting-text">Formatting text</h2>
@@ -163,16 +163,21 @@ line X here
 <p>Jekyll makes use of something called Liquid to do <a href="https://stackoverflow.com/questions/4026597/what-is-a-templating-language">templates</a>. It looks like there’s about a million and ten things you can do with this and they’re all nicely organized on <a href="https://jekyllrb.com/docs/templates/">Jekyll’s Liquid docs</a>, so check that out there. 
 If it ends up being super complex, I will write up another post explaining the basics of templating for noobs like myself.</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
   <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
 <span class="k">end</span>
 <span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
-<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
+<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></pre></td></tr></tbody></table></code></pre></figure>
 
 <p>created with:</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-{% highlight ruby %}
+{% highlight ruby linenos %}
 def print_hi(name)
   puts "Hi, #{name}"
 end
@@ -199,18 +204,30 @@ code stuff here
 
 <p>These require two lines of stuff:</p>
 
-<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">yadda</span> <span class="n">yadda</span> <span class="p">[</span><span class="n">link</span> <span class="n">text</span><span class="p">][</span><span class="n">link</span> <span class="n">tag</span><span class="p">]</span> <span class="n">blahblah</span>
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="n">yadda</span> <span class="n">yadda</span> <span class="p">[</span><span class="n">link</span> <span class="n">text</span><span class="p">][</span><span class="n">link</span> <span class="n">tag</span><span class="p">]</span> <span class="n">blahblah</span>
 <span class="c1">//OR
 </span><span class="n">yadda</span> <span class="n">yadda</span> <span class="p">[</span><span class="n">link</span> <span class="n">text</span><span class="p">](</span><span class="n">http</span><span class="o">:</span><span class="c1">//yourlinkhere.com/GettingGood) blahblah
 // at bottom of doc, place this as is:
-</span><span class="p">[</span><span class="n">link</span> <span class="n">tag</span><span class="p">]</span><span class="o">:</span> <span class="n">http</span><span class="o">://</span><span class="n">yourlinkhere</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">GettingGood</span></code></pre></figure>
+</span><span class="p">[</span><span class="n">link</span> <span class="n">tag</span><span class="p">]</span><span class="o">:</span> <span class="n">http</span><span class="o">://</span><span class="n">yourlinkhere</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">GettingGood</span></pre></td></tr></tbody></table></code></pre></figure>
 
-<h2 id="inserting-pictures-from-links">Inserting pictures from links</h2>
+<h2 id="inserting-pictures">Inserting pictures</h2>
 
-<p><code class="highlighter-rouge">![sweet pic](http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg "caption here")</code>
-<img src="http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg" alt="sweet pic" title="caption here" /></p>
+<h4 id="inserting-pictures-from-a-link">Inserting pictures from a link</h4>
 
-<p>Inserting local pictures (i.e. not via a link) is coming soon. The answer appears to be <a href="https://jekyllrb.com/docs/static-files/">here</a>.</p>
+<p><img src="http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg" alt="sweet pic" title="caption here" />
+<code class="highlighter-rouge">![sweet pic](http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg "caption here")</code></p>
+
+<h4 id="inserting-local-pictures">Inserting local pictures</h4>
+<p>Inserting local pictures can be done by identifying the path to the picture (treating the root part of the repo as the ‘root’ directory). The picture below is called ‘zz.jpeg’ and is in the ‘files’ directory.</p>
+
+<p><img src="/files/zz.jpeg" alt="sweet pic" title="caption here" /></p>
+
+<p><code class="highlighter-rouge">![sweet pic](/files/zz.jpeg "caption here")</code></p>
 
 <p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>
 
