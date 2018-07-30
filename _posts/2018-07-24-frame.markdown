@@ -116,7 +116,7 @@ line X here
 
 Jekyll makes use of something called Liquid to do [templates](https://stackoverflow.com/questions/4026597/what-is-a-templating-language). It looks like there's about a million and ten things you can do with this and they're all nicely organized on [Jekyll's Liquid docs](https://jekyllrb.com/docs/templates/), so check that out there. 
 If it ends up being super complex, I will write up another post explaining the basics of templating for noobs like myself. 
-{% highlight ruby %}
+{% highlight ruby linenos %}
 def print_hi(name)
   puts "Hi, #{name}"
 end
@@ -128,7 +128,7 @@ created with:
 
 ```
 {% raw %}
-{% highlight ruby %}
+{% highlight ruby linenos %}
 def print_hi(name)
   puts "Hi, #{name}"
 end
@@ -157,7 +157,7 @@ code stuff here
 
 These require two lines of stuff:
 
-{% highlight c %}
+{% highlight c linenos %}
 yadda yadda [link text][link tag] blahblah
 //OR
 yadda yadda [link text](http://yourlinkhere.com/GettingGood) blahblah
@@ -167,14 +167,20 @@ yadda yadda [link text](http://yourlinkhere.com/GettingGood) blahblah
 
 
 
-## Inserting pictures from links
+## Inserting pictures
 
-```![sweet pic](http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg "caption here")```
+#### Inserting pictures from a link
+
 ![sweet pic](http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg "caption here")
+```![sweet pic](http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg "caption here")```
 
 
-Inserting local pictures (i.e. not via a link) is coming soon. The answer appears to be [here](https://jekyllrb.com/docs/static-files/). 
+#### Inserting local pictures
+Inserting local pictures can be done by identifying the path to the picture (treating the root part of the repo as the 'root' directory). The picture below is called 'zz.jpeg' and is in the 'files' directory. 
 
+![sweet pic]({{"/files/zz.jpeg"}} "caption here")
+
+```![sweet pic]({{"/files/zz.jpeg"}} "caption here")```
 
 Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
 
