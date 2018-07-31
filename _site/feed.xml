@@ -1,4 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-30T17:32:00-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Playing with Liquid</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html" rel="alternate" type="text/html" title="Playing with Liquid" /><published>2018-07-30T13:37:00-06:00</published><updated>2018-07-30T13:37:00-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html">&lt;p&gt;Liquid is a templating language used with Jekyll, and it appears to have some significant power. This post will be dedicated to investigating just what’s possible using it. I started off by following the docs &lt;a href=&quot;https://shopify.github.io/liquid/basics/introduction/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-31T17:30:05-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Practical Malware Analysis Ch.1 Labs</title><link href="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1 Labs" /><published>2018-07-31T14:12:00-06:00</published><updated>2018-07-31T14:12:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs.html">&lt;p&gt;In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).&lt;/p&gt;
+
+&lt;p&gt;I’ll also answer the following general questions in an attempt to keep the big picture of the assignments in mind:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/li&gt;
+  &lt;li&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/li&gt;
+  &lt;li&gt;What are the three (or more) most notable challenges encountered in doing these exercises, and what did you do to overcome them?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab Summary questions&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the three (or more) most notable challenges encountered in doing these exercises, and what did you do to overcome them?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges Encountered in the labs&lt;/h2&gt;
+
+&lt;p&gt;here&lt;/p&gt;
+
+&lt;h2 id=&quot;final-answers-to-questions&quot;&gt;Final Answers to Questions&lt;/h2&gt;
+
+&lt;p&gt;here&lt;/p&gt;</content><author><name></name></author><summary type="html">In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).</summary></entry><entry><title type="html">Practical Malware Analysis Ch.1 personal notes</title><link href="http://localhost:4000/notes/2018/07/31/PMA_Chapter_3_notes.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1 personal notes" /><published>2018-07-31T14:11:00-06:00</published><updated>2018-07-31T14:11:00-06:00</updated><id>http://localhost:4000/notes/2018/07/31/PMA_Chapter_3_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/31/PMA_Chapter_3_notes.html">&lt;p&gt;As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content, and one that walks through my analysis of the lab assignments.&lt;/p&gt;
+
+&lt;p&gt;In addition to including technical details inscribed within the chapter, I’ll be answering the following questions in an attempt to keep in mind the big picture of the chapter.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/li&gt;
+  &lt;li&gt;What are the five most important takeaways from this chapter?&lt;/li&gt;
+  &lt;li&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Let’s get started.&lt;/p&gt;
+
+&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the five most important takeaways from this chapter?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;questions-encountered-and-answers-if-found&quot;&gt;Questions encountered (and answers, if found)&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Ascii  representation of “BAD”:&lt;/em&gt;
+0x42 0x41 0x44 0x00&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Unicode representation of “BAD”:&lt;/em&gt;
+0x42 0x00 0x41 0x00 0x44 0x00 0x00 0x00&lt;/p&gt;
+
+&lt;p&gt;What are the extra null terminators after each character typically used for?&lt;/p&gt;
+
+&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ascii strings use 1 byte per char; Unicode strings use two per char.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Packed and otherwise obfuscated code will usually include library functions “GetProcAddress” and “LoadLibrary” as those two are typically used to decrypt/deobfuscate other functions. &lt;strong&gt;These two functions can be used to access any function in any library on the system.&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Linking is used to connect code in libraries to an executable. There are three kinds of linking:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;em&gt;Static:&lt;/em&gt; the library code is copied ver batim into the executable. Common in malware due to how it can be obfuscated; rare in goodware as there’s little purpose to do it other than to hide meaning of a program.&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Runtime:&lt;/em&gt; Library code is searched for only when needed within a program, as opposed to at the beginning of execution of a program (see dynamic linking). It’s popular with malware writers as the imports can be concealed at the beginning of the program’s execution and revealed at some point in the runtie of the program, making static analysis harder.&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Dynamic:&lt;/em&gt; The host OS searches for necessary libraries only when the program is loaded. When executing library code, the code executed is within the library’s space (i.e. it’s not copied somewhere and executed there).&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Appendix A contains lots of DLLs of high interest to malware analysts.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;a-little-about-the-pe-file-format&quot;&gt;A little about the PE file format&lt;/h3&gt;
+
+&lt;p&gt;Consists of a header followed by a series of sections:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;.text&lt;/strong&gt;: Contains instructions that the CPU executes&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;.rdata&lt;/strong&gt;: typically contains import and export information, which is the same info available from Dependency Walker (a tool) and PEViEW (a slightly out of date tool).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;.data&lt;/strong&gt;: Contains program’s global data, accessable from anywhere in the program.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;.rsrc&lt;/strong&gt;: includes resources used by the executable that are not ocnsidered part of the executable (such as icons, images, menus, and strings). Strings are usually (but not necessarily) stored here for multilanguage support.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These section names are convention; Windows doesn’t require them to be labeled as above. It determines what section is what based on info in the PE header.&lt;/p&gt;
+
+&lt;h3 id=&quot;tools-discussed-in-this-section&quot;&gt;Tools discussed in this section&lt;/h3&gt;</content><author><name></name></author><summary type="html">As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content, and one that walks through my analysis of the lab assignments.</summary></entry><entry><title type="html">Playing with Liquid</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html" rel="alternate" type="text/html" title="Playing with Liquid" /><published>2018-07-30T13:37:00-06:00</published><updated>2018-07-30T13:37:00-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html">&lt;p&gt;Liquid is a templating language used with Jekyll, and it appears to have some significant power. This post will be dedicated to investigating just what’s possible using it. I started off by following the docs &lt;a href=&quot;https://shopify.github.io/liquid/basics/introduction/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Other resources:&lt;/p&gt;
 &lt;ul&gt;

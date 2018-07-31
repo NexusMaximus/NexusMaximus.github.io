@@ -1,0 +1,34 @@
+---
+layout: post
+title: "Practical Malware Analysis Ch.1 Labs"
+date: 2018-07-31 14:12:00 -0600
+categories: lab_assignment
+---
+
+In this category of posts, I'll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin). 
+
+I'll also answer the following general questions in an attempt to keep the big picture of the assignments in mind:
+
+1. Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter's exercises?
+2. What did doing the lab exercises teach that was not gained from reading the chapter?
+3. What are the three (or more) most notable challenges encountered in doing these exercises, and what did you do to overcome them?
+
+
+## Lab Summary questions
+
+1. Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter's exercises?
+
+
+2. What did doing the lab exercises teach that was not gained from reading the chapter?
+
+3. What are the three (or more) most notable challenges encountered in doing these exercises, and what did you do to overcome them?
+
+
+## Challenges Encountered in the labs
+
+here
+
+## Final Answers to Questions
+
+here
+
