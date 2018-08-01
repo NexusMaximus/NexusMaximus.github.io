@@ -21,7 +21,7 @@ To create headers, use pounds symbols/hashtags.
 
 ``` # One pound ```
 
-Question: Why does one pound result in smaller text than two? I don't know yet. 
+Question: Why does one pound result in smaller text than two? 
 
 ## Two pounds
 
@@ -199,7 +199,7 @@ yadda yadda [link text](http://yourlinkhere.com/GettingGood) blahblah
 #### Inserting local pictures
 Inserting local pictures can be done by identifying the path to the picture (treating the root part of the repo as the 'root' directory). The picture below is called 'zz.jpeg' and is in the 'files' directory. 
 
-![sweet pic]({{"/files/zz.jpeg"}} "caption here")
+![sweet pic]({{"/files/zz.jpeg"}} "caption here" )
 
 ```![sweet pic]({{"/files/zz.jpeg"}} "caption here")```
 

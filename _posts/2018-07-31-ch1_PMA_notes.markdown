@@ -67,7 +67,7 @@ P16 discusses a bit about how to use it.
 
 PeID: support was discontinued in 2011, but it is still helpful for detecting packed files.
 
-PEview: used to view executable file metadata (i.e. information in the headers of an executable).
+[PEview](http://wjradburn.com/software/): used to view executable file metadata (i.e. information in the headers of an executable).
 
 [Resource Hacker](http://angusj.com/): browses the .rsrc section of an executable. P25 discusses usage of this tool. It also enables one to extract embedded files from within executable files. 
 
