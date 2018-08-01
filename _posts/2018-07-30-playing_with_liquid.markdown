@@ -11,4 +11,7 @@ Liquid is a templating language used with Jekyll, and it appears to have some si
 Other resources:
 * [simple liquid PoC things](https://jekyllrb.com/docs/posts/)
 * [global/site variable info](https://jekyllrb.com/docs/variables/)
-* 
+
+
+It looks like Liquid will be more helpful when I actually have some content that needs organizing. As such, I'm going to hold off on researching how this works until after I get some more posts.
+

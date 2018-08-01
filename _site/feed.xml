@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-31T17:30:05-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Practical Malware Analysis Ch.1 Labs</title><link href="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1 Labs" /><published>2018-07-31T14:12:00-06:00</published><updated>2018-07-31T14:12:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs.html">&lt;p&gt;In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-01T09:17:57-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Practical Malware Analysis Ch.1 Labs</title><link href="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1 Labs" /><published>2018-07-31T14:12:00-06:00</published><updated>2018-07-31T14:12:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs.html">&lt;p&gt;In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).&lt;/p&gt;
 
 &lt;p&gt;I’ll also answer the following general questions in an attempt to keep the big picture of the assignments in mind:&lt;/p&gt;
 
@@ -28,13 +28,13 @@
 
 &lt;h2 id=&quot;final-answers-to-questions&quot;&gt;Final Answers to Questions&lt;/h2&gt;
 
-&lt;p&gt;here&lt;/p&gt;</content><author><name></name></author><summary type="html">In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).</summary></entry><entry><title type="html">Practical Malware Analysis Ch.1 personal notes</title><link href="http://localhost:4000/notes/2018/07/31/PMA_Chapter_3_notes.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1 personal notes" /><published>2018-07-31T14:11:00-06:00</published><updated>2018-07-31T14:11:00-06:00</updated><id>http://localhost:4000/notes/2018/07/31/PMA_Chapter_3_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/31/PMA_Chapter_3_notes.html">&lt;p&gt;As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content, and one that walks through my analysis of the lab assignments.&lt;/p&gt;
+&lt;p&gt;here&lt;/p&gt;</content><author><name></name></author><summary type="html">In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).</summary></entry><entry><title type="html">Practical Malware Analysis Ch.1: Basic Static Analysis Techniques</title><link href="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1: Basic Static Analysis Techniques" /><published>2018-07-31T14:11:00-06:00</published><updated>2018-07-31T14:11:00-06:00</updated><id>http://localhost:4000/notes/2018/07/31/ch1_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html">&lt;p&gt;As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.&lt;/p&gt;
 
 &lt;p&gt;In addition to including technical details inscribed within the chapter, I’ll be answering the following questions in an attempt to keep in mind the big picture of the chapter.&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/li&gt;
-  &lt;li&gt;What are the five most important takeaways from this chapter?&lt;/li&gt;
+  &lt;li&gt;What are the three most important takeaways from this chapter?&lt;/li&gt;
   &lt;li&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/li&gt;
 &lt;/ol&gt;
 
@@ -44,24 +44,24 @@
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
+
+    &lt;p&gt;This chapter discusses basic static analysis of executable files and provides a slew of tools used to do so. Static analysis of a file is analysis that does NOT involve running the file, such as by examining the header of the file and looking for strings contained within.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;What are the five most important takeaways from this chapter?&lt;/p&gt;
+    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Static analysis is one tool in the toolbox for identifying malware, but there are ways to make static analysis virtually useless.&lt;/li&gt;
+      &lt;li&gt;Section names are merely convention. They can be renamed to be misleading.&lt;/li&gt;
+      &lt;li&gt;There are three kinds of linking: &lt;em&gt;static&lt;/em&gt;, &lt;em&gt;runtime&lt;/em&gt;, and &lt;em&gt;dynamic&lt;/em&gt;. Malware more frequently makes use of runtime linking due to how it’s easier to conceal runtime behavior using this version.&lt;/li&gt;
+    &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
+
+    &lt;p&gt;Static analysis is the first step in analyzing any executable, and you should do it. It can provide clues that will pave the way for productive dynamic analysis.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
-
-&lt;h2 id=&quot;questions-encountered-and-answers-if-found&quot;&gt;Questions encountered (and answers, if found)&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;Ascii  representation of “BAD”:&lt;/em&gt;
-0x42 0x41 0x44 0x00&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Unicode representation of “BAD”:&lt;/em&gt;
-0x42 0x00 0x41 0x00 0x44 0x00 0x00 0x00&lt;/p&gt;
-
-&lt;p&gt;What are the extra null terminators after each character typically used for?&lt;/p&gt;
 
 &lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
 &lt;ul&gt;
@@ -79,7 +79,7 @@
   &lt;li&gt;Appendix A contains lots of DLLs of high interest to malware analysts.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;a-little-about-the-pe-file-format&quot;&gt;A little about the PE file format&lt;/h3&gt;
+&lt;h4 id=&quot;a-little-about-the-pe-file-format&quot;&gt;A little about the PE file format&lt;/h4&gt;
 
 &lt;p&gt;Consists of a header followed by a series of sections:&lt;/p&gt;
 &lt;ul&gt;
@@ -91,14 +91,37 @@
 
 &lt;p&gt;These section names are convention; Windows doesn’t require them to be labeled as above. It determines what section is what based on info in the PE header.&lt;/p&gt;
 
-&lt;h3 id=&quot;tools-discussed-in-this-section&quot;&gt;Tools discussed in this section&lt;/h3&gt;</content><author><name></name></author><summary type="html">As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content, and one that walks through my analysis of the lab assignments.</summary></entry><entry><title type="html">Playing with Liquid</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html" rel="alternate" type="text/html" title="Playing with Liquid" /><published>2018-07-30T13:37:00-06:00</published><updated>2018-07-30T13:37:00-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html">&lt;p&gt;Liquid is a templating language used with Jekyll, and it appears to have some significant power. This post will be dedicated to investigating just what’s possible using it. I started off by following the docs &lt;a href=&quot;https://shopify.github.io/liquid/basics/introduction/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;tools-discussed-in-this-section&quot;&gt;Tools discussed in this section&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://dependencywalker.com/&quot;&gt;Dependency Walker&lt;/a&gt; is a free utility that scans Windows executables and builds a hierarchical tree diagram of all dependent modules. 
+P16 discusses a bit about how to use it.&lt;/p&gt;
+
+&lt;p&gt;PeID: support was discontinued in 2011, but it is still helpful for detecting packed files.&lt;/p&gt;
+
+&lt;p&gt;PEview: used to view executable file metadata (i.e. information in the headers of an executable).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://angusj.com/&quot;&gt;Resource Hacker&lt;/a&gt;: browses the .rsrc section of an executable. P25 discusses usage of this tool. It also enables one to extract embedded files from within executable files.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.smidgeonsoft.prohosting.com/pebrowse-pro-file-viewer.html&quot;&gt;PEBrowse Professional&lt;/a&gt; is similar to PEview and allows you to look at the bytes from each section. It does a good job of presenting info from the resource (.rsrc) section.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://heaventools.com/&quot;&gt;PE Explorer&lt;/a&gt; has a rich GUI that allows one to navigate through the various parts of a PE file. It permits editing files, too. RIP if you don’t have money to pay for it, though.&lt;/p&gt;
+
+&lt;h2 id=&quot;questions-encountered-and-answers-if-found&quot;&gt;Questions encountered (and answers, if found)&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Ascii  representation of “BAD”:&lt;/em&gt;
+0x42 0x41 0x44 0x00&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Unicode representation of “BAD”:&lt;/em&gt;
+0x42 0x00 0x41 0x00 0x44 0x00 0x00 0x00&lt;/p&gt;
+
+&lt;p&gt;What are the extra null terminators after each character typically used for?&lt;/p&gt;</content><author><name></name></author><summary type="html">As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.</summary></entry><entry><title type="html">Playing with Liquid</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html" rel="alternate" type="text/html" title="Playing with Liquid" /><published>2018-07-30T13:37:00-06:00</published><updated>2018-07-30T13:37:00-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html">&lt;p&gt;Liquid is a templating language used with Jekyll, and it appears to have some significant power. This post will be dedicated to investigating just what’s possible using it. I started off by following the docs &lt;a href=&quot;https://shopify.github.io/liquid/basics/introduction/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Other resources:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;simple liquid PoC things&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/variables/&quot;&gt;global/site variable info&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Liquid is a templating language used with Jekyll, and it appears to have some significant power. This post will be dedicated to investigating just what’s possible using it. I started off by following the docs here.</summary></entry><entry><title type="html">Markdown Cheatsheet for Github Pages/Jekyll Blog Posts</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html" rel="alternate" type="text/html" title="Markdown Cheatsheet for Github Pages/Jekyll Blog Posts" /><published>2018-07-24T14:43:45-06:00</published><updated>2018-07-24T14:43:45-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html">&lt;p&gt;This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. 
+&lt;/ul&gt;
+
+&lt;p&gt;It looks like Liquid will be more helpful when I actually have some content that needs organizing. As such, I’m going to hold off on researching how this works until after I get some more posts.&lt;/p&gt;</content><author><name></name></author><summary type="html">Liquid is a templating language used with Jekyll, and it appears to have some significant power. This post will be dedicated to investigating just what’s possible using it. I started off by following the docs here.</summary></entry><entry><title type="html">Markdown Cheatsheet for Github Pages/Jekyll Blog Posts</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html" rel="alternate" type="text/html" title="Markdown Cheatsheet for Github Pages/Jekyll Blog Posts" /><published>2018-07-24T14:43:45-06:00</published><updated>2018-07-24T14:43:45-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html">&lt;p&gt;This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. 
 Much of the content here is taken directly from &lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;the Jekyll docs about writing docs&lt;/a&gt;, but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.&lt;/p&gt;
 
 &lt;p&gt;I found a generic markdown cheatsheet &lt;a href=&quot;https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet&quot;&gt;here&lt;/a&gt; but some things mentioned there don’t appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found &lt;a href=&quot;https://gist.github.com/roachhd/779fa77e9b90fe945b0c&quot;&gt;here&lt;/a&gt; but it’s not super comprehensive– thus the need for this post here. 
@@ -192,6 +215,46 @@ or
 &lt;/ol&gt;
 
 &lt;p&gt;Sadly, it seems that &lt;a href=&quot;https://meta.stackexchange.com/questions/85474/how-to-write-nested-numbered-lists&quot;&gt;markdown doesn’t support numbered sublists&lt;/a&gt; (such as 1, 2, 2.1, 2.2, 3, etc).&lt;/p&gt;
+
+&lt;h2 id=&quot;tables&quot;&gt;Tables&lt;/h2&gt;
+
+&lt;p&gt;Credit to the real MVP &lt;a href=&quot;https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet&quot;&gt;Adam-P&lt;/a&gt; for this sweet table example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Renders as:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Tables&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Are&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Cool&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;col 3 is&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;right-aligned&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;$1600&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;col 2 is&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;centered&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;$12&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;zebra stripes&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;are neat&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;$1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
 &lt;h2 id=&quot;markdown-comments&quot;&gt;Markdown Comments&lt;/h2&gt;
 

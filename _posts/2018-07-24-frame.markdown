@@ -91,6 +91,27 @@ Renders as:
 
 Sadly, it seems that [markdown doesn't support numbered sublists](https://meta.stackexchange.com/questions/85474/how-to-write-nested-numbered-lists) (such as 1, 2, 2.1, 2.2, 3, etc).  
 
+## Tables
+
+Credit to the real MVP [Adam-P](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) for this sweet table example:
+
+
+```
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+```
+
+Renders as:
+
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
 
 ## Markdown Comments
 

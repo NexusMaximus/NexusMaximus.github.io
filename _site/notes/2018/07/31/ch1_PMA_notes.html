@@ -3,19 +3,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>Practical Malware Analysis Ch.1 personal notes | Kyle the (Aspiring) Reverser</title>
+<title>Practical Malware Analysis Ch.1: Basic Static Analysis Techniques | Kyle the (Aspiring) Reverser</title>
 <meta name="generator" content="Jekyll v3.7.3" />
-<meta property="og:title" content="Practical Malware Analysis Ch.1 personal notes" />
+<meta property="og:title" content="Practical Malware Analysis Ch.1: Basic Static Analysis Techniques" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content, and one that walks through my analysis of the lab assignments." />
-<meta property="og:description" content="As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content, and one that walks through my analysis of the lab assignments." />
-<link rel="canonical" href="http://localhost:4000/notes/2018/07/31/PMA_Chapter_3_notes.html" />
-<meta property="og:url" content="http://localhost:4000/notes/2018/07/31/PMA_Chapter_3_notes.html" />
+<meta name="description" content="As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments." />
+<meta property="og:description" content="As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments." />
+<link rel="canonical" href="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html" />
+<meta property="og:url" content="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html" />
 <meta property="og:site_name" content="Kyle the (Aspiring) Reverser" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-07-31T14:11:00-06:00" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/notes/2018/07/31/PMA_Chapter_3_notes.html"},"url":"http://localhost:4000/notes/2018/07/31/PMA_Chapter_3_notes.html","headline":"Practical Malware Analysis Ch.1 personal notes","dateModified":"2018-07-31T14:11:00-06:00","datePublished":"2018-07-31T14:11:00-06:00","description":"As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content, and one that walks through my analysis of the lab assignments.","@context":"http://schema.org"}</script>
+{"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html"},"url":"http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html","headline":"Practical Malware Analysis Ch.1: Basic Static Analysis Techniques","dateModified":"2018-07-31T14:11:00-06:00","datePublished":"2018-07-31T14:11:00-06:00","description":"As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Kyle the (Aspiring) Reverser" /></head>
 <body><header class="site-header" role="banner">
@@ -38,20 +38,20 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Practical Malware Analysis Ch.1 personal notes</h1>
+    <h1 class="post-title p-name" itemprop="name headline">Practical Malware Analysis Ch.1: Basic Static Analysis Techniques</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2018-07-31T14:11:00-06:00" itemprop="datePublished">Jul 31, 2018
       </time></p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <p>As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content, and one that walks through my analysis of the lab assignments.</p>
+    <p>As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.</p>
 
 <p>In addition to including technical details inscribed within the chapter, I’ll be answering the following questions in an attempt to keep in mind the big picture of the chapter.</p>
 
 <ol>
   <li>In two sentences or less, provide an overview of what this chapter is about.</li>
-  <li>What are the five most important takeaways from this chapter?</li>
+  <li>What are the three most important takeaways from this chapter?</li>
   <li>What problems does this chapter address? In other words, why should we care about this chapter?</li>
 </ol>
 
@@ -61,24 +61,24 @@
 <ol>
   <li>
     <p>In two sentences or less, provide an overview of what this chapter is about.</p>
+
+    <p>This chapter discusses basic static analysis of executable files and provides a slew of tools used to do so. Static analysis of a file is analysis that does NOT involve running the file, such as by examining the header of the file and looking for strings contained within.</p>
   </li>
   <li>
-    <p>What are the five most important takeaways from this chapter?</p>
+    <p>What are the three most important takeaways from this chapter?</p>
+
+    <ul>
+      <li>Static analysis is one tool in the toolbox for identifying malware, but there are ways to make static analysis virtually useless.</li>
+      <li>Section names are merely convention. They can be renamed to be misleading.</li>
+      <li>There are three kinds of linking: <em>static</em>, <em>runtime</em>, and <em>dynamic</em>. Malware more frequently makes use of runtime linking due to how it’s easier to conceal runtime behavior using this version.</li>
+    </ul>
   </li>
   <li>
     <p>What problems does this chapter address? In other words, why should we care about this chapter?</p>
+
+    <p>Static analysis is the first step in analyzing any executable, and you should do it. It can provide clues that will pave the way for productive dynamic analysis.</p>
   </li>
 </ol>
-
-<h2 id="questions-encountered-and-answers-if-found">Questions encountered (and answers, if found)</h2>
-
-<p><em>Ascii  representation of “BAD”:</em>
-0x42 0x41 0x44 0x00</p>
-
-<p><em>Unicode representation of “BAD”:</em>
-0x42 0x00 0x41 0x00 0x44 0x00 0x00 0x00</p>
-
-<p>What are the extra null terminators after each character typically used for?</p>
 
 <h2 id="page-to-page-notes">Page-to-page notes</h2>
 <ul>
@@ -96,7 +96,7 @@
   <li>Appendix A contains lots of DLLs of high interest to malware analysts.</li>
 </ul>
 
-<h3 id="a-little-about-the-pe-file-format">A little about the PE file format</h3>
+<h4 id="a-little-about-the-pe-file-format">A little about the PE file format</h4>
 
 <p>Consists of a header followed by a series of sections:</p>
 <ul>
@@ -108,10 +108,32 @@
 
 <p>These section names are convention; Windows doesn’t require them to be labeled as above. It determines what section is what based on info in the PE header.</p>
 
-<h3 id="tools-discussed-in-this-section">Tools discussed in this section</h3>
+<h2 id="tools-discussed-in-this-section">Tools discussed in this section</h2>
+<p><a href="http://dependencywalker.com/">Dependency Walker</a> is a free utility that scans Windows executables and builds a hierarchical tree diagram of all dependent modules. 
+P16 discusses a bit about how to use it.</p>
+
+<p>PeID: support was discontinued in 2011, but it is still helpful for detecting packed files.</p>
+
+<p>PEview: used to view executable file metadata (i.e. information in the headers of an executable).</p>
+
+<p><a href="http://angusj.com/">Resource Hacker</a>: browses the .rsrc section of an executable. P25 discusses usage of this tool. It also enables one to extract embedded files from within executable files.</p>
+
+<p><a href="http://www.smidgeonsoft.prohosting.com/pebrowse-pro-file-viewer.html">PEBrowse Professional</a> is similar to PEview and allows you to look at the bytes from each section. It does a good job of presenting info from the resource (.rsrc) section.</p>
+
+<p><a href="http://heaventools.com/">PE Explorer</a> has a rich GUI that allows one to navigate through the various parts of a PE file. It permits editing files, too. RIP if you don’t have money to pay for it, though.</p>
+
+<h2 id="questions-encountered-and-answers-if-found">Questions encountered (and answers, if found)</h2>
+
+<p><em>Ascii  representation of “BAD”:</em>
+0x42 0x41 0x44 0x00</p>
+
+<p><em>Unicode representation of “BAD”:</em>
+0x42 0x00 0x41 0x00 0x44 0x00 0x00 0x00</p>
+
+<p>What are the extra null terminators after each character typically used for?</p>
 
 
-  </div><a class="u-url" href="/notes/2018/07/31/PMA_Chapter_3_notes.html" hidden></a>
+  </div><a class="u-url" href="/notes/2018/07/31/ch1_PMA_notes.html" hidden></a>
 </article>
 
       </div>
