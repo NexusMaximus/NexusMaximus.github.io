@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-01T09:17:57-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Practical Malware Analysis Ch.1 Labs</title><link href="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1 Labs" /><published>2018-07-31T14:12:00-06:00</published><updated>2018-07-31T14:12:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch3_Labs.html">&lt;p&gt;In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-10T12:20:49-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Practical Malware Analysis Ch.1 Labs</title><link href="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1 Labs" /><published>2018-07-31T14:12:00-06:00</published><updated>2018-07-31T14:12:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html">&lt;p&gt;In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).&lt;/p&gt;
 
 &lt;p&gt;I’ll also answer the following general questions in an attempt to keep the big picture of the assignments in mind:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/li&gt;
   &lt;li&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/li&gt;
-  &lt;li&gt;What are the three (or more) most notable challenges encountered in doing these exercises, and what did you do to overcome them?&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab Summary questions&lt;/h2&gt;
@@ -13,22 +12,229 @@
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
+
+    &lt;p&gt;Super important! Static analysis is one of those things that seems easy and straightforward, but ends up being trickier to conduct than expected (for me, at least), due to the fact that I find myself questioning if the information I find is legit or planted.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Look &lt;strong&gt;very&lt;/strong&gt; carefully at the strings of the file– specifically at the names of .dll files!&lt;/li&gt;
+      &lt;li&gt;Modification time and compilation time are definitely not the same thing. Compilation time can be found by putting the file into PEView and going to IMAGE_NT_HEADERS -&amp;gt; IMAGE_FILE_HEADER -&amp;gt; Time Date Stamp.&lt;/li&gt;
+      &lt;li&gt;Virtual vs. raw sizes, identifiable using PEiD (at least for 32 bit exes) can be an indicator of packing. Per this &lt;a href=&quot;http://www.asmcommunity.net/forums/topic/?id=29605&quot;&gt;post&lt;/a&gt;:
+        &lt;ul&gt;
+          &lt;li&gt;Raw size: exactly the size of the section’s data &lt;em&gt;in the file&lt;/em&gt;&lt;/li&gt;
+          &lt;li&gt;Virtual size: The size of the section &lt;em&gt;in memory&lt;/em&gt;
+ So it makes sense that, if the section is larger in memory, something is unpacking into that section. Usually, the virtual size is smaller than the raw size.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;It seems evident now, but LoadResource, FindResource, and SizeOfResource functions imply the existence of something that ResourceHacker can help extract. As such, look around with ResourceHacker if you see these functions in the import list.
+        &lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges Encountered in the labs&lt;/h2&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;What are the three (or more) most notable challenges encountered in doing these exercises, and what did you do to overcome them?&lt;/p&gt;
+    &lt;p&gt;I wasn’t sure how to find the compilation time and wasn’t sure of if the modification time sufficed. The answer to this was made clear after checking the answers in the back of the book.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
+
+&lt;h3 id=&quot;11&quot;&gt;1.1&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Upload to VT. Does the file match any existing antivirus signatures?&lt;/p&gt;
+
+    &lt;p&gt;Indeed!&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch1_sc/1.1.1dll.PNG&quot; alt=&quot;1.1.1dll&quot; title=&quot;yee&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch1_sc/1.1.1exe.PNG&quot; alt=&quot;1.1.1exe&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When were these files compiled?&lt;/p&gt;
+
+    &lt;p&gt;Not positive on how to find the exact date using a tool, but just viewing file properties and looking at the “last modified” entry gives the right answer for the .exe. Alternatively, this info is also provided by CFFExplorer.&lt;/p&gt;
+
+    &lt;p&gt;After reading answers: see question 2 of the above section&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Are there any indicators that these files are packed or obfuscated? If so, what are the indicators?&lt;/p&gt;
+
+    &lt;p&gt;I argue no:&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;The .exe and .dll disassemble successfully in IDA Demo&lt;/li&gt;
+      &lt;li&gt;There are several imports identifiable by CFFExplorer which would otherwise be obfuscated &lt;img src=&quot;/files/ch1_sc/1.1.3dll.PNG&quot; alt=&quot;1.1.3dll&quot; /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Do the imports hint at what the malware does?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Lab1.dll:
+        &lt;ul&gt;
+          &lt;li&gt;CreateProcess indicates it runs something.&lt;/li&gt;
+          &lt;li&gt;from the book: WS2_32.dll provides network functions. So perhaps it’s exfiltrating stuff-n-things&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Lab1.exe:
+        &lt;ul&gt;
+          &lt;li&gt;CreateFileA/FindFileA: maybe it’s creating a log file, or checking for its own existence, or searching for specific files on a system (like SAM files)&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Any other host-based indicators?&lt;/p&gt;
+
+    &lt;p&gt;Running strings shows that the .exe has hard-coded within it “WARNING_THIS_WILL_DESTROY_YOUR_MACHINE” which can be easily grepped for.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What network-based indicators could be used to find this malware on infected machines?&lt;/p&gt;
+
+    &lt;p&gt;Running strings on the .dll yields an IP address: 127.26.152.13. So look for traffic going to that IP address&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Guess as to the purpose of the files:&lt;/p&gt;
+
+    &lt;p&gt;Search for certain files (and/or create them) and exfil them to an external site. My guess is it’s a keylogger or it’s seeking password files or something of the like.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges Encountered in the labs&lt;/h2&gt;
+&lt;h4 id=&quot;after-reading-the-book&quot;&gt;After reading the book:&lt;/h4&gt;
 
-&lt;p&gt;here&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ahh, the .exe has a string “kerne132.dll”… ‘1’… didn’t notice that at first. Perfect host-based indicator.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;h2 id=&quot;final-answers-to-questions&quot;&gt;Final Answers to Questions&lt;/h2&gt;
+&lt;h3 id=&quot;12&quot;&gt;1.2&lt;/h3&gt;
 
-&lt;p&gt;here&lt;/p&gt;</content><author><name></name></author><summary type="html">In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).</summary></entry><entry><title type="html">Practical Malware Analysis Ch.1: Basic Static Analysis Techniques</title><link href="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1: Basic Static Analysis Techniques" /><published>2018-07-31T14:11:00-06:00</published><updated>2018-07-31T14:11:00-06:00</updated><id>http://localhost:4000/notes/2018/07/31/ch1_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html">&lt;p&gt;As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Existing antivirus definitions?&lt;/p&gt;
+
+    &lt;p&gt;Absolutely: 43/66 say it’s malicious.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Obfuscation signs?&lt;/p&gt;
+
+    &lt;p&gt;At a glance– some imports are clearly visible and are more in quantity than for typical packed malware.&lt;/p&gt;
+
+    &lt;p&gt;However, Ida claims the imports section was destroyed. I trust Ida more than CFFExplorer since Ida costs like $2000.&lt;/p&gt;
+
+    &lt;p&gt;Looking at strings from within Ida indicates a section called UPX1. UPX is a packer. Obfuscated it is!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Do imports provide any juicy knowledge?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;GetProcAddressA and VirtualAlloc suggest this might be doing process injection.&lt;/li&gt;
+      &lt;li&gt;CreateService suggests the malware establishes persistence.&lt;/li&gt;
+      &lt;li&gt;InternetOpenA suggests the program talks out somewhere.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Indicators!&lt;/p&gt;
+
+    &lt;p&gt;First, I unpacked the file using CFFExplorer and then put it back into Ida to discover, with Ida’s strings utility:&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Host-based: strings shows “MalService” in our presence, and that string is passed as a parameter to CreateService: &lt;img src=&quot;/files/ch1_sc/1.2.4malservice.PNG&quot; alt=&quot;malservice&quot; /&gt; This would be a great indicator (albeit not reflective of what real malware might actually do (probably)). Further, there is a strange string “HGL345” used as a parameter to CreateMutex, which suggests if a mutex named HGL345 is on the system, we know this malware probably ran. &lt;img src=&quot;/files/ch1_sc/1.2.4HGL345.PNG&quot; alt=&quot;HGL345&quot; /&gt;&lt;/li&gt;
+      &lt;li&gt;Network-based: strings yet again comes in clutch to show the presence of “http://malwareanalysisbook.com”.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;after-reading-the-book-1&quot;&gt;After reading the book:&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PEiD can be used to identify virtual vs. raw sizes of sections in memory. Therefore, a raw size of 0 but a virtual size of &amp;gt;0 is strong evidence of shenanigans. &lt;img src=&quot;/files/ch1_sc/1.2.4peid.PNG&quot; alt=&quot;peid&quot; title=&quot;Raw size: 0; yet virtual size=0x4000? HMMMMMMM&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;13&quot;&gt;1.3&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;VirusTotal it up.&lt;/p&gt;
+
+    &lt;p&gt;55/66 claim EVIL (at this point, duh). Also, they say it’s packed.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Obfuscations?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;For starters, VT claims it’s packed (i.e. a lot of the warnings say “Packer.FSG.A”).&lt;/li&gt;
+      &lt;li&gt;Secondly, the ONLY two imports that exist within the file are “LoadLibraryA” and “GetProcAddress” which are the two imports associated with unpacking an executable.&lt;/li&gt;
+      &lt;li&gt;Moreover, we have sections identified by PEiD as having a raw size of 0 and a virtual size of larger. It’s definitely packed.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Imports hinting at functionality?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;can’t really answer without unpacking&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;indicators?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;can’t really answer without unpacking&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;14&quot;&gt;1.4&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;VT?
+ 53/67&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Obfuscations?&lt;/p&gt;
+
+    &lt;p&gt;Ida disassembled it just fine. It has lots of imports. That’s reason enough for me to believe it’s not obfuscated.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Program compilation date?&lt;/p&gt;
+
+    &lt;p&gt;PEView tells us the compilation date is 8/30/2019, which is BS since it isn’t 2019. Clearly this is spoofed.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Imports hinting as to functionality?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;GetProcAddress/LoadLibraryA: searching for external code to run&lt;/li&gt;
+      &lt;li&gt;CreateFile/MoveFile/WriteFile: It’s got the ability to create and write files. Keylogger? Reverse shell?&lt;/li&gt;
+      &lt;li&gt;CreateRemoteThread: has ability to execute code in other programs. Process injection?&lt;/li&gt;
+      &lt;li&gt;LookupPrivilegeValue: looking to see what permissions its running with perhaps?
+ All this, combined with the antivirus vendor tags that say “backdoor”, tell me this is probably a backdoor into a machine that will give an adversary control.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;host/network based indicators?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Ida Strings: \system32\wupdmgr.exe is in there, which suggests this malware writes or modifies a file at that location with that name. Same with \winup.exe (which, &lt;a href=&quot;https://www.bleepingcomputer.com/startups/winup.exe-18972.html&quot;&gt;according to bleepingcomputer&lt;/a&gt;, is BAD and EVIL!&lt;/li&gt;
+      &lt;li&gt;No clue WHY Ida doesn’t show ALL the strings, but it doesn’t. Strings.exe found the string “http://practicalmalwareanalysis.com/updater.exe” in the program. This may be a host-based AND network-based indicator!&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;one resource in the resource section. Use ResourceHacker to examine it, and then to extract it. What does the resource tell us?&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch1_sc/1.4.6resource.PNG&quot; alt=&quot;resource&quot; /&gt; 
+ This appears to be another executable file. Saving it and submitting the hash resulted in interestingness:
+ &lt;img src=&quot;/files/ch1_sc/1.4.6resourceVT.PNG&quot; alt=&quot;resource2&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Cool– we get TWO malware samples for the price of ONE! My guess is that this sample drops a second executable and names it one of the above things (perhaps winup.exe).&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The book tells us that we can use Resource Hacker to save just the resource. “Action -&amp;gt; save resource as binary file” takes care of that.&lt;/p&gt;
+
+&lt;h6 id=&quot;la-ur-18-27643&quot;&gt;LA-UR-18-27643&lt;/h6&gt;</content><author><name></name></author><summary type="html">In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).</summary></entry><entry><title type="html">Practical Malware Analysis Ch.1: Basic Static Analysis Techniques</title><link href="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1: Basic Static Analysis Techniques" /><published>2018-07-31T14:11:00-06:00</published><updated>2018-07-31T14:11:00-06:00</updated><id>http://localhost:4000/notes/2018/07/31/ch1_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html">&lt;p&gt;As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.&lt;/p&gt;
 
 &lt;p&gt;In addition to including technical details inscribed within the chapter, I’ll be answering the following questions in an attempt to keep in mind the big picture of the chapter.&lt;/p&gt;
 
@@ -97,7 +303,7 @@ P16 discusses a bit about how to use it.&lt;/p&gt;
 
 &lt;p&gt;PeID: support was discontinued in 2011, but it is still helpful for detecting packed files.&lt;/p&gt;
 
-&lt;p&gt;PEview: used to view executable file metadata (i.e. information in the headers of an executable).&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://wjradburn.com/software/&quot;&gt;PEview&lt;/a&gt;: used to view executable file metadata (i.e. information in the headers of an executable).&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://angusj.com/&quot;&gt;Resource Hacker&lt;/a&gt;: browses the .rsrc section of an executable. P25 discusses usage of this tool. It also enables one to extract embedded files from within executable files.&lt;/p&gt;
 
@@ -113,15 +319,9 @@ P16 discusses a bit about how to use it.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Unicode representation of “BAD”:&lt;/em&gt;
 0x42 0x00 0x41 0x00 0x44 0x00 0x00 0x00&lt;/p&gt;
 
-&lt;p&gt;What are the extra null terminators after each character typically used for?&lt;/p&gt;</content><author><name></name></author><summary type="html">As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.</summary></entry><entry><title type="html">Playing with Liquid</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html" rel="alternate" type="text/html" title="Playing with Liquid" /><published>2018-07-30T13:37:00-06:00</published><updated>2018-07-30T13:37:00-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/30/playing_with_liquid.html">&lt;p&gt;Liquid is a templating language used with Jekyll, and it appears to have some significant power. This post will be dedicated to investigating just what’s possible using it. I started off by following the docs &lt;a href=&quot;https://shopify.github.io/liquid/basics/introduction/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;What are the extra null terminators after each character typically used for?&lt;/p&gt;
 
-&lt;p&gt;Other resources:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;simple liquid PoC things&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/variables/&quot;&gt;global/site variable info&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;It looks like Liquid will be more helpful when I actually have some content that needs organizing. As such, I’m going to hold off on researching how this works until after I get some more posts.&lt;/p&gt;</content><author><name></name></author><summary type="html">Liquid is a templating language used with Jekyll, and it appears to have some significant power. This post will be dedicated to investigating just what’s possible using it. I started off by following the docs here.</summary></entry><entry><title type="html">Markdown Cheatsheet for Github Pages/Jekyll Blog Posts</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html" rel="alternate" type="text/html" title="Markdown Cheatsheet for Github Pages/Jekyll Blog Posts" /><published>2018-07-24T14:43:45-06:00</published><updated>2018-07-24T14:43:45-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html">&lt;p&gt;This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. 
+&lt;h6 id=&quot;la-ur-18-27643&quot;&gt;LA-UR-18-27643&lt;/h6&gt;</content><author><name></name></author><summary type="html">As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.</summary></entry><entry><title type="html">Markdown Cheatsheet for Github Pages/Jekyll Blog Posts</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html" rel="alternate" type="text/html" title="Markdown Cheatsheet for Github Pages/Jekyll Blog Posts" /><published>2018-07-24T14:43:45-06:00</published><updated>2018-07-24T14:43:45-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html">&lt;p&gt;This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. 
 Much of the content here is taken directly from &lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;the Jekyll docs about writing docs&lt;/a&gt;, but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.&lt;/p&gt;
 
 &lt;p&gt;I found a generic markdown cheatsheet &lt;a href=&quot;https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet&quot;&gt;here&lt;/a&gt; but some things mentioned there don’t appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found &lt;a href=&quot;https://gist.github.com/roachhd/779fa77e9b90fe945b0c&quot;&gt;here&lt;/a&gt; but it’s not super comprehensive– thus the need for this post here. 
@@ -137,7 +337,7 @@ I’ll be adding to it continuously over the next few days (probably weeks) as I
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;# One pound&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Question: Why does one pound result in smaller text than two? I don’t know yet.&lt;/p&gt;
+&lt;p&gt;Question: Why does one pound result in smaller text than two?&lt;/p&gt;
 
 &lt;h2 id=&quot;two-pounds&quot;&gt;Two pounds&lt;/h2&gt;
 
@@ -345,4 +545,6 @@ code stuff here
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;![sweet pic](/files/zz.jpeg &quot;caption here&quot;)&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. Much of the content here is taken directly from the Jekyll docs about writing docs, but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.</summary></entry></feed>
+&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h6 id=&quot;la-ur-18-27643&quot;&gt;LA-UR-18-27643&lt;/h6&gt;</content><author><name></name></author><summary type="html">This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. Much of the content here is taken directly from the Jekyll docs about writing docs, but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.</summary></entry></feed>
