@@ -1,4 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-10T12:20:49-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Practical Malware Analysis Ch.1 Labs</title><link href="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1 Labs" /><published>2018-07-31T14:12:00-06:00</published><updated>2018-07-31T14:12:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html">&lt;p&gt;In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-22T15:49:10-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.2 notes: Malware Analysis in Virtual Machines</title><link href="http://localhost:4000/notes/2018/08/22/ch2_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.2 notes: Malware Analysis in Virtual Machines" /><published>2018-08-22T14:31:00-06:00</published><updated>2018-08-22T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/08/22/ch2_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/08/22/ch2_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
+
+    &lt;p&gt;This short chapter discusses how to create a virtual environment to analyze malware in. It explains details about the author’s preferred tool, VMWare Workstation, and details how to create/configure a virtual machine, including details about virtual networking, snapshotting, using peripheral devices, VMWare’s record/replay feature, and provides discussion on the risks that must be considered when analyzing malware in ANY case.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
+
+    &lt;p&gt;There is always some risk inherent with the field of malware analysis, but using the right tools can help attenuate the risk to an acceptable level.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
+
+    &lt;p&gt;This chapter provides the key information behind how to set up the analysis environment used in the rest of the book.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;Structure of a VM: pg30&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Snapshotting&lt;/em&gt; is the act of saving the state of a VM and being able to revert back to it within seconds. THIS IS WHY VMWARE WORKSTATION IS NECESSARY. Player does not support this feature. Now’s the time when you agree and go buy workstation. :)&lt;/li&gt;
+  &lt;li&gt;Configuring virtual networks using services machines such as Remnux: pg33&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;connecting malware to the internet is genreally a bad plan. it can:&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;spread around&lt;/li&gt;
+      &lt;li&gt;Notify the author that it’s on a machine&lt;/li&gt;
+      &lt;li&gt;drop more malware&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;etc etc&lt;/p&gt;
+
+        &lt;p&gt;so NEVER connect malware to the internet without first doing some analysis to determine what it might do when it connects. Then, use your best judgement to determine whether or not it’s worth it to connect the malware to the internet.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Malware can detect if it’s running in a virtual machine, and it can behave differently if it is. Of course, at the end of the day, it’s just running instructions, and those can be checked for and modified by the analyst, but it all takes time.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;There is ALWAYS an inherent risk from running malware even with a virtual environment. Good practices can help attenuate the risk, but will never make the risk 0.&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tools-discussed-in-this-section&quot;&gt;Tools discussed in this section&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.vmware.com/products/workstation-pro.html&quot;&gt;VMWare Workstation&lt;/a&gt;: potentially the most important piece of software for malware analysis.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Record and replay seemed especially neat and potentially useful. It records &lt;em&gt;every&lt;/em&gt; instruction executed in the process of a recording session. I’m sure there are uses for this.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">Practical Malware Analysis Ch.1 Labs</title><link href="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1 Labs" /><published>2018-07-31T14:12:00-06:00</published><updated>2018-07-31T14:12:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html">&lt;p&gt;In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).&lt;/p&gt;
 
 &lt;p&gt;I’ll also answer the following general questions in an attempt to keep the big picture of the assignments in mind:&lt;/p&gt;
 

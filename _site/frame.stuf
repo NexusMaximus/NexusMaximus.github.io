@@ -3,17 +3,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>Kyle the (Aspiring) Reverser | A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</title>
+<title>notes frame | Kyle the (Aspiring) Reverser</title>
 <meta name="generator" content="Jekyll v3.7.3" />
-<meta property="og:title" content="Kyle the (Aspiring) Reverser" />
+<meta property="og:title" content="notes frame" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis." />
 <meta property="og:description" content="A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis." />
-<link rel="canonical" href="http://localhost:4000/" />
-<meta property="og:url" content="http://localhost:4000/" />
+<link rel="canonical" href="http://localhost:4000/frame.stuf" />
+<meta property="og:url" content="http://localhost:4000/frame.stuf" />
 <meta property="og:site_name" content="Kyle the (Aspiring) Reverser" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-08-22T14:31:00-06:00" />
 <script type="application/ld+json">
-{"name":"Kyle the (Aspiring) Reverser","description":"A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.","@type":"WebSite","url":"http://localhost:4000/","headline":"Kyle the (Aspiring) Reverser","@context":"http://schema.org"}</script>
+{"description":"A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.","@type":"BlogPosting","url":"http://localhost:4000/frame.stuf","headline":"notes frame","dateModified":"2018-08-22T14:31:00-06:00","datePublished":"2018-08-22T14:31:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/frame.stuf"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Kyle the (Aspiring) Reverser" /></head>
 <body><header class="site-header" role="banner">
@@ -33,31 +35,38 @@
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
-<h2 class="post-list-heading">Posts</h2>
-    <ul class="post-list"><li><span class="post-meta">Aug 22, 2018</span>
-        <h3>
-          <a class="post-link" href="/notes/2018/08/22/ch2_PMA_notes.html">
-            PMA Ch.2 notes: Malware Analysis in Virtual Machines
-          </a>
-        </h3></li><li><span class="post-meta">Jul 31, 2018</span>
-        <h3>
-          <a class="post-link" href="/lab_assignment/2018/07/31/PMA_Ch1_Labs.html">
-            Practical Malware Analysis Ch.1 Labs
-          </a>
-        </h3></li><li><span class="post-meta">Jul 31, 2018</span>
-        <h3>
-          <a class="post-link" href="/notes/2018/07/31/ch1_PMA_notes.html">
-            Practical Malware Analysis Ch.1: Basic Static Analysis Techniques
-          </a>
-        </h3></li><li><span class="post-meta">Jul 24, 2018</span>
-        <h3>
-          <a class="post-link" href="/jekyll/documentation/howto/2018/07/24/frame.html">
-            Markdown Cheatsheet for Github Pages/Jekyll Blog Posts
-          </a>
-        </h3></li></ul>
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-    <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p></div>
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">notes frame</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-08-22T14:31:00-06:00" itemprop="datePublished">Aug 22, 2018
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    ## Chapter summary questions
+1. In two sentences or less, provide an overview of what this chapter is about.
+2. What are the three most important takeaways from this chapter?
+3. What problems does this chapter address? In other words, why should we care about this chapter?
+
+# Page=to-page notes
+* here
+  * here
+
+## Tools discussed in this section
+here
+
+## Questions encountered (and answers, if found)
+here
+
+
+
+
+
+
+  </div><a class="u-url" href="/frame.stuf" hidden></a>
+</article>
 
       </div>
     </main><footer class="site-footer h-card">
