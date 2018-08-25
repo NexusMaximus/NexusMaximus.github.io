@@ -24,7 +24,7 @@ categories: notes
 * Structure of a VM: pg30
 * _Snapshotting_ is the act of saving the state of a VM and being able to revert back to it within seconds. THIS IS WHY VMWARE WORKSTATION IS NECESSARY. Player does not support this feature. Now's the time when you agree and go buy workstation. :)
 * Configuring virtual networks using services machines such as Remnux: pg33
-* **connecting malware to the internet is genreally a bad plan. it can:**
+* **connecting malware to the internet is generally a bad plan. it can:**
   * spread around
   * Notify the author that it's on a machine
   * drop more malware
