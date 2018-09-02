@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Practical Malware Analysis Ch.1 Labs"
+title: "PMA Ch.1 Labs: Basic Static Analysis"
 date: 2018-07-31 14:12:00 -0600
 categories: lab_assignment
 ---
@@ -29,11 +29,12 @@ I'll also answer the following general questions in an attempt to keep the big p
 	So it makes sense that, if the section is larger in memory, something is unpacking into that section. Usually, the virtual size is smaller than the raw size.
 	 
 	* It seems evident now, but LoadResource, FindResource, and SizeOfResource functions imply the existence of something that ResourceHacker can help extract. As such, look around with ResourceHacker if you see these functions in the import list. 
+
+
 ## Challenges Encountered in the labs
 
 1. I wasn't sure how to find the compilation time and wasn't sure of if the modification time sufficed. The answer to this was made clear after checking the answers in the back of the book.
 
-2. 
 
 ## Lab Walkthrough (includes answers!)
 

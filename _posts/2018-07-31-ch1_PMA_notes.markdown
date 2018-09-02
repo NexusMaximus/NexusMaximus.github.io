@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Practical Malware Analysis Ch.1: Basic Static Analysis Techniques"
+title: "PMA Ch.1: Basic Static Analysis Techniques"
 date: 2018-07-31 14:11:00 -0600
 categories: notes
 ---

@@ -1,4 +1,181 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-25T14:28:02-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.3 notes: Basic Dynamic Analysis</title><link href="http://localhost:4000/notes/2018/08/22/ch3_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.3 notes: Basic Dynamic Analysis" /><published>2018-08-22T14:31:00-06:00</published><updated>2018-08-22T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/08/22/ch3_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/08/22/ch3_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-01T21:41:07-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.3 Lab: Basic Dynamic Analysis</title><link href="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="PMA Ch.3 Lab: Basic Dynamic Analysis" /><published>2018-08-29T12:31:00-06:00</published><updated>2018-08-29T12:31:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
+
+    &lt;p&gt;Very important. Applying the dynamic analysis processes described in this chapter and becoming used to the tools discussed within is going to be helpful experience for when it comes to analyze just about any other piece of malware.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
+
+    &lt;p&gt;In this case, it was mainly just practice using the tools.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges encountered in the labs&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Using ProcMon to find imports wasn’t done &lt;em&gt;quite&lt;/em&gt; how the book indicated it would be done– I didn’t have a way to launch “depends.exe” in the options generated from right clicking the malicious process. After consulting a &lt;a href=&quot;https://support.microsoft.com/en-us/help/970920/using-process-explorer-to-list-dlls-running-under-the-outlook-exe-proc&quot;&gt;post from Microsoft on how to view imports using ProcMon&lt;/a&gt;, it was made clear that all I needed to do was go to view -&amp;gt; click show lower pane, and then imports could be viewed in the lower pane for whatever process I had selected.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
+
+&lt;h3 id=&quot;31&quot;&gt;3.1&lt;/h3&gt;
+&lt;p&gt;Analyze the malware found in the file &lt;em&gt;Lab03-01.exe&lt;/em&gt; using basic dynamic analysis tools.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are this malware’s imports and strings?&lt;/p&gt;
+
+    &lt;p&gt;Imports:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.1.1imports.PNG&quot; alt=&quot;3.1.1imports&quot; title=&quot;imports&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Strings:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.1.1strings.PNG&quot; alt=&quot;3.1.1strings&quot; title=&quot;strings&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Note that ProcExp found that the strings on the image as well as on disk were identical.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the malware’s host-based indicators?&lt;/p&gt;
+
+    &lt;p&gt;It doesn’t create any files. It doesn’t seem to modify keys (for, say, persistence). I don’t see any evident host based indicators.&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;This seems weird.&lt;/strong&gt; The file crashes. At first I thought that was part of the operation of the file, but with no strange seeming imports and relatively normal strings and no indicators, the file seemed especially well-behaved. After looking into what the “error” message I recieved meant, I now know that the file doesn’t run well on a 64-bit Windows 7 VM.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.1.2fail1.PNG&quot; alt=&quot;fail1&quot; title=&quot;64-bit Windows 7 runtime error&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;And after reading up a little on &lt;a href=&quot;https://superuser.com/questions/610495/the-application-was-unable-to-start-correctly-0xc0000018-windows-8-x64&quot;&gt;what this cryptic error might have meant&lt;/a&gt;, and after trying the top answer in the question to no avail, I decided I needed to try it in a 32 bit environment.&lt;/p&gt;
+
+    &lt;p&gt;So, I spun up a 32-bit windows VM real quick and ran it again…:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.1.2fail2.PNG&quot; alt=&quot;fail2&quot; title=&quot;32-bit Windows 7 runtime error&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Ugh. That’s probably not normal either. So, I looked into what &lt;a href=&quot;https://jmprsp.wordpress.com/2016/01/28/practical-malware-analysis-basic-dynamic-techniques-lab-3-01/&quot;&gt;someone else did&lt;/a&gt; and discovered an explanation that seemed to hint towards how this particular sample was built to leverage a Windows XP-specific function– one that was changed in Windows 7.&lt;/p&gt;
+
+    &lt;p&gt;No wonder this sample seemed well-behaved on the 64-bit version of Windows 7– it doesn’t do anything. Unfortunately, I don’t currently have access to a Windows XP .iso, so I’m going to have to put this problem on the backburner. In any case, after reading the answers and what jmprsp did, I’m thinking it wouldn’t have been too difficult to identify this malware’s pesky behavior in an environment in which the malware would actually properly run.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Are there any useful network-based signatures for this malware? If so, what are they?&lt;/p&gt;
+
+    &lt;p&gt;Strings shows the presence of &lt;code class=&quot;highlighter-rouge&quot;&gt;www.practicalmalwareanalysis.com&lt;/code&gt; but due to previously described problems, a true analysis of this sample could not be completed.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;32&quot;&gt;3.2&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;How can you get this malware to install itself?&lt;/p&gt;
+
+    &lt;p&gt;After strictly reading this question, the first thing that comes to mind is we need to use rundll32.exe to run this file, but we need to know what DLL functions should be ran. If we use Ida to check out the exports, we find there exist a few:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.2.1dllexports.PNG&quot; alt=&quot;3.2.1dllexports&quot; /&gt;)&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Install&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;installA&lt;/code&gt; look promising. Let’s try running &lt;code class=&quot;highlighter-rouge&quot;&gt;Install&lt;/code&gt; with rundll32.exe and see what happens.&lt;/p&gt;
+
+    &lt;p&gt;First, I start up Procmon and…&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rundll32.exe Lab03-02.dll, Install&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.2.2fail.PNG&quot; alt=&quot;3.2.2fail.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;UGH. WHY.&lt;/p&gt;
+
+    &lt;p&gt;It doesn’t work on 32 bit versions of Windows 7 either, even when ran as an administrator. It looks like this is another piece of Windows XP-specific malware. Unfortunately, I cannot continue with this sample either. Review &lt;a href=&quot;https://jmprsp.wordpress.com/2016/01/31/practical-malware-analysis-basic-dynamic-techniques-lab-3-02/&quot;&gt;jmprsp’s work here&lt;/a&gt; and move on.&lt;/p&gt;
+
+    &lt;p&gt;We will return to this problem as soon as I hit chapter 5 (i.e. the Ida chapter), and identify the exact problem behind why it won’t run. Maybe it’s something that can be fixed.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How would you get this malware to run after installation?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How can you find the process under which this malware is running?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Which filters could you set in order to use procmon to glean information?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the malware’s host-based indicators?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Are there any useful network-based signatures for this malware?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;realizations-made-after-reading-the-book-answers&quot;&gt;Realizations made after reading the book answers:&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;here&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;33&quot;&gt;3.3&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;What do you notice when monitoring this malware with Process Explorer?&lt;/p&gt;
+
+    &lt;p&gt;I notice that I get yet another Windows error. This time, it’s 0xc0000142. Frustrating.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.3.1svchostfail.PNG&quot; alt=&quot;3.3.1svchostfail.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Although, the failure is coming from svchost.exe – NOT Lab03-03.exe. After running it again, I noticed that Lab03-03.exe appears to spawn this svchost.exe and then exits, which leaves svchost.exe a zombie process. I’m not sure what that svchost.exe is trying to do yet. We know it’s failing with error 0xc0000142, and if we look into &lt;a href=&quot;https://answers.microsoft.com/en-us/windows/forum/windows_10-performance-winpc/error-0xc0000142/3da27a75-178c-4de5-b43c-c538e6005540&quot;&gt;what causes this error&lt;/a&gt; we find that it has something to do with system files not existing, which is indicative of another Windows XP vs 7 problem.&lt;/p&gt;
+
+    &lt;p&gt;In either case, however, running the program in a 32 bit environment yielded a different error than when in a 64 bit environment. Upon viewing the procmon logs on the 32-bit version, it looks like svchost, before crashing, successfully completes a &lt;em&gt;lot&lt;/em&gt; of registry querying.&lt;/p&gt;
+
+    &lt;p&gt;Further, if we look at HOW svchost.exe is called, we notice it’s not called in any special way:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.3.2svchostcall.PNG&quot; alt=&quot;3.3.2svchostcall.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Yet, it appears to be querying the entire registry. I don’t think this is svchost.exe’s main function. This smells like process injection, which could be what ends up causing the Windows error when this malware arrives at the functionality that is supposed to come after the registry querying. Further, process injection often works only for specific builds of Windows (i.e. injecting a process in Windows 7 may not work the same way as injecting a process in Windows XP). I think that’s why we receive a runtime error when runnign this in Windows 7.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Can you identify any live memory modifications?&lt;/p&gt;
+
+    &lt;p&gt;If svchost didn’t unexpectedly crash, I would view the process properties from within procexp and compare the strings in the image to the strings on disk, and, as is confirmed by &lt;a href=&quot;https://jmprsp.wordpress.com/2016/01/31/practical-malware-analysis-basic-dynamic-techniques-lab-3-03/&quot;&gt;jmprsp in his post on ch3 lab3&lt;/a&gt;, we would find that they are indeed very different, which demonstrates process injection as well.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the malware’s host-based indicators?&lt;/p&gt;
+
+    &lt;p&gt;This question would be easier to answer if the program ran correctly.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is the purpose of this program?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;34&quot;&gt;3.4&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;What happens when you run this file?&lt;/p&gt;
+
+    &lt;p&gt;Running the file results in the file’s deleting itself!  (FINALLY, MALWARE THAT RUNS PROPERLY IN A WINDOWS 7 ENVIRONMENT WOOOO).&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.4.1proctree.PNG&quot; alt=&quot;3.4.1proctree.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;The process tree provided by ProcMon (view -&amp;gt; process tree) shows that cmd is spawned by Lab03-04.exe with a delete command for the initial binary. It doesn’t appear to do much more, despite the fact that there is lots of potential functionality, judging from the imported functions.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is causing the roadblock in dynamic analysis?&lt;/p&gt;
+
+    &lt;p&gt;If we look at the code using Ida, we see that it calls main passing in command line arguments…&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/sc2_ch3/3.4.1callmain.PNG&quot; alt=&quot;3.4.1callmain.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;and that something happens if there is only one argument passed to the program (i.e. if no command line arguments are passed in).&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/sc2_ch3/3.4.2main.PNG&quot; alt=&quot;3.4.2main.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Perhaps this is the issue.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Are there other ways to run this program?&lt;/p&gt;
+
+    &lt;p&gt;If we running the program on the command line (i.e. cmd.exe) we can easily pass in more arguments. However, without doing a deeper dive into what sorts of arguments it may require/need, we can’t further process what this program does. I suspect we’ll return to this program shortly after the Ida chapter.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</summary></entry><entry><title type="html">PMA Ch.3 notes: Basic Dynamic Analysis</title><link href="http://localhost:4000/notes/2018/08/22/ch3_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.3 notes: Basic Dynamic Analysis" /><published>2018-08-22T14:31:00-06:00</published><updated>2018-08-22T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/08/22/ch3_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/08/22/ch3_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
@@ -160,7 +337,7 @@ C:\&amp;gt; net start serviceNameHere
 &lt;p&gt;&lt;a href=&quot;https://www.vmware.com/products/workstation-pro.html&quot;&gt;VMWare Workstation&lt;/a&gt;: potentially the most important piece of software for malware analysis.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Record and replay seemed especially neat and potentially useful. It records &lt;em&gt;every&lt;/em&gt; instruction executed in the process of a recording session. I’m sure there are uses for this.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">Practical Malware Analysis Ch.1 Labs</title><link href="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1 Labs" /><published>2018-07-31T14:12:00-06:00</published><updated>2018-07-31T14:12:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html">&lt;p&gt;In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">PMA Ch.1 Labs: Basic Static Analysis</title><link href="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html" rel="alternate" type="text/html" title="PMA Ch.1 Labs: Basic Static Analysis" /><published>2018-07-31T14:12:00-06:00</published><updated>2018-07-31T14:12:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html">&lt;p&gt;In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).&lt;/p&gt;
 
 &lt;p&gt;I’ll also answer the following general questions in an attempt to keep the big picture of the assignments in mind:&lt;/p&gt;
 
@@ -190,15 +367,15 @@ C:\&amp;gt; net start serviceNameHere
  So it makes sense that, if the section is larger in memory, something is unpacking into that section. Usually, the virtual size is smaller than the raw size.&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
-      &lt;li&gt;It seems evident now, but LoadResource, FindResource, and SizeOfResource functions imply the existence of something that ResourceHacker can help extract. As such, look around with ResourceHacker if you see these functions in the import list.
-        &lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges Encountered in the labs&lt;/h2&gt;
-      &lt;/li&gt;
+      &lt;li&gt;It seems evident now, but LoadResource, FindResource, and SizeOfResource functions imply the existence of something that ResourceHacker can help extract. As such, look around with ResourceHacker if you see these functions in the import list.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;I wasn’t sure how to find the compilation time and wasn’t sure of if the modification time sufficed. The answer to this was made clear after checking the answers in the back of the book.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges Encountered in the labs&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I wasn’t sure how to find the compilation time and wasn’t sure of if the modification time sufficed. The answer to this was made clear after checking the answers in the back of the book.&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
@@ -396,7 +573,7 @@ C:\&amp;gt; net start serviceNameHere
 
 &lt;p&gt;The book tells us that we can use Resource Hacker to save just the resource. “Action -&amp;gt; save resource as binary file” takes care of that.&lt;/p&gt;
 
-&lt;h6 id=&quot;la-ur-18-27643&quot;&gt;LA-UR-18-27643&lt;/h6&gt;</content><author><name></name></author><summary type="html">In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).</summary></entry><entry><title type="html">Practical Malware Analysis Ch.1: Basic Static Analysis Techniques</title><link href="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html" rel="alternate" type="text/html" title="Practical Malware Analysis Ch.1: Basic Static Analysis Techniques" /><published>2018-07-31T14:11:00-06:00</published><updated>2018-07-31T14:11:00-06:00</updated><id>http://localhost:4000/notes/2018/07/31/ch1_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html">&lt;p&gt;As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.&lt;/p&gt;
+&lt;h6 id=&quot;la-ur-18-27643&quot;&gt;LA-UR-18-27643&lt;/h6&gt;</content><author><name></name></author><summary type="html">In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).</summary></entry><entry><title type="html">PMA Ch.1: Basic Static Analysis Techniques</title><link href="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.1: Basic Static Analysis Techniques" /><published>2018-07-31T14:11:00-06:00</published><updated>2018-07-31T14:11:00-06:00</updated><id>http://localhost:4000/notes/2018/07/31/ch1_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html">&lt;p&gt;As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.&lt;/p&gt;
 
 &lt;p&gt;In addition to including technical details inscribed within the chapter, I’ll be answering the following questions in an attempt to keep in mind the big picture of the chapter.&lt;/p&gt;
 

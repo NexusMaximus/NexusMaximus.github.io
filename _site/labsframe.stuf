@@ -3,19 +3,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>notes frame | Kyle the (Aspiring) Reverser</title>
+<title>labs frame | Kyle the (Aspiring) Reverser</title>
 <meta name="generator" content="Jekyll v3.7.3" />
-<meta property="og:title" content="notes frame" />
+<meta property="og:title" content="labs frame" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis." />
 <meta property="og:description" content="A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis." />
-<link rel="canonical" href="http://localhost:4000/frame.stuf" />
-<meta property="og:url" content="http://localhost:4000/frame.stuf" />
+<link rel="canonical" href="http://localhost:4000/labsframe.stuf" />
+<meta property="og:url" content="http://localhost:4000/labsframe.stuf" />
 <meta property="og:site_name" content="Kyle the (Aspiring) Reverser" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2018-08-22T14:31:00-06:00" />
+<meta property="article:published_time" content="2018-08-29T14:31:00-06:00" />
 <script type="application/ld+json">
-{"description":"A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.","@type":"BlogPosting","url":"http://localhost:4000/frame.stuf","headline":"notes frame","dateModified":"2018-08-22T14:31:00-06:00","datePublished":"2018-08-22T14:31:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/frame.stuf"},"@context":"http://schema.org"}</script>
+{"description":"A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.","@type":"BlogPosting","url":"http://localhost:4000/labsframe.stuf","headline":"labs frame","dateModified":"2018-08-29T14:31:00-06:00","datePublished":"2018-08-29T14:31:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/labsframe.stuf"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Kyle the (Aspiring) Reverser" /></head>
 <body><header class="site-header" role="banner">
@@ -30,7 +30,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/about/">About This Blog</a><a class="page-link" href="/frame.stuf">notes frame</a></div>
+        <div class="trigger"><a class="page-link" href="/about/">About This Blog</a><a class="page-link" href="/labsframe.stuf">labs frame</a><a class="page-link" href="/notesframe.stuf">notes frame</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -38,37 +38,46 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">notes frame</h1>
+    <h1 class="post-title p-name" itemprop="name headline">labs frame</h1>
     <p class="post-meta">
-      <time class="dt-published" datetime="2018-08-22T14:31:00-06:00" itemprop="datePublished">Aug 22, 2018
+      <time class="dt-published" datetime="2018-08-29T14:31:00-06:00" itemprop="datePublished">Aug 29, 2018
       </time></p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    ## Chapter summary questions
-1. In two sentences or less, provide an overview of what this chapter is about.
-2. What are the three most important takeaways from this chapter?
-3. What problems does this chapter address? In other words, why should we care about this chapter?
+    ## Lab summary questions
+1. Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter's exercises?
 
-## Terminology
+2. What did doing the lab exercises teach that was not gained from reading the chapter?
 
 
-## Page-to-page notes
+## Challenges encountered in the labs
+
+## Lab Walkthrough (includes answers!)
+
+### 1.1 
+
+1. question here
+
+	answer here
+
+#### Realizations made after reading the book answers:
+
 * here
-  * here
-
-## Tools discussed in this section
-here
-
-## Questions encountered (and answers, if found)
-here
 
 
 
+### 1.2
+
+1. Question here
+
+	Answer here
 
 
 
-  </div><a class="u-url" href="/frame.stuf" hidden></a>
+
+
+  </div><a class="u-url" href="/labsframe.stuf" hidden></a>
 </article>
 
       </div>
