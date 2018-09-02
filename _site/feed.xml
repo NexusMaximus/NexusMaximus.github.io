@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-01T21:41:07-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.3 Lab: Basic Dynamic Analysis</title><link href="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="PMA Ch.3 Lab: Basic Dynamic Analysis" /><published>2018-08-29T12:31:00-06:00</published><updated>2018-08-29T12:31:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-01T21:53:31-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.3 Lab: Basic Dynamic Analysis</title><link href="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="PMA Ch.3 Lab: Basic Dynamic Analysis" /><published>2018-08-29T12:31:00-06:00</published><updated>2018-08-29T12:31:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
@@ -162,11 +162,11 @@
 
     &lt;p&gt;If we look at the code using Ida, we see that it calls main passing in command line arguments…&lt;/p&gt;
 
-    &lt;p&gt;&lt;img src=&quot;/files/sc2_ch3/3.4.1callmain.PNG&quot; alt=&quot;3.4.1callmain.PNG&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.4.1callmain.PNG&quot; alt=&quot;3.4.1callmain.PNG&quot; /&gt;&lt;/p&gt;
 
     &lt;p&gt;and that something happens if there is only one argument passed to the program (i.e. if no command line arguments are passed in).&lt;/p&gt;
 
-    &lt;p&gt;&lt;img src=&quot;/files/sc2_ch3/3.4.2main.PNG&quot; alt=&quot;3.4.2main.PNG&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.4.2main.PNG&quot; alt=&quot;3.4.2main.PNG&quot; /&gt;&lt;/p&gt;
 
     &lt;p&gt;Perhaps this is the issue.&lt;/p&gt;
   &lt;/li&gt;
