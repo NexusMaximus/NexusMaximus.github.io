@@ -1,4 +1,128 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-01T21:56:35-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.3 Lab: Basic Dynamic Analysis</title><link href="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="PMA Ch.3 Lab: Basic Dynamic Analysis" /><published>2018-08-29T12:31:00-06:00</published><updated>2018-08-29T12:31:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-04T16:26:00-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch. 4 notes: A Crash Course in x86 Disassembly</title><link href="http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch. 4 notes: A Crash Course in x86 Disassembly" /><published>2018-09-03T14:31:00-06:00</published><updated>2018-09-03T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/03/ch4_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
+
+    &lt;p&gt;This chapter lays the foundation of assembly and computer architecture required for effective malware analysis.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;How the stack works and how functions utilize it&lt;/li&gt;
+      &lt;li&gt;What information is contained in which parts of RAM (see the Computer Architecture subsection below)&lt;/li&gt;
+      &lt;li&gt;Which registers do what. I presume that’s known upon reading this section, but just in case it isn’t, this chapter cover sit.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
+
+    &lt;p&gt;Without this information, one won’t even have a foundation for being able to understand what 90% of malware analysis is about– assembly instructions and how they’re used.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
+
+&lt;h3 id=&quot;levels-of-abstraction&quot;&gt;Levels of Abstraction&lt;/h3&gt;
+
+&lt;p&gt;There are six levels of abstraction in a computer system. From lowest to highest:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Hardware.&lt;/em&gt; This is the actual circuitry of the system.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Microcode.&lt;/em&gt; This is the firmware of the system. It operates &lt;em&gt;only&lt;/em&gt; on the exact circuitry for which it was designed.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Machine code.&lt;/em&gt; The machine code level consists of &lt;em&gt;opcodes&lt;/em&gt;, which are hex digits that tell the processor what to do. Machine code is the result of the compilation process.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Low-level languages.&lt;/em&gt; Assembly and the like is what is found here, and is generally accepted as the lowest-level human-readable abstraction level. There are several dialects of assembly, among which include x86, which is what is taught in this book. &lt;strong&gt;Assembly is the highest level language that can be reliably and consistently recovered from machine code when the high level source code is unavailable (as it usually is.)&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;High-level languages.&lt;/em&gt; Things like C, C++, etc.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Interpreted languages.&lt;/em&gt; Languages like Java, C#, Perl, .NET. Interpreted languages are not compiled but are instead translated into &lt;em&gt;bytecode&lt;/em&gt;, which is an intermediate representation specific to the programming language. It executes within an &lt;em&gt;interpreter&lt;/em&gt;, which translates bytecode into executable machine code on the fly at runtime.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;computer-architecture&quot;&gt;Computer Architecture&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;RAM contains the Stack, Heap, Code, and Data of a program.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;em&gt;Data&lt;/em&gt;. Contains the data section, which contain values put in place when a program is initially loaded. These are static values (opposite of dynamic values which are contained within the heap), or they are global values since they’re available to any part of the program.&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Code.&lt;/em&gt; Instructions for the CPU are here.&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Heap.&lt;/em&gt; Used for dynamic memory during program execution.&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Stack.&lt;/em&gt; Used for local variables and parameters for functions, and to help control program flow. More on this later.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Operands&lt;/em&gt; take one of three forms.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;em&gt;Immediates&lt;/em&gt;: fixed values. Ex: &lt;code class=&quot;highlighter-rouge&quot;&gt;0x42&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Registers&lt;/em&gt;: refer to registers. Self-explanatory. Ex: &lt;code class=&quot;highlighter-rouge&quot;&gt;eax, esp, ah&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Memory addresses&lt;/em&gt;: refer to memory addresses which in turn could point to locations in memory or registers. Ex: &lt;code class=&quot;highlighter-rouge&quot;&gt;[eax]&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Registers&lt;/em&gt; are small amounts of data storage available to the CPU. We have four different kinds of registers.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;em&gt;General&lt;/em&gt; registers are used by the CPU during execution.&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Segment&lt;/em&gt; registers are used to track sections of memory.&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Status flags&lt;/em&gt; are used to make decisions and are modified by certain instructions.&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;Instruction pointers&lt;/em&gt; point to the next instruction to execute.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;notes-on-specific-assembly-instructions&quot;&gt;Notes on specific assembly instructions&lt;/h3&gt;
+&lt;p&gt;The book uses Intel syntax, which follows a &lt;code class=&quot;highlighter-rouge&quot;&gt;dest, src&lt;/code&gt; notation.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;LEA &lt;em&gt;dest, src&lt;/em&gt; is used as a quick way to calculate an effective address. For example, &lt;code class=&quot;highlighter-rouge&quot;&gt;lea eax, [ebx + 8]&lt;/code&gt; puts the value specified within ebx, +8, into eax.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;SUB will subtract into the destination register.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;MUL and DIV always operate on EAX.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MUL *value*&lt;/code&gt; will calculate EDX:EAX = EAX * value&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;DIV *value*&lt;/code&gt; will calculate EDX:EAX (treating the two as a compound register) by value, and store the quotient (division) in eax, and the remainder (modulus) in edx.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;XOR is a common instruction used to zero things out. &lt;code class=&quot;highlighter-rouge&quot;&gt;XOR eax, eax&lt;/code&gt; =&amp;gt; eax is 0 now.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;TEST and CMP are used to set flags. They do not affect operands. See p80 for a little table that helps make sense of what cmp sets under what conditions.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The REP family of instructions are used for manipulating data buffers. I won’t bother with understanding these in too much depth at the moment, as it’s something that can be easily looked up when I’m face-to-face with a rep instruction later on. See page 81.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;stack-details&quot;&gt;Stack Details&lt;/h3&gt;
+&lt;p&gt;It’s very important to know how the stack is used to conduct function calls, as it is frequently abused.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Arguments are &lt;code class=&quot;highlighter-rouge&quot;&gt;push&lt;/code&gt;ed onto the stack.&lt;/li&gt;
+  &lt;li&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;call [functionName]&lt;/code&gt; occurs. FunctionName is simply a pointer to some code.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; is a compound instruction– that is, it is an instruction that combines two others. In this case, those two instructions are &lt;code class=&quot;highlighter-rouge&quot;&gt;push eip&lt;/code&gt; followed by &lt;code class=&quot;highlighter-rouge&quot;&gt;mov eip, functionName&lt;/code&gt;. In this manner, the return address is saved onto the stack.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Function prologue stuff (i.e. boiler plate stuff) happens now. Space is allocated on the stack for local variables, and &lt;code class=&quot;highlighter-rouge&quot;&gt;ebp&lt;/code&gt; is pushed onto the stack. Pushing &lt;code class=&quot;highlighter-rouge&quot;&gt;ebp&lt;/code&gt; ‘saves the context’ of the stack as it was before the function was called, which is important as we need that context back after the function completes.&lt;/li&gt;
+  &lt;li&gt;The function does its work.&lt;/li&gt;
+  &lt;li&gt;Now, the stack is restored to the state in which it was before the function was called, via a function epilogue. &lt;code class=&quot;highlighter-rouge&quot;&gt;ebp&lt;/code&gt; is restored to what it was. &lt;code class=&quot;highlighter-rouge&quot;&gt;leave&lt;/code&gt; is often used to restore the stack as &lt;code class=&quot;highlighter-rouge&quot;&gt;leave&lt;/code&gt; does a &lt;code class=&quot;highlighter-rouge&quot;&gt;mov esp, ebp&lt;/code&gt; followed by a &lt;code class=&quot;highlighter-rouge&quot;&gt;pop ebp&lt;/code&gt;, which is all that needs to happen to set the stack back to what it was– as long as things weren’t modified by the function.&lt;/li&gt;
+  &lt;li&gt;The function returns by calling &lt;code class=&quot;highlighter-rouge&quot;&gt;ret&lt;/code&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;ret&lt;/code&gt; does a &lt;code class=&quot;highlighter-rouge&quot;&gt;pop eip&lt;/code&gt;, which transfers control back to the calling function.&lt;/li&gt;
+  &lt;li&gt;The stack is adjusted to remove arguments that were sent, unless they’ll be sent again later.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Diagrams are great for visualing the stack. Due to fear of copyright stuff, I’ll just tell you that a great diagram can be found on p79.&lt;/p&gt;
+
+&lt;p&gt;Note that the stack grows upward (i.e. as things are pushed onto the stack, memory addresses of ‘higher’ items are lower in value than memory addresses of ‘lower’ items.&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. This chapter lays the foundation of assembly and computer architecture required for effective malware analysis.</summary></entry><entry><title type="html">PMA Ch.3 Lab: Basic Dynamic Analysis</title><link href="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="PMA Ch.3 Lab: Basic Dynamic Analysis" /><published>2018-08-29T12:31:00-06:00</published><updated>2018-08-29T12:31:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;

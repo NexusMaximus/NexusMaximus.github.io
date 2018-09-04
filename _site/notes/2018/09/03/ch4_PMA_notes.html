@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>PMA Ch. 4 notes: A Crash Course in x86 Disassembly | Kyle the (Aspiring) Reverser</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="PMA Ch. 4 notes: A Crash Course in x86 Disassembly" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. This chapter lays the foundation of assembly and computer architecture required for effective malware analysis." />
+<meta property="og:description" content="Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. This chapter lays the foundation of assembly and computer architecture required for effective malware analysis." />
+<link rel="canonical" href="http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html" />
+<meta property="og:url" content="http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html" />
+<meta property="og:site_name" content="Kyle the (Aspiring) Reverser" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-09-03T14:31:00-06:00" />
+<script type="application/ld+json">
+{"description":"Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. This chapter lays the foundation of assembly and computer architecture required for effective malware analysis.","@type":"BlogPosting","url":"http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html","headline":"PMA Ch. 4 notes: A Crash Course in x86 Disassembly","dateModified":"2018-09-03T14:31:00-06:00","datePublished":"2018-09-03T14:31:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Kyle the (Aspiring) Reverser" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Kyle the (Aspiring) Reverser</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About This Blog</a><a class="page-link" href="/labsframe.stuf">labs frame</a><a class="page-link" href="/notesframe.stuf">notes frame</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">PMA Ch. 4 notes: A Crash Course in x86 Disassembly</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-09-03T14:31:00-06:00" itemprop="datePublished">Sep 3, 2018
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="chapter-summary-questions">Chapter summary questions</h2>
+<ol>
+  <li>
+    <p>In two sentences or less, provide an overview of what this chapter is about.</p>
+
+    <p>This chapter lays the foundation of assembly and computer architecture required for effective malware analysis.</p>
+  </li>
+  <li>
+    <p>What are the three most important takeaways from this chapter?</p>
+
+    <ul>
+      <li>How the stack works and how functions utilize it</li>
+      <li>What information is contained in which parts of RAM (see the Computer Architecture subsection below)</li>
+      <li>Which registers do what. I presume that’s known upon reading this section, but just in case it isn’t, this chapter cover sit.</li>
+    </ul>
+  </li>
+  <li>
+    <p>What problems does this chapter address? In other words, why should we care about this chapter?</p>
+
+    <p>Without this information, one won’t even have a foundation for being able to understand what 90% of malware analysis is about– assembly instructions and how they’re used.</p>
+  </li>
+</ol>
+
+<h2 id="page-to-page-notes">Page-to-page notes</h2>
+
+<h3 id="levels-of-abstraction">Levels of Abstraction</h3>
+
+<p>There are six levels of abstraction in a computer system. From lowest to highest:</p>
+
+<ol>
+  <li>
+    <p><em>Hardware.</em> This is the actual circuitry of the system.</p>
+  </li>
+  <li>
+    <p><em>Microcode.</em> This is the firmware of the system. It operates <em>only</em> on the exact circuitry for which it was designed.</p>
+  </li>
+  <li>
+    <p><em>Machine code.</em> The machine code level consists of <em>opcodes</em>, which are hex digits that tell the processor what to do. Machine code is the result of the compilation process.</p>
+  </li>
+  <li>
+    <p><em>Low-level languages.</em> Assembly and the like is what is found here, and is generally accepted as the lowest-level human-readable abstraction level. There are several dialects of assembly, among which include x86, which is what is taught in this book. <strong>Assembly is the highest level language that can be reliably and consistently recovered from machine code when the high level source code is unavailable (as it usually is.)</strong></p>
+  </li>
+  <li>
+    <p><em>High-level languages.</em> Things like C, C++, etc.</p>
+  </li>
+  <li>
+    <p><em>Interpreted languages.</em> Languages like Java, C#, Perl, .NET. Interpreted languages are not compiled but are instead translated into <em>bytecode</em>, which is an intermediate representation specific to the programming language. It executes within an <em>interpreter</em>, which translates bytecode into executable machine code on the fly at runtime.</p>
+  </li>
+</ol>
+
+<h3 id="computer-architecture">Computer Architecture</h3>
+
+<ul>
+  <li>
+    <p>RAM contains the Stack, Heap, Code, and Data of a program.</p>
+
+    <ul>
+      <li><em>Data</em>. Contains the data section, which contain values put in place when a program is initially loaded. These are static values (opposite of dynamic values which are contained within the heap), or they are global values since they’re available to any part of the program.</li>
+      <li><em>Code.</em> Instructions for the CPU are here.</li>
+      <li><em>Heap.</em> Used for dynamic memory during program execution.</li>
+      <li><em>Stack.</em> Used for local variables and parameters for functions, and to help control program flow. More on this later.</li>
+    </ul>
+  </li>
+  <li><em>Operands</em> take one of three forms.
+    <ul>
+      <li><em>Immediates</em>: fixed values. Ex: <code class="highlighter-rouge">0x42</code></li>
+      <li><em>Registers</em>: refer to registers. Self-explanatory. Ex: <code class="highlighter-rouge">eax, esp, ah</code></li>
+      <li><em>Memory addresses</em>: refer to memory addresses which in turn could point to locations in memory or registers. Ex: <code class="highlighter-rouge">[eax]</code>.</li>
+    </ul>
+  </li>
+  <li><em>Registers</em> are small amounts of data storage available to the CPU. We have four different kinds of registers.
+    <ul>
+      <li><em>General</em> registers are used by the CPU during execution.</li>
+      <li><em>Segment</em> registers are used to track sections of memory.</li>
+      <li><em>Status flags</em> are used to make decisions and are modified by certain instructions.</li>
+      <li><em>Instruction pointers</em> point to the next instruction to execute.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="notes-on-specific-assembly-instructions">Notes on specific assembly instructions</h3>
+<p>The book uses Intel syntax, which follows a <code class="highlighter-rouge">dest, src</code> notation.</p>
+
+<ul>
+  <li>
+    <p>LEA <em>dest, src</em> is used as a quick way to calculate an effective address. For example, <code class="highlighter-rouge">lea eax, [ebx + 8]</code> puts the value specified within ebx, +8, into eax.</p>
+  </li>
+  <li>
+    <p>SUB will subtract into the destination register.</p>
+  </li>
+  <li>MUL and DIV always operate on EAX.
+    <ul>
+      <li><code class="highlighter-rouge">MUL *value*</code> will calculate EDX:EAX = EAX * value</li>
+      <li><code class="highlighter-rouge">DIV *value*</code> will calculate EDX:EAX (treating the two as a compound register) by value, and store the quotient (division) in eax, and the remainder (modulus) in edx.</li>
+    </ul>
+  </li>
+  <li>
+    <p>XOR is a common instruction used to zero things out. <code class="highlighter-rouge">XOR eax, eax</code> =&gt; eax is 0 now.</p>
+  </li>
+  <li>
+    <p>TEST and CMP are used to set flags. They do not affect operands. See p80 for a little table that helps make sense of what cmp sets under what conditions.</p>
+  </li>
+  <li>The REP family of instructions are used for manipulating data buffers. I won’t bother with understanding these in too much depth at the moment, as it’s something that can be easily looked up when I’m face-to-face with a rep instruction later on. See page 81.</li>
+</ul>
+
+<h3 id="stack-details">Stack Details</h3>
+<p>It’s very important to know how the stack is used to conduct function calls, as it is frequently abused.</p>
+
+<ol>
+  <li>Arguments are <code class="highlighter-rouge">push</code>ed onto the stack.</li>
+  <li>A <code class="highlighter-rouge">call [functionName]</code> occurs. FunctionName is simply a pointer to some code.
+    <ul>
+      <li><code class="highlighter-rouge">call</code> is a compound instruction– that is, it is an instruction that combines two others. In this case, those two instructions are <code class="highlighter-rouge">push eip</code> followed by <code class="highlighter-rouge">mov eip, functionName</code>. In this manner, the return address is saved onto the stack.</li>
+    </ul>
+  </li>
+  <li>Function prologue stuff (i.e. boiler plate stuff) happens now. Space is allocated on the stack for local variables, and <code class="highlighter-rouge">ebp</code> is pushed onto the stack. Pushing <code class="highlighter-rouge">ebp</code> ‘saves the context’ of the stack as it was before the function was called, which is important as we need that context back after the function completes.</li>
+  <li>The function does its work.</li>
+  <li>Now, the stack is restored to the state in which it was before the function was called, via a function epilogue. <code class="highlighter-rouge">ebp</code> is restored to what it was. <code class="highlighter-rouge">leave</code> is often used to restore the stack as <code class="highlighter-rouge">leave</code> does a <code class="highlighter-rouge">mov esp, ebp</code> followed by a <code class="highlighter-rouge">pop ebp</code>, which is all that needs to happen to set the stack back to what it was– as long as things weren’t modified by the function.</li>
+  <li>The function returns by calling <code class="highlighter-rouge">ret</code>. <code class="highlighter-rouge">ret</code> does a <code class="highlighter-rouge">pop eip</code>, which transfers control back to the calling function.</li>
+  <li>The stack is adjusted to remove arguments that were sent, unless they’ll be sent again later.</li>
+</ol>
+
+<p>Diagrams are great for visualing the stack. Due to fear of copyright stuff, I’ll just tell you that a great diagram can be found on p79.</p>
+
+<p>Note that the stack grows upward (i.e. as things are pushed onto the stack, memory addresses of ‘higher’ items are lower in value than memory addresses of ‘lower’ items.</p>
+
+
+  </div><a class="u-url" href="/notes/2018/09/03/ch4_PMA_notes.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Kyle the (Aspiring) Reverser</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Kyle the (Aspiring) Reverser</li><li><a class="u-email" href="mailto:kyle.buchmiller@gmail.com">kyle.buchmiller@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/NexusMaximus"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">NexusMaximus</span></a></li><li><a href="https://www.twitter.com/KyleTheReverser"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">KyleTheReverser</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
