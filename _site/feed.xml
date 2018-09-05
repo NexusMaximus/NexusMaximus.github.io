@@ -1,4 +1,137 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-04T16:26:00-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch. 4 notes: A Crash Course in x86 Disassembly</title><link href="http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch. 4 notes: A Crash Course in x86 Disassembly" /><published>2018-09-03T14:31:00-06:00</published><updated>2018-09-03T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/03/ch4_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-04T22:35:26-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.5 notes: IDA Pro</title><link href="http://localhost:4000/notes/2018/09/04/ch5_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.5 notes: IDA Pro" /><published>2018-09-04T18:32:00-06:00</published><updated>2018-09-04T18:32:00-06:00</updated><id>http://localhost:4000/notes/2018/09/04/ch5_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/04/ch5_PMA_notes.html">&lt;p&gt;There is a HUGE amount of content to know about IDA, and these notes hardly puts a dent in covering the helpful content.&lt;/p&gt;
+
+&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
+
+    &lt;p&gt;This chapter introduces Ida Pro, which is one of the most important tools in the market.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
+
+    &lt;p&gt;Ida is an extremely powerful tool, and the information in the chapter is just barely enough to &lt;em&gt;get started&lt;/em&gt;. More will be provided as the book continues.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
+
+    &lt;p&gt;This chapter is more of a flyover tutorial than a conceptually dense section of the book. As such, we should care because it provides tips and tricks to get a novice reverser up and running with Ida.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;terminology&quot;&gt;Terminology&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Rebasing&lt;/strong&gt;: PE files are compiled to load at a preferred base address. If the Windows loader cannot use this address (say, because it’s taken up by another program), then &lt;em&gt;rebasing&lt;/em&gt; may occur. It’s not explicitly defined in this chapter, but they do mention that if DLLs appear to be loading into processes different than what Ida says, the DLL may be being rebased, and this can be fixed by clicking the &lt;em&gt;Manual Load&lt;/em&gt; checkbox on the load file window.&lt;/p&gt;
+
+&lt;h2 id=&quot;ida-cheatsheet&quot;&gt;Ida Cheatsheet&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;switch between graph mode and text mode: &lt;strong&gt;space&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Cross references are things that help you find where certain names are used. Think of it as the opposite of clicking a link– it goes the other direction. Find cross references with &lt;strong&gt;x&lt;/strong&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Jumping to a virtual address can be done with &lt;strong&gt;g&lt;/strong&gt;. GOTO, of course!
+    &lt;ul&gt;
+      &lt;li&gt;Jumping to a raw offset is possible too with &lt;strong&gt;jump -&amp;gt; jump to file offset&lt;/strong&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Has Ida failed to identify some code as a function? Create it by pressing &lt;strong&gt;p&lt;/strong&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;Has Ida also failed to identify a EBP-based stack frame, and thus not abstracted away some simple changes that add for readability (like putting variable names into assembly instruction operand spots)? Try &lt;strong&gt;Alt+p&lt;/strong&gt;, select &lt;strong&gt;BP based frame&lt;/strong&gt;, and specify &lt;strong&gt;4 bytes for saved registers.&lt;/strong&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Add your own comments to places by putting the cursor on a line of a disassembly and hitting &lt;strong&gt;:&lt;/strong&gt;. OR BETTER YET: put a comment on an address that has cross-references to it, and have the comment be repeated: hit &lt;strong&gt;;&lt;/strong&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Sometimes Ida mislabels numbers to be addresses, or vice versa, since everything’s a number under the hood anyway. Change numbers to cross-referencable addresses and back via &lt;strong&gt;O&lt;/strong&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;To represent highlighted bytes as code: &lt;strong&gt;C&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;To represent defined code as not a function, code, or data: &lt;strong&gt;U&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ida-tips-and-tricks&quot;&gt;Ida Tips and Tricks&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;When Idaing, you may find a few keystrokes suddenly causes the interface to become impossible to navigate (imagine the first couple times you used Vim). Reset the interface with &lt;strong&gt;Windows -&amp;gt; reset desktop.&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Similarly, if you love your current desktop configuration, do a &lt;strong&gt;Windows -&amp;gt; save desktop&lt;/strong&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Graph mode excludes certain helpful info, such as line numbers and op codes. Change this:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;Options -&amp;gt; general -&amp;gt; select &lt;code class=&quot;highlighter-rouge&quot;&gt;line prefixes&lt;/code&gt;&lt;/strong&gt; and set number of opcode bytes to 6. Most instructions are 6 or less bytes, so setting this to 6 will allow one to see the memory locations and opcode values for each instruction in the code listing.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Auto Comments&lt;/strong&gt; can help aid analysis via adding assembly comments throughout the disassembly window. Go to &lt;strong&gt;Options -&amp;gt; General&lt;/strong&gt; and click the &lt;strong&gt;Auto Comments&lt;/strong&gt; checkbox.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;For information on plugins for Ida, see page 103. I’m not good enough to appreciate that yet, so I’m putting this subsection on the backburner for now.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;useful-analysis-windows&quot;&gt;Useful Analysis Windows&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;Functions Window&lt;/em&gt;: lists all functions in the executable and each function’s length.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Names window&lt;/em&gt;: Lists every address with a name, including functions, named code, named data, and strings.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Strings window&lt;/em&gt;: Shows all strings. Default is ASCII only; longer than 5 characters.
+    &lt;ul&gt;
+      &lt;li&gt;Can change this by right-clicking in the strings window and selecting setup.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Imports/Exports windows&lt;/em&gt;: self-explanatory. The exports window is helpful when analyzing DLLs (since DLLs provide exports).&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Structures window&lt;/em&gt;: Lists the layout of all active data structures.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;In general, double clicking stuff in windows will link back to the disassembly window.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;searching&quot;&gt;Searching&lt;/h3&gt;
+&lt;p&gt;The Search functionality in the disassembly window is helpful. See p.94 for more details about common searches (if they aren’t self explanatory in Ida). (Search -&amp;gt; next code, search -&amp;gt; test, search-&amp;gt; sequence of bytes for starters)&lt;/p&gt;
+
+&lt;h3 id=&quot;graphing-options&quot;&gt;Graphing Options&lt;/h3&gt;
+&lt;p&gt;Graphing options help provide insight into the control flow of the program. However, due to how they are used, it  wouldn’t be very helpful for me to annotate this section as it’s so diagram dependent. Look at page 98 for graphing options information.&lt;/p&gt;
+
+&lt;h3 id=&quot;enhancing-the-disassembly&quot;&gt;Enhancing the disassembly&lt;/h3&gt;
+
+&lt;h4 id=&quot;renaming-locations&quot;&gt;Renaming Locations&lt;/h4&gt;
+&lt;p&gt;Should be doable by right clicking names of things like sub_400699. Changes propogate throughout the program.&lt;/p&gt;
+
+&lt;h4 id=&quot;comments&quot;&gt;Comments&lt;/h4&gt;
+&lt;p&gt;Add your own comments to places by putting the cursor on a line of a disassembly and hitting &lt;strong&gt;:&lt;/strong&gt;. OR BETTER YET: put a comment on an address that has cross-references to it, and have the comment be repeated: hit &lt;strong&gt;;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;formatting-operands&quot;&gt;Formatting operands&lt;/h4&gt;
+&lt;p&gt;You can right click constants and represent the data there in a plethora of ways (binary, octal, hex, decimal).&lt;/p&gt;
+
+&lt;p&gt;Imagine &lt;code class=&quot;highlighter-rouge&quot;&gt;stdin.&lt;/code&gt; What number comes straight to mind? 0, of course! &lt;code class=&quot;highlighter-rouge&quot;&gt;stdin&lt;/code&gt; is a named constant of sorts. Ida can help reverse where a compiler plugged in a number for a named constant in the initial source code. The option to do so is given in the same menu as the above options.&lt;/p&gt;
+
+&lt;p&gt;If the constants don’t show up, then the proper libraries that correspond to those function calls may not be loaded in Ida. Do a &lt;strong&gt;View -&amp;gt; open subviews -&amp;gt; type libraries&lt;/strong&gt; to get to the submenu to change that.&lt;/p&gt;
+
+&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;When loading a program, Ida maps the file into memory in a similar fashion to how the OS does it.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When loading a file into Ida, you can choose to interpret the file as raw data. This can be helpful in the case that malware has additional stuff appended to the end of the executable. This extra stuff would normally not be loaded into memory.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Jump arrow color key:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;em&gt;red&lt;/em&gt;: Jump not taken&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;green&lt;/em&gt;: Jump taken&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;blue&lt;/em&gt;: unconditional jump&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Ida provides a &lt;em&gt;Navigation band.&lt;/em&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Light blue is library code recognized by Ida’s super cool ‘FLIRT’ technology.&lt;/li&gt;
+      &lt;li&gt;Red is compiler generated code.&lt;/li&gt;
+      &lt;li&gt;Dark blue is user-written code.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">There is a HUGE amount of content to know about IDA, and these notes hardly puts a dent in covering the helpful content.</summary></entry><entry><title type="html">PMA Ch. 4 notes: A Crash Course in x86 Disassembly</title><link href="http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch. 4 notes: A Crash Course in x86 Disassembly" /><published>2018-09-03T14:31:00-06:00</published><updated>2018-09-03T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/03/ch4_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
@@ -122,7 +255,9 @@
 
 &lt;p&gt;Diagrams are great for visualing the stack. Due to fear of copyright stuff, I’ll just tell you that a great diagram can be found on p79.&lt;/p&gt;
 
-&lt;p&gt;Note that the stack grows upward (i.e. as things are pushed onto the stack, memory addresses of ‘higher’ items are lower in value than memory addresses of ‘lower’ items.&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. This chapter lays the foundation of assembly and computer architecture required for effective malware analysis.</summary></entry><entry><title type="html">PMA Ch.3 Lab: Basic Dynamic Analysis</title><link href="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="PMA Ch.3 Lab: Basic Dynamic Analysis" /><published>2018-08-29T12:31:00-06:00</published><updated>2018-08-29T12:31:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+&lt;p&gt;Note that the stack grows upward (i.e. as things are pushed onto the stack, memory addresses of ‘higher’ items are lower in value than memory addresses of ‘lower’ items.&lt;/p&gt;
+
+&lt;p&gt;Finally, note that function &lt;em&gt;arguments&lt;/em&gt; are going to be at a positive offset relative to EBP, while &lt;em&gt;local variables&lt;/em&gt; are going to be at a negative offset relative to EBP.&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. This chapter lays the foundation of assembly and computer architecture required for effective malware analysis.</summary></entry><entry><title type="html">PMA Ch.3 Lab: Basic Dynamic Analysis</title><link href="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="PMA Ch.3 Lab: Basic Dynamic Analysis" /><published>2018-08-29T12:31:00-06:00</published><updated>2018-08-29T12:31:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;

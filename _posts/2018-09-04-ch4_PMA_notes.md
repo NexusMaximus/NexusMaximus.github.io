@@ -96,3 +96,5 @@ Diagrams are great for visualing the stack. Due to fear of copyright stuff, I'll
 
 Note that the stack grows upward (i.e. as things are pushed onto the stack, memory addresses of 'higher' items are lower in value than memory addresses of 'lower' items. 
 
+Finally, note that function *arguments* are going to be at a positive offset relative to EBP, while *local variables* are going to be at a negative offset relative to EBP. 
+
