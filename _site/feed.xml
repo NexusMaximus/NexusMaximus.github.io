@@ -1,4 +1,80 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-08T16:15:56-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.5 Lab: Ida Pro Practice</title><link href="http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs.html" rel="alternate" type="text/html" title="PMA Ch.5 Lab: Ida Pro Practice" /><published>2018-09-05T10:31:00-06:00</published><updated>2018-09-05T10:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs.html">&lt;p&gt;Use only Ida Pro to analyze Lab05-01.dll.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-08T17:53:25-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch. 6 notes: Recognizing C Code Constructs in Assembly</title><link href="http://localhost:4000/notes/2018/09/08/ch6_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch. 6 notes: Recognizing C Code Constructs in Assembly" /><published>2018-09-08T14:31:00-06:00</published><updated>2018-09-08T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/08/ch6_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/08/ch6_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
+
+    &lt;p&gt;This chapter introduces how some common C code constructs look when implemented in assembly. Being able to understand what these constructs looks like is extremely helpful when analyzing malware as it’ll provide insight into the general functionality of the malware, more quickly.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
+
+    &lt;p&gt;Practice is the only thing that will help a new malware analyst recognize general semantics of a program.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
+
+    &lt;p&gt;This chapter provides exercises to quickly speed up analysis of executables by providing a foundation for understanding what common code constructs &lt;em&gt;generally&lt;/em&gt; look in assembly. It is, however, no substitute for practicing. Labs coming soon.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;terminology&quot;&gt;Terminology&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;code construct&lt;/strong&gt;: a code abstraction level that defines a functional property, but not the details of its implementation. 
+	* if statements, for loops, switches, linked lists, etc&lt;/p&gt;
+
+&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;This is the part of malware analysis in which it becomes easy to get bogged down with weeds. Keeping the overall picture in mind and not getting infatuated with unnecesary details is very important.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;global-vs-local-variables&quot;&gt;Global vs Local variables&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Global variables are referenced by memory address.&lt;/li&gt;
+  &lt;li&gt;Local variables are referenced relative to the stack.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;different-calling-conventions&quot;&gt;Different Calling Conventions&lt;/h3&gt;
+
+&lt;h4 id=&quot;cdecl&quot;&gt;cdecl&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;Parameters pushed ontothe stack from right to left.&lt;/li&gt;
+  &lt;li&gt;Caller cleans up stack when function is complete.&lt;/li&gt;
+  &lt;li&gt;Return value stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;eax.&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;stdcall&quot;&gt;stdcall&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;Similar to cdecl, except that stdcall requires the &lt;em&gt;callee&lt;/em&gt; to clean up the stack when the function is complete.&lt;/li&gt;
+  &lt;li&gt;Windows API uses stdcall by convention.
+    &lt;ul&gt;
+      &lt;li&gt;Any code calling API functions will therefore not need to clean up the stack, since that’s the responsibility of the DLL that implement code for the API functions.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;fastcall&quot;&gt;fastcall&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;The first few arguments (typically two) are passed in via registers (usually &lt;code class=&quot;highlighter-rouge&quot;&gt;edx&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;ecx&lt;/code&gt;). Additional arguments are loaded from right to left.&lt;/li&gt;
+  &lt;li&gt;Calling function is usually responsible for cleaning up the stack, if necessary.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;In general, you won’t know what your malware was compiled with, so you should know the concepts behind why the calling conventions work, so you can recognize the semantics of any calling convention.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;notes-on-specific-constructs&quot;&gt;Notes on specific constructs&lt;/h3&gt;
+
+&lt;h4 id=&quot;switch-statements&quot;&gt;Switch statements&lt;/h4&gt;
+&lt;p&gt;Switches are typically implemented in one of two ways: the if-style, or jump tables.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;If style: each case statement is compared to the switch conditional variable. Typically there are lots of jz’s and cmp’s in these.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Jump table style: Typically seen with large, contiguous switch statements, the compiler optimizes away lots of the comparisons. In this case, there is a lot of &lt;code class=&quot;highlighter-rouge&quot;&gt;dd offset loc_abcd&lt;/code&gt; statements following each other, and the switch variable is used as an index into that table to identify which block of code to hop to (i.e. which case to evaluate).&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;arrays&quot;&gt;Arrays&lt;/h4&gt;
+&lt;p&gt;Ararys are accessed using a base address as a starting point. The size of each element is not always obious, but it can be determined by seeing how the array is being indexed.&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">PMA Ch.5 Lab: Ida Pro Practice</title><link href="http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs.html" rel="alternate" type="text/html" title="PMA Ch.5 Lab: Ida Pro Practice" /><published>2018-09-05T10:31:00-06:00</published><updated>2018-09-05T10:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs.html">&lt;p&gt;Use only Ida Pro to analyze Lab05-01.dll.&lt;/p&gt;
 
 &lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
 &lt;ol&gt;
