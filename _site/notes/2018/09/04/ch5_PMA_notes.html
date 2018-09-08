@@ -155,6 +155,9 @@
 
 <p>If the constants don’t show up, then the proper libraries that correspond to those function calls may not be loaded in Ida. Do a <strong>View -&gt; open subviews -&gt; type libraries</strong> to get to the submenu to change that.</p>
 
+<h4 id="loading-symbolic-constants">Loading symbolic constants</h4>
+<p>If you have random looking numbers being passed to Windows API functions, you can have Ida identify what constants those numbers refer to. Go to <strong>View -&gt; Open Subviews -&gt; Type Libraries</strong> and then right click and load a new library. Look for <code class="highlighter-rouge">ntapi</code> and load it. (I presume this will work assuming <code class="highlighter-rouge">ntapi</code> shows up, which, in my case, it does <em>not</em>.)</p>
+
 <h2 id="page-to-page-notes">Page-to-page notes</h2>
 
 <ul>

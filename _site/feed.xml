@@ -1,4 +1,223 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-04T22:35:26-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.5 notes: IDA Pro</title><link href="http://localhost:4000/notes/2018/09/04/ch5_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.5 notes: IDA Pro" /><published>2018-09-04T18:32:00-06:00</published><updated>2018-09-04T18:32:00-06:00</updated><id>http://localhost:4000/notes/2018/09/04/ch5_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/04/ch5_PMA_notes.html">&lt;p&gt;There is a HUGE amount of content to know about IDA, and these notes hardly puts a dent in covering the helpful content.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-08T16:15:56-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.5 Lab: Ida Pro Practice</title><link href="http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs.html" rel="alternate" type="text/html" title="PMA Ch.5 Lab: Ida Pro Practice" /><published>2018-09-05T10:31:00-06:00</published><updated>2018-09-05T10:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs.html">&lt;p&gt;Use only Ida Pro to analyze Lab05-01.dll.&lt;/p&gt;
+
+&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
+
+    &lt;p&gt;As important as the rest of the book thus far. Being able to use Ida to navigate through the binary and answer general questions about an executable is an imperative skill for malware analysts.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
+
+    &lt;p&gt;Tons of practice using Ida. Also, it helped me appreciate how quickly it is to accedentally misrepresent certain portions of disassembly (via accedentally converting instructions to constants, or strings to code, or etc). However, this can usually be undone, and “undefining” the data is very helpful in a lot of cases. (&lt;strong&gt;U&lt;/strong&gt; undefines data.)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges encountered in the labs&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Ida pro is needed for a couple of questions of this lab, and unfortunately, I don't have that.
+
+Furthermore, I struggled with the symbolic constant naming portion of the lab simply because a DLL referenced in the book didn't seem to exist within my virtual environment. The problem was sidestepped via looking directly at MSDN documentation. See below for details on where the problem was encountered. 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
+
+&lt;p&gt;First thing I did was change the settings to include addresses in graph mode, as was suggested by the authors of the book.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch5_sc/01_IdaOptionsForGraphMode.PNG&quot; alt=&quot;01_ida.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;51&quot;&gt;5.1&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is the address of &lt;code class=&quot;highlighter-rouge&quot;&gt;DllMain&lt;/code&gt;?&lt;/p&gt;
+
+    &lt;p&gt;This one is easy enough. Just look in the functions window, scroll down to DllMain, and click it.&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;0x1000D02E&lt;/code&gt;.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/02_DllMain.PNG&quot; alt=&quot;02_DllMain&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Use the Imports window to browse to &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt;. Where is the import located?&lt;/p&gt;
+
+    &lt;p&gt;Imports is a tab at the top of the disassembly window. Going in there and hitting &lt;strong&gt;ctrl+f&lt;/strong&gt; to search for &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt; is how I arrived at this answer.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/03_gethostbyname.PNG&quot; alt=&quot;03_gethostbyname&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How many functions call &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt;?&lt;/p&gt;
+
+    &lt;p&gt;Ah, we need to find all cross references to &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt; and count the number of unique functions in them. . Do this by hitting &lt;strong&gt;x&lt;/strong&gt; while &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt; is selected.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/04_xrefsGHBN.PNG&quot; alt=&quot;04_xrefsGHBN&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;I count &lt;strong&gt;5&lt;/strong&gt; unique functions.&lt;/p&gt;
+
+    &lt;p&gt;This looks like good information, but what’s that strange letter in the second column? What do the letters stand for? This helpful &lt;a href=&quot;https://resources.infosecinstitute.com/ida-cross-references-xrefs/#gref&quot;&gt;post&lt;/a&gt; provided me insight into the three types of cross references.&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;r: read&lt;/li&gt;
+      &lt;li&gt;w: write&lt;/li&gt;
+      &lt;li&gt;p: pointer&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Focusing on the call to &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt; located at 0x100001757, can you figure out which DNS request will be made?&lt;/p&gt;
+
+    &lt;p&gt;I had a minor panic attack when I didn’t see address 10001757 above, but then I noticed if we do some simple math we find that 1001656 + 101 gives us that number. Woo, ADDITION&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/05_10001757.PNG&quot; alt=&quot;10001757.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt; is being pushed as a parameter. If you hover over the operand for mov, it says “[this is RDO]pics.practicalmalwareanalys…”. Then 0xD is added to this, which pushes the offset to the beginning of the URL.&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;pics.practicalmalwareanalysis.com&lt;/strong&gt; is the DNS request being made.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How many local variables has IDA Pro recognized for the subroutine at 0x10001656?&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/06_10001656.PNG&quot; alt=&quot;10001656.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Let’s count em! I believe every variable in the list is a local variable, and there are &lt;strong&gt;24&lt;/strong&gt; of these. But wait! One of the elements of this list is lpThreadParameter, which is actually a parameter. So, 24-1=&lt;strong&gt;23&lt;/strong&gt; local variables.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How many parameters has IDA Pro recognized for the subroutine at 0x10001656?&lt;/p&gt;
+
+    &lt;p&gt;Looking at how the function is called, I see one parameter: lpThreadParameter. &lt;strong&gt;1&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Use the Strings window to locate the string \cmd.exe /c in the disassembly. Where is it located?&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/08_stringscmd.PNG&quot; alt=&quot;08_stringscmd.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;0x10095B34&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is happening in the area of code that references \cmd.exe /c?&lt;/p&gt;
+
+    &lt;p&gt;Double click the string, then click the address of this string in the disassembler and find cross references. Find that there is only one:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/09_xrefcmd.PNG&quot; alt=&quot;09_xrefcmd.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Proceed to click this reference to see what’s going on and Ida helps us identify quickly that it’s a check to see whether cmd.exe or command.exe is the correct command to run command prompt on whatever version of Windows this malware is attacking.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/10_cmdorcommand.PNG&quot; alt=&quot;10_cmdorcommand.PNG&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In the same area, at 0x100101C8, it looks like dword_1008E5C4 is a global variable that helps decide which path to take. How does the malware set dword_1008E5C4? (Hint: Use dword_1008E5C4’s cross-references.)&lt;/p&gt;
+
+    &lt;p&gt;If we look at the xrefs of this, there are three. Two are reads, and one is a write. The write is the one we are interested in because writing the variable implies that’s where it’s set to something. So if we look at where that happens…:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/11_xref1008e5c4.PNG&quot; alt=&quot;11_xref1008e5c4.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;So, that area is populated with whatever is in &lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt; after function &lt;code class=&quot;highlighter-rouge&quot;&gt;sub_10003695&lt;/code&gt; runs. Usually &lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt; contains return values, so we want to investigate what this function does.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/12_sub_10003695.PNG&quot; alt=&quot;12_sub_10003695.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;This function is a wrapper for the Microsoft function GetVersionExA, which can quickly be identified (via a google search) as a function that returns the operating system version running on the machine.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A few hundred lines into the subroutine at 0x1000FF58, a series of comparisons use memcmp to compare strings. What happens if the string comparison to robotwork is successful (when memcmp returns 0)?&lt;/p&gt;
+
+    &lt;p&gt;Look at the strings, identify where “robotwork” is, cross reference it, find it’s used here:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/13_robotwork.PNG&quot; alt=&quot;13_robotwork.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;So if the comparison returns 0, then eax will be 0. Test sets the flags, and then JNZ jumps if not zero, meaning the jump will be taken (the green path) if the zero flag is NOT set. The question asks what happens if memcmp returns 0, which would result in the zero flag being set, which means this jump will NOT be taken, so we follow the red path.&lt;/p&gt;
+
+    &lt;p&gt;The red path takes us to a guaranteed calling of sub_100052A2 with parameter “s”. This function appears to query a registry key to find some data value labeled as Robot_Worktime.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What does the export PSLIST do?&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/14_pslist.PNG&quot; alt=&quot;14_pslist.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;After briefly looking over the functions called from within PSLIST I believe PSLIST is looking through a set of processes trying to find one to inject code with.  (I see “OpenProcess” in each function guaranteed to be called from within PSLIST).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Use the graph mode to graph the cross-references from sub_10004E79. Which API functions could be called by entering this function? Based on the API functions alone, what could you rename this function?&lt;/p&gt;
+
+    &lt;p&gt;After finding the function and getting its disassembly onscreen, I went to &lt;strong&gt;view -&amp;gt; graphs -&amp;gt; Xrefs from:&lt;/strong&gt; and obtained this graph.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/15_xrefFrom.PNG&quot; alt=&quot;15_xrefFrom.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;strlen, sprintf, GetSystemDefaultLangId, malloc, send, free&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;I’d name it something like &lt;code class=&quot;highlighter-rouge&quot;&gt;SendSystemLanguage&lt;/code&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How many Windows API functions does DllMain call directly? How many at a depth of 2?&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/16_dllMainXrefs.PNG&quot; alt=&quot;16_dllMainXrefs.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;Four direct calls: &lt;strong&gt;Strncpy, createThread, strlen, _strnicmp&lt;/strong&gt;.&lt;/p&gt;
+
+    &lt;p&gt;In order to view calls at a depth of two, we can go to &lt;strong&gt;view -&amp;gt; graphs -&amp;gt; User Xref chart&lt;/strong&gt; and choose a recurive depth of 2. However, this doesn’t seem to have any affect on Ida demo and i’m not sure why. The information could be derived manually, however, from doing xref charts on each of the above listed functions, so I’m not going to spend more time on it.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;At 0x10001358, there is a call to Sleep (an API function that takes one parameter containing the number of milliseconds to sleep). Looking backward through the code, how long will the program sleep if this code executes?&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/17_sleep.PNG&quot; alt=&quot;17_sleep.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;A pointer to the string “[This is CTI]30” is moved into &lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt;. Then, 0xD is added to it, which moves forward the address to point directly to the “30” part of the string. Then, atoi converts it to a number and stores it in &lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt;. Up next, 0x3E8 is multiplied into the 30 in &lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt;. I clicked this hex number and hit &lt;strong&gt;h&lt;/strong&gt; to turn it into a decimal number, which is 1000. So, 30*1000 is 30,000 milliseconds, which is &lt;strong&gt;30 seconds.&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;At 0x10001701 is a call to socket. What are the three parameters?&lt;/p&gt;
+
+    &lt;p&gt;Do a ‘goto’ and go to that address. Ida lists what the three parameters are:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Protocol: 6&lt;/li&gt;
+      &lt;li&gt;Type: 1&lt;/li&gt;
+      &lt;li&gt;af: 2&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;All we need to do is identify what those numbers refer to. Pull up the microsoft documentation for &lt;code class=&quot;highlighter-rouge&quot;&gt;socket&lt;/code&gt; and we find that:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Protocol of 6 refers to IPPROTO_TCP, which (shockingly) configures the socket to use the TCP protocol.&lt;/li&gt;
+      &lt;li&gt;Type of 1 means SOCK_STREAM, which is ‘a socket type that provides sequenced, reliable, two-way connection-based byte streams with an OOB data transmission mechanism.’&lt;/li&gt;
+      &lt;li&gt;af (address family) of 2 means AF_INET– IPv4 address families.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Using the MSDN page for socket and the named symbolic constants functionality in IDA Pro, can you make the parameters more meaningful? What are the parameters after you apply changes?&lt;/p&gt;
+
+    &lt;p&gt;We can make the parameters more meaningful, &lt;em&gt;if Ida Demo actually found the right library to load.&lt;/em&gt; It’s slightly inconvenient to look at MSDN documentation, but it gets the job done, so I’m going to move on.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Search for usage of the in instruction (opcode 0xED). This instruction is used with a magic string VMXh to perform VMware detection. Is that in use in this malware? Using the cross-references to the function that executes the in instruction, is there further evidence of VMware detection?&lt;/p&gt;
+
+    &lt;p&gt;If we do a &lt;strong&gt;search -&amp;gt; text&lt;/strong&gt; and click &lt;strong&gt;find all occurances&lt;/strong&gt; and search for the text &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt;, we find that in the resulting list there is only one &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt; instruction. If we go to that location and cross reference the function that contains the instruction, we find that three functions call it: InstallRT, InstallSA, and InstallSB. The functions all look very similar. There certainly is evidence of VMWare detection.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/18_vmwaredetect.PNG&quot; alt=&quot;18_vmwaredetect&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Jump your cursor to 0x1001D988. What do you find?&lt;/p&gt;
+
+    &lt;p&gt;We find information interpreted as characters by Ida.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/19_1001d988.PNG&quot; alt=&quot;1001d988&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If you have the IDA Python plug-in installed (included with the commercial version of IDA Pro), run Lab05-01.py, an IDA Pro Python script provided with the malware for this book. (Make sure the cursor is at 0x1001D988.) What happens after you run the script?&lt;/p&gt;
+
+    &lt;p&gt;I don’t have Ida Pro :/&lt;/p&gt;
+
+    &lt;p&gt;But the book states that the obfuscated string would be decoded to reveal a backdoor.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;With the cursor in the same location, how do you turn this data into a single ASCII string?&lt;/p&gt;
+
+    &lt;p&gt;You’d hit the A key to turn it into a readable string after running the plugin.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Open the script with a text editor. How does it work?&lt;/p&gt;
+
+    &lt;p&gt;I’ll omit this question since I cannot figure it out without doing the above two parts legitimately.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Use only Ida Pro to analyze Lab05-01.dll.</summary></entry><entry><title type="html">PMA Ch.5 notes: IDA Pro</title><link href="http://localhost:4000/notes/2018/09/04/ch5_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.5 notes: IDA Pro" /><published>2018-09-04T18:32:00-06:00</published><updated>2018-09-04T18:32:00-06:00</updated><id>http://localhost:4000/notes/2018/09/04/ch5_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/04/ch5_PMA_notes.html">&lt;p&gt;There is a HUGE amount of content to know about IDA, and these notes hardly puts a dent in covering the helpful content.&lt;/p&gt;
 
 &lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
 &lt;ol&gt;
@@ -107,6 +326,9 @@
 &lt;p&gt;Imagine &lt;code class=&quot;highlighter-rouge&quot;&gt;stdin.&lt;/code&gt; What number comes straight to mind? 0, of course! &lt;code class=&quot;highlighter-rouge&quot;&gt;stdin&lt;/code&gt; is a named constant of sorts. Ida can help reverse where a compiler plugged in a number for a named constant in the initial source code. The option to do so is given in the same menu as the above options.&lt;/p&gt;
 
 &lt;p&gt;If the constants don’t show up, then the proper libraries that correspond to those function calls may not be loaded in Ida. Do a &lt;strong&gt;View -&amp;gt; open subviews -&amp;gt; type libraries&lt;/strong&gt; to get to the submenu to change that.&lt;/p&gt;
+
+&lt;h4 id=&quot;loading-symbolic-constants&quot;&gt;Loading symbolic constants&lt;/h4&gt;
+&lt;p&gt;If you have random looking numbers being passed to Windows API functions, you can have Ida identify what constants those numbers refer to. Go to &lt;strong&gt;View -&amp;gt; Open Subviews -&amp;gt; Type Libraries&lt;/strong&gt; and then right click and load a new library. Look for &lt;code class=&quot;highlighter-rouge&quot;&gt;ntapi&lt;/code&gt; and load it. (I presume this will work assuming &lt;code class=&quot;highlighter-rouge&quot;&gt;ntapi&lt;/code&gt; shows up, which, in my case, it does &lt;em&gt;not&lt;/em&gt;.)&lt;/p&gt;
 
 &lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
 

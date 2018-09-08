@@ -92,6 +92,8 @@ Imagine ``stdin.`` What number comes straight to mind? 0, of course! ``stdin`` i
 
 If the constants don't show up, then the proper libraries that correspond to those function calls may not be loaded in Ida. Do a **View -> open subviews -> type libraries** to get to the submenu to change that. 
 
+#### Loading symbolic constants
+If you have random looking numbers being passed to Windows API functions, you can have Ida identify what constants those numbers refer to. Go to **View -> Open Subviews -> Type Libraries** and then right click and load a new library. Look for ``ntapi`` and load it. (I presume this will work assuming ``ntapi`` shows up, which, in my case, it does *not*.)
 
 ## Page-to-page notes
 
