@@ -1,4 +1,208 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-08T17:53:25-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch. 6 notes: Recognizing C Code Constructs in Assembly</title><link href="http://localhost:4000/notes/2018/09/08/ch6_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch. 6 notes: Recognizing C Code Constructs in Assembly" /><published>2018-09-08T14:31:00-06:00</published><updated>2018-09-08T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/08/ch6_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/08/ch6_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-10T16:41:32-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.6 Lab: Recognizing C Constructs in Assembly</title><link href="http://localhost:4000/labs/2018/09/09/PMA_ch6_labs.html" rel="alternate" type="text/html" title="PMA Ch.6 Lab: Recognizing C Constructs in Assembly" /><published>2018-09-09T14:31:00-06:00</published><updated>2018-09-09T14:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/09/PMA_ch6_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/09/PMA_ch6_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
+
+    &lt;p&gt;This lab may prove to be less challenging for those already aquainted with C programming, but it was still very helpful because of the way it starts off very easy and builds up. I’d argue that this lab was the most fun one I’ve done so far.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
+
+    &lt;p&gt;This lab helps fortify the necessity of paying attention to details, and knowing &lt;em&gt;exactly&lt;/em&gt; what the functionality of MSDN functions are.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges encountered in the labs&lt;/h2&gt;
+
+&lt;p&gt;I didn’t encounter too many challenges in this lab, but I believe that was due to my knowledge of C programming. It &lt;strong&gt;significantly&lt;/strong&gt; sped up how fast I was able to gather the semantic meaning of the program because I didn’t need to look up nearly as many functions or parameters as I otherwise would have.&lt;/p&gt;
+
+&lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
+
+&lt;h3 id=&quot;61&quot;&gt;6.1&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is the major code construct found in the only subroutine called by &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt;?&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch6sc/1_6.1.PNG&quot; alt=&quot;1_6.1.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;It’s an ‘if’ condition checking whether or not we’re connected to the internet.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is the subroutine located at &lt;code class=&quot;highlighter-rouge&quot;&gt;0x40105F&lt;/code&gt;?&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sub_40105F&lt;/code&gt; is called if the code finds there is an internet connection. The first function call in this _stbuf(), which &lt;a href=&quot;https://social.msdn.microsoft.com/Forums/vstudio/en-US/838011e2-7404-4922-989e-3ceacd6e3127/how-about-the-function-stbufstdout-woks-?forum=vclanguage&quot;&gt;appears to be called in preparation for sending content to stdout&lt;/a&gt;. This is enough for me to believe that this function is simply a print function.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is the purpose of this program?&lt;/p&gt;
+
+    &lt;p&gt;The purpose of this program is to print whether or not an internet connection can be made.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;62&quot;&gt;6.2&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;What operation does the first subroutine called by &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt; perform?&lt;/p&gt;
+
+    &lt;p&gt;The first subroutine called by main is &lt;code class=&quot;highlighter-rouge&quot;&gt;sub_401000&lt;/code&gt;, which appears to be the exact same subroutine we analyzed in the problem above (i.e. the one that checks to see if we have an internet connection).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is the subroutine located at &lt;code class=&quot;highlighter-rouge&quot;&gt;0x40117F&lt;/code&gt;?&lt;/p&gt;
+
+    &lt;p&gt;This is printf (same answer to 6.1.2).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What does the second subroutine called by &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt; do?&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sub_401040&lt;/code&gt;, the second subroutine, phones home looking to get a command, presumably to execute on the infected machine.&lt;/p&gt;
+
+    &lt;p&gt;The function opens a handle to an internet resource (in this case practicalmalwareanalysis.com/cc.htm), and then, if that succeeds, heads to loc_40109d to read 0x200 bytes into a buffer using the InternetReadFile function.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch6sc/6_6.2.PNG&quot; alt=&quot;6_6.2.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;We see here that it moves in the dereferenced pointer to the buffer into ecx (i.e. the first character of the buffer), and then compares it to ascii 60. Ascii 60 corresponds to the “&amp;lt;” character, which is the first character of an HTML tag. Immediately after that, it compares to ascii 33, which is the “!” character. Then, it looks for 0x2d or 45 in decimal, which is a “-“ character. It does this twice. If at any time it detects characters that are not these, in this order, it breaks to loc_40111D, which yields an error.&lt;/p&gt;
+
+    &lt;p&gt;So it’s looking for the string “&amp;lt;!–”. This is how a comment in an HTML document is started. We can conclude it’s looking for an HTML comment.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What type of code construct is used in this subroutine?&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch6sc/2_6.2.PNG&quot; alt=&quot;2_6.2.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;This looks like a switch nested within an if-statement.&lt;/p&gt;
+
+    &lt;p&gt;Note from after reading the book: the answer they were looking for was an array. There is an array at work here as well, as one can tell from the above screenshot. Bytes of data one byte apart from each other, and referenced in terms of ebp, are sequentially compared, which is indicative of an array.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Are there any network-based indicators for this program?&lt;/p&gt;
+
+    &lt;p&gt;Absolutely. We see that this block of data gets pushed as a parameter to InternetOpenUrlA:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch6sc/3_6.2.PNG&quot; alt=&quot;3_6.2.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;And we can see what the rest of the data is by clicking szUrl.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch6sc/4_6.2.PNG&quot; alt=&quot;4_6.2.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;http://www.practicalmalwareanalysis.com/cc.htm&lt;/code&gt; is what the network fellas should look for.&lt;/p&gt;
+
+    &lt;p&gt;The book also mentions that we can look for the user agent that this program uses, which makes sense.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is the purpose of this malware?&lt;/p&gt;
+
+    &lt;p&gt;The purpose of this malware is to phone home and get commands to execute on the infected machine.&lt;/p&gt;
+
+    &lt;p&gt;If the code passes the HTML comment check, then it moves the character immediately proceeding the comment into al (which is eax’s lowest 8 bits) and returns. Then, that single character is moved into the pointer pointing to the memory address contained within ebp+var_8. This character is then pushed to be in a function that prints a single character immediately before a command, which is indicative that there are a predefined set of commands, each corresponding to a single character, that this malware can run. The purpose of the malware is to get a single character command and do something with it.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;63&quot;&gt;6.3&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Compare the calls in &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt; to Lab 6.2’s &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt; method. What is the new funtion called from &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt;?&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch6sc/5_6.3.PNG&quot; alt=&quot;5_6.3.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;The new function appears to be shortly after the parsing actions. I presume this function will execute the command received and parsed from the internet.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What parameters does this new function take?&lt;/p&gt;
+
+    &lt;p&gt;Function sub_401130 takes two arguments:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;LpExistingfileName, which is, &lt;em&gt;I believe&lt;/em&gt;, the name of itself. The &lt;code class=&quot;highlighter-rouge&quot;&gt;argv&lt;/code&gt; pointer is equivalent to &lt;code class=&quot;highlighter-rouge&quot;&gt;argv[0]&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;argv[0]&lt;/code&gt; is conventionally the name of the program being executed.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;a magic character. From analysis of 6.2, we are highly confident that this particular character corresponds to a command to execute.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What major code construct does this function contain?&lt;/p&gt;
+
+    &lt;p&gt;Ida has identified a switch. BEAUTIFUL.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch6sc/7_6.3switch.PNG&quot; alt=&quot;7_6.3switch.PNG&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What can this function do?&lt;/p&gt;
+
+    &lt;p&gt;The function puts the character into ecx and subtracts 97. 97 corresponds to ascii ‘a’. It then jumps to a default case if the resulting number is above 4 (i.e. if the character command was not a, b, c, d, or e).&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch6sc/8_6.3.PNG&quot; alt=&quot;8_6.3.PNG&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;We see now why it subtracted 97– the resulting number is used as an index in a 5-case jump table.&lt;/p&gt;
+
+    &lt;p&gt;The cases are:&lt;/p&gt;
+    &lt;ol start=&quot;0&quot;&gt;
+ &lt;li&gt; Create directory &lt;code class=&quot;highlighter-rouge&quot;&gt;C:\\Temp&lt;/code&gt;&lt;/li&gt;
+ &lt;li&gt; Copy itself into directory &lt;code class=&quot;highlighter-rouge&quot;&gt;C:\\Temp&lt;/code&gt;, renaming itself &lt;code class=&quot;highlighter-rouge&quot;&gt;cc.exe&lt;/code&gt; (but if the file exists it will not overwrite the existing file)&lt;/li&gt;
+ &lt;li&gt; Delete file &lt;code class=&quot;highlighter-rouge&quot;&gt;C:\\Temp\\cc.exe&lt;/code&gt;&lt;/li&gt;
+ &lt;li&gt; Modify the &lt;code class=&quot;highlighter-rouge&quot;&gt;Software\\Microsoft\\Windows\\CurrentVersion\\Run&lt;/code&gt; registry key. It adds a new service &lt;code class=&quot;highlighter-rouge&quot;&gt;malware&lt;/code&gt; and sets it to execute &lt;code class=&quot;highlighter-rouge&quot;&gt;C:\\Temp\\cc.exe&lt;/code&gt;. This establishes persistence on the infected machine. &lt;/li&gt;
+ &lt;li&gt; Sleep for 100000. The sleep function accepts an integer that represents milliseconds, so it sleeps for 100000/1000 = 100 seconds. &lt;/li&gt;
+ &lt;li&gt; (Default case) Print an error message that says it's not a valid command. &lt;/li&gt;&lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Are there any host-based indicators for this malware?&lt;/p&gt;
+
+    &lt;p&gt;Most definitely.&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;From case 1 above: if &lt;code class=&quot;highlighter-rouge&quot;&gt;C:\Temp&lt;/code&gt; exists, you may be infected.&lt;/li&gt;
+      &lt;li&gt;From case 2 above: if &lt;code class=&quot;highlighter-rouge&quot;&gt;C:\Temp\cc.exe&lt;/code&gt; exists, you are almost surely infected.&lt;/li&gt;
+      &lt;li&gt;From case 3 above: if the registry has added &lt;code class=&quot;highlighter-rouge&quot;&gt;Malware&lt;/code&gt; as a service that executes &lt;code class=&quot;highlighter-rouge&quot;&gt;C:\Temp\cc.exe&lt;/code&gt;, you’re certainly infected.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is the purpose of this malware?&lt;/p&gt;
+
+    &lt;p&gt;The purpose of this malware is to copy itself into a folder and establish persistence, depending on commands it receives from the internet. If the internet cannot be reached, it terminates. My guess is switch case 4 will be a cooler evil payload in 6.4.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;64&quot;&gt;6.4&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;What’s the difference between the calls made from the &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt; method in Labs 6-3 and 6-4?&lt;/p&gt;
+
+    &lt;p&gt;They are at different addresses, I believe. I’m not going to put too much time into comparing the two, because being able to compare things is a skill I already have.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What new code construct has been added to &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt;?&lt;/p&gt;
+
+    &lt;p&gt;Ah, now we have the same functionality wrapped in a loop. It will wait 60 seconds every iteration, and execute 1440 times (presuming it’s connected to the internet).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What’s the difference between this lab’s parse HTML function and those of the previous labs?&lt;/p&gt;
+
+    &lt;p&gt;Different user agent?&lt;/p&gt;
+
+    &lt;p&gt;After reading book: Ah yes, it builds a separate user agent using &lt;code class=&quot;highlighter-rouge&quot;&gt;sprintf&lt;/code&gt;.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/files/ch6sc/9_6.4.PNG&quot; alt=&quot;9_6.4.PNG&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How long will this program run? (Assume it’s connected to the internet.)&lt;/p&gt;
+
+    &lt;p&gt;It runs 1440 times * 60 seconds. That’s 1440 minutes, which is 24 hours.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Are there any new network-based indicators for this malware?&lt;/p&gt;
+
+    &lt;p&gt;A different user agent that’ll follow the format of &lt;code class=&quot;highlighter-rouge&quot;&gt;Internet Explorer 7.50/pma%d&lt;/code&gt;, where the number substituted for %d is the iteration number that the malware is on. This can be used as input to the command &amp;amp; control server to serve a HTML file with a different command depending on what iteration the malware is on.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What’s the purpose of this malware?&lt;/p&gt;
+
+    &lt;p&gt;The same as previous samples, but upgraded grab MULTIPLE commands from the command and control server back home.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</summary></entry><entry><title type="html">PMA Ch. 6 notes: Recognizing C Code Constructs in Assembly</title><link href="http://localhost:4000/notes/2018/09/08/ch6_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch. 6 notes: Recognizing C Code Constructs in Assembly" /><published>2018-09-08T14:31:00-06:00</published><updated>2018-09-08T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/08/ch6_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/08/ch6_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
@@ -1217,230 +1421,4 @@ P16 discusses a bit about how to use it.&lt;/p&gt;
 
 &lt;p&gt;What are the extra null terminators after each character typically used for?&lt;/p&gt;
 
-&lt;h6 id=&quot;la-ur-18-27643&quot;&gt;LA-UR-18-27643&lt;/h6&gt;</content><author><name></name></author><summary type="html">As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.</summary></entry><entry><title type="html">Markdown Cheatsheet for Github Pages/Jekyll Blog Posts</title><link href="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html" rel="alternate" type="text/html" title="Markdown Cheatsheet for Github Pages/Jekyll Blog Posts" /><published>2018-07-24T14:43:45-06:00</published><updated>2018-07-24T14:43:45-06:00</updated><id>http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame</id><content type="html" xml:base="http://localhost:4000/jekyll/documentation/howto/2018/07/24/frame.html">&lt;p&gt;This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. 
-Much of the content here is taken directly from &lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;the Jekyll docs about writing docs&lt;/a&gt;, but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.&lt;/p&gt;
-
-&lt;p&gt;I found a generic markdown cheatsheet &lt;a href=&quot;https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet&quot;&gt;here&lt;/a&gt; but some things mentioned there don’t appear to work in this specific environment. Another Jekyll-specific cheatsheet can be found &lt;a href=&quot;https://gist.github.com/roachhd/779fa77e9b90fe945b0c&quot;&gt;here&lt;/a&gt; but it’s not super comprehensive– thus the need for this post here. 
-Yet another link &lt;a href=&quot;http://nestacms.com/docs/creating-content/markdown-cheat-sheet&quot;&gt;here&lt;/a&gt; proved itself very helpful in the creation of this cheatsheet, too. 
-&lt;a href=&quot;https://en.support.wordpress.com/markdown-quick-reference/&quot;&gt;Wordpress official quick reference&lt;/a&gt; has good info too.
-I’ll be adding to it continuously over the next few days (probably weeks) as I learn more and more about what’s possible and as I test my markdown, so if it seems a little small or improperly formatted, you know why.&lt;/p&gt;
-
-&lt;h2 id=&quot;formatting-text&quot;&gt;Formatting text&lt;/h2&gt;
-
-&lt;p&gt;To create headers, use pounds symbols/hashtags.&lt;/p&gt;
-
-&lt;h1 id=&quot;one-pound&quot;&gt;One pound&lt;/h1&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;# One pound&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Question: Why does one pound result in smaller text than two?&lt;/p&gt;
-
-&lt;h2 id=&quot;two-pounds&quot;&gt;Two pounds&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;## Two pounds&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;three-pounds&quot;&gt;Three pounds&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;### Three pounds&lt;/code&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;four-pounds&quot;&gt;Four pounds&lt;/h4&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;#### Four pounds&lt;/code&gt;&lt;/p&gt;
-
-&lt;h5 id=&quot;five-pounds&quot;&gt;Five pounds&lt;/h5&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;##### Five pounds&lt;/code&gt;&lt;/p&gt;
-
-&lt;h6 id=&quot;six-pounds&quot;&gt;Six pounds&lt;/h6&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;###### Six pounds&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Italics: &lt;em&gt;italic text here&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_italic text here_&lt;/code&gt;
-or
-&lt;code class=&quot;highlighter-rouge&quot;&gt;*italic text here*&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Bold/Emphasis: &lt;strong&gt;bold text here&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;__bold text here__&lt;/code&gt;
-or
-&lt;code class=&quot;highlighter-rouge&quot;&gt;**bold text here**&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Combine the two: &lt;strong&gt;B/I text &lt;em&gt;here&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;**B/I text _here_**&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;lists&quot;&gt;Lists&lt;/h2&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;* Bullet 1
-* Bullet 2
-  * Bullet 2a
-    * Bullet 2b
-* Bullet 3
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Renders as:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Bullet 1&lt;/li&gt;
-  &lt;li&gt;Bullet 2
-    &lt;ul&gt;
-      &lt;li&gt;Bullet 2.1
-        &lt;ul&gt;
-          &lt;li&gt;Bullet 2.1.1&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Bullet 3&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. item 1
-2. item 2
-	1. Item 2a
-3. item 3
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Renders as:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;item 1&lt;/li&gt;
-  &lt;li&gt;item 2
-    &lt;ol&gt;
-      &lt;li&gt;item 2a&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;item 3&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Sadly, it seems that &lt;a href=&quot;https://meta.stackexchange.com/questions/85474/how-to-write-nested-numbered-lists&quot;&gt;markdown doesn’t support numbered sublists&lt;/a&gt; (such as 1, 2, 2.1, 2.2, 3, etc).&lt;/p&gt;
-
-&lt;h2 id=&quot;tables&quot;&gt;Tables&lt;/h2&gt;
-
-&lt;p&gt;Credit to the real MVP &lt;a href=&quot;https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet&quot;&gt;Adam-P&lt;/a&gt; for this sweet table example:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Renders as:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Tables&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Are&lt;/th&gt;
-      &lt;th style=&quot;text-align: right&quot;&gt;Cool&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;col 3 is&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;right-aligned&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;$1600&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;col 2 is&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;centered&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;$12&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;zebra stripes&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;are neat&lt;/td&gt;
-      &lt;td style=&quot;text-align: right&quot;&gt;$1&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;markdown-comments&quot;&gt;Markdown Comments&lt;/h2&gt;
-
-&lt;p&gt;To make a single line markdown comment:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[/]: comment here&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Note that you may need to add some blank lines above or below to get the comment to register as a comment. Also, I don’t know why but things like &lt;code class=&quot;highlighter-rouge&quot;&gt;[asdf/]: comment text here&lt;/code&gt; register properly as comments too.&lt;/p&gt;
-
-&lt;p&gt;To make a multiline markdown comment, HTML comment tags seem to work:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!--- 
-line 1 here
-line 2 here
-...
-line X here
---&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;inserting-code-snippets&quot;&gt;Inserting code snippets&lt;/h2&gt;
-
-&lt;p&gt;Jekyll makes use of something called Liquid to do &lt;a href=&quot;https://stackoverflow.com/questions/4026597/what-is-a-templating-language&quot;&gt;templates&lt;/a&gt;. It looks like there’s about a million and ten things you can do with this and they’re all nicely organized on &lt;a href=&quot;https://jekyllrb.com/docs/templates/&quot;&gt;Jekyll’s Liquid docs&lt;/a&gt;, so check that out there. 
-If it ends up being super complex, I will write up another post explaining the basics of templating for noobs like myself.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;created with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-{% highlight ruby linenos %}
-def print_hi(name)
-  puts &quot;Hi, #{name}&quot;
-end
-print_hi('Tom')
-#=&amp;gt; prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;posting-rawverbatim-code-blocks&quot;&gt;Posting raw/verbatim code blocks&lt;/h2&gt;
-&lt;p&gt;This one took me a while to figure out. Encapsulate your stuff as follows but remove the spaces on the closing tag, and replace the double-triple-double backticks with just triple backticks (tricking the parser is hard and I’m not good at it yet).&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-`` ``` `` 
-{% raw %}
-put your raw 
-code stuff here
-{ % endraw % }
-`` ``` ``
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;inserting-links&quot;&gt;Inserting links&lt;/h2&gt;
-
-&lt;p&gt;These require two lines of stuff:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;yadda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yadda&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blahblah&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//OR
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;yadda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yadda&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//yourlinkhere.com/GettingGood) blahblah
-// at bottom of doc, place this as is:
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;://&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;yourlinkhere&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GettingGood&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;inserting-pictures&quot;&gt;Inserting pictures&lt;/h2&gt;
-
-&lt;h4 id=&quot;inserting-pictures-from-a-link&quot;&gt;Inserting pictures from a link&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg&quot; alt=&quot;sweet pic&quot; title=&quot;caption here&quot; /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;![sweet pic](http://4.bp.blogspot.com/-lWOyJ3PiYfI/T_8z4Pl6EGI/AAAAAAAABwA/zjeB2UGEnCQ/s1600/zz.jpeg &quot;caption here&quot;)&lt;/code&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;inserting-local-pictures&quot;&gt;Inserting local pictures&lt;/h4&gt;
-&lt;p&gt;Inserting local pictures can be done by identifying the path to the picture (treating the root part of the repo as the ‘root’ directory). The picture below is called ‘zz.jpeg’ and is in the ‘files’ directory.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/files/zz.jpeg&quot; alt=&quot;sweet pic&quot; title=&quot;caption here&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;![sweet pic](/files/zz.jpeg &quot;caption here&quot;)&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h6 id=&quot;la-ur-18-27643&quot;&gt;LA-UR-18-27643&lt;/h6&gt;</content><author><name></name></author><summary type="html">This post is a technical cheatsheet for syntactical constructs used to create pretty posts, specifically in the Jekyll/Github Pages environment. Much of the content here is taken directly from the Jekyll docs about writing docs, but I wanted to create a cheatsheet briefly summarizing what I think is the most helpful content.</summary></entry></feed>
+&lt;h6 id=&quot;la-ur-18-27643&quot;&gt;LA-UR-18-27643&lt;/h6&gt;</content><author><name></name></author><summary type="html">As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.</summary></entry></feed>
