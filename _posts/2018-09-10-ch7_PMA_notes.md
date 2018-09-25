@@ -10,10 +10,15 @@ categories: notes
 
 1. In two sentences or less, provide an overview of what this chapter is about.
 
+  This chapter discusses a plethora of the Windows mechanics that malware authors frequently like to make use of. 
+
 2. What are the three most important takeaways from this chapter?
+
+  The attack surface for Windows-based malware is huge, and it's important to have a grasp on as much of the workings of Windows internals as possible to be best equipped for analyzing malicious samples. 
 
 3. What problems does this chapter address? In other words, why should we care about this chapter?
 
+  Windows is the most popular malware target simply because more people use Windows than other operating systems. As such, it pays to know how Windows works. 
 
 ## Windows Mechanics
 

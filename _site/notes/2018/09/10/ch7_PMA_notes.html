@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>PMA Ch. 7 notes: Analyzing Malicious Windows Programs | Kyle the (Aspiring) Reverser</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="PMA Ch. 7 notes: Analyzing Malicious Windows Programs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Chapter summary questions" />
+<meta property="og:description" content="Chapter summary questions" />
+<link rel="canonical" href="http://localhost:4000/notes/2018/09/10/ch7_PMA_notes.html" />
+<meta property="og:url" content="http://localhost:4000/notes/2018/09/10/ch7_PMA_notes.html" />
+<meta property="og:site_name" content="Kyle the (Aspiring) Reverser" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-09-10T14:31:00-06:00" />
+<script type="application/ld+json">
+{"description":"Chapter summary questions","@type":"BlogPosting","url":"http://localhost:4000/notes/2018/09/10/ch7_PMA_notes.html","headline":"PMA Ch. 7 notes: Analyzing Malicious Windows Programs","dateModified":"2018-09-10T14:31:00-06:00","datePublished":"2018-09-10T14:31:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/notes/2018/09/10/ch7_PMA_notes.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Kyle the (Aspiring) Reverser" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Kyle the (Aspiring) Reverser</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About This Blog</a><a class="page-link" href="/labsframe.stuf">labs frame</a><a class="page-link" href="/notesframe.stuf">notes frame</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">PMA Ch. 7 notes: Analyzing Malicious Windows Programs</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-09-10T14:31:00-06:00" itemprop="datePublished">Sep 10, 2018
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="chapter-summary-questions">Chapter summary questions</h2>
+
+<ol>
+  <li>In two sentences or less, provide an overview of what this chapter is about.</li>
+</ol>
+
+<p>This chapter discusses a plethora of the Windows mechanics that malware authors frequently like to make use of.</p>
+
+<ol>
+  <li>What are the three most important takeaways from this chapter?</li>
+</ol>
+
+<p>The attack surface for Windows-based malware is huge, and it’s important to have a grasp on as much of the workings of Windows internals as possible to be best equipped for analyzing malicious samples.</p>
+
+<ol>
+  <li>What problems does this chapter address? In other words, why should we care about this chapter?</li>
+</ol>
+
+<p>Windows is the most popular malware target simply because more people use Windows than other operating systems. As such, it pays to know how Windows works.</p>
+
+<h2 id="windows-mechanics">Windows Mechanics</h2>
+
+<h3 id="common-windows-api-data-types">Common Windows API Data Types</h3>
+
+<ul>
+  <li><code class="highlighter-rouge">WORD</code> (w): 16 bits</li>
+  <li><code class="highlighter-rouge">DWORD</code> (dw): 32 bits</li>
+  <li>Handle: a reference to an object. They are like pointers in that they refer to objects or memory addresses, but include more information and cannot be manipulated like pointers.
+    <ul>
+      <li>Examples: <code class="highlighter-rouge">HModule</code>, <code class="highlighter-rouge">HInstance</code>, <code class="highlighter-rouge">HKey</code>.</li>
+    </ul>
+  </li>
+  <li>Long Pointer (LP): Pointer to another type. 32 bits, I believe.
+    <ul>
+      <li>Examples: <code class="highlighter-rouge">LPByte</code> is a pointer to a byte.</li>
+    </ul>
+  </li>
+  <li>Callback: Represents a function that will be called by the Windows API.</li>
+</ul>
+
+<h3 id="special-files">Special Files</h3>
+<p><strong>Special File</strong>: one that can be accessed much like other files, but are not accessed by their drive letter and path. They can be hidden to directory listings.</p>
+
+<h4 id="shared-files">Shared Files</h4>
+
+<p>These start with <code class="highlighter-rouge">\\serverName\share</code> or <code class="highlighter-rouge">\\?\serverName\share</code>. The <code class="highlighter-rouge">\\?\</code> prefix tells the OS to disable all string parsing, and allows access to longer filenames.</p>
+
+<h4 id="namespaces">Namespaces</h4>
+
+<p><strong>Namepsaces</strong> can be thought of as a fixed number of folders, each storing different types of objects. All namespaces exist within the NT namespace, and this can be browsed using the <em>WinObj Object Manager namespace viewer</em> from Microsoft. 
+  The Win32 device namespace with the prefix <code class="highlighter-rouge">\\.\</code> can be used to access physical devices directly, and read and write to them like a file. Again, this can be used to get around Windows API calls and avoid detection.</p>
+
+<p><strong>It seems like namepsaces are a significant threat to analysts due to the covert abilities it equips malware with.</strong></p>
+
+<h4 id="alternate-data-streams">Alternate Data Streams</h4>
+
+<p>This allows additional data to be added to an existing file within NTFS. The extra data does not show up from within a directory listing, nor is it displayed when showing the contents of a file. <em>It’s only visible when viewing the stream.</em></p>
+
+<p>ADS data is named according to the convention <em>normalFile.txt:Stream:$DATA</em>, which is what allows a program to read and write to a stream. (I don’t really understand the concept of streams in this context yet, but if it’s not further answered in the chapter, I’ll look it up elsewhere.)</p>
+
+<h3 id="the-windows-registry">The Windows Registry</h3>
+<p>The registry is used to store OS and program configuration information, such as settings and options. It is often used by malware to establish persistence in addition to its usual use of configuration. Important terminology related to the registry:</p>
+
+<ul>
+  <li><em>Root Key</em>: registry is divided into five top-level sections called root keys. <code class="highlighter-rouge">HKEY</code> and <code class="highlighter-rouge">hive</code> are pseudonyms of this.</li>
+  <li><em>Key</em>: It’s like a folder in the registry.</li>
+  <li><em>Subkey</em>: it’s like a subfolder within a folder. A subkey is a key.</li>
+  <li><em>Value Entry</em>: An ordered pair with a name and a value.</li>
+  <li><em>Value or Data</em>: data stored in a registry entry.</li>
+</ul>
+
+<h4 id="root-key-101">Root Key 101</h4>
+
+<ul>
+  <li><code class="highlighter-rouge">HKEY_LOCAL_MACHINE (HKLM)</code>: Stores settings global to the local machine</li>
+  <li><code class="highlighter-rouge">HKEY_CURRENT_USER (HKCU)</code>: Stores settings specific to the current user</li>
+  <li><code class="highlighter-rouge">HKEY_CLASSES_ROOT</code>: Stores info defining types</li>
+  <li><code class="highlighter-rouge">HKEY_CURRENT_CONFIG</code>: Stores settings about the current hardware configuration (especially differences between current and standard configuration)</li>
+  <li><code class="highlighter-rouge">HKEY_USERS</code>: Defines settings for default/new/current users</li>
+</ul>
+
+<h4 id="popular-ways-to-establish-persistence">Popular ways to establish persistence</h4>
+<p><code class="highlighter-rouge">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</code> contains values that are executables that are started as soon as a user logs in.</p>
+
+<h3 id="networking-apis">Networking APIs</h3>
+<p>Note that <code class="highlighter-rouge">WSAStartup()</code> must be called before other networking functions to allocate resources for the networking libraries.</p>
+
+<h4 id="berkeley-compatible-sockets">Berkeley Compatible Sockets</h4>
+<p>These socket functions provide functionality that is almost identical on Unix and Windows systems, and these functions are implemented in the Winsock libraries– <em>ws2_32.dll</em>. Most common:</p>
+<ul>
+  <li><code class="highlighter-rouge">socket</code>: Creates a socket.</li>
+  <li><code class="highlighter-rouge">bind</code>: Attaches a socket to a particular port, prior to the accept call</li>
+  <li><code class="highlighter-rouge">listen</code>: Indicates that a socket will be listening for incoming connections</li>
+  <li><code class="highlighter-rouge">accept</code>: Opens a connection to a remote socket and accepts that connection</li>
+  <li><code class="highlighter-rouge">connect</code>: Opens a connection to a remote socket that is waiting for the connection</li>
+  <li><code class="highlighter-rouge">recv</code>: Receives data from the remote socket</li>
+  <li><code class="highlighter-rouge">send</code>: Sends data to the remote socket</li>
+</ul>
+
+<h4 id="wininet-api">WinINet API</h4>
+<p>These functions are stored in <em>Wininet.dll</em> and provide higher-level networking APIs.</p>
+<ul>
+  <li><code class="highlighter-rouge">InternetOpen</code>: used to initialize a connection to the Internet</li>
+  <li><code class="highlighter-rouge">InternetOpenUrl</code>: used to connect to a HTTP or FTP resource</li>
+  <li><code class="highlighter-rouge">InternetReadFile</code>: allows the program to read data from a file downloaded from the Internet.</li>
+</ul>
+
+<h3 id="processes">Processes</h3>
+<p>The OS will allocate memory for processes on a per-process basis. One process’s addresses may be the same as another process’s addresses, but due to virtual memory and abstraction by the OS (I believe), these processes will not overlap.</p>
+
+<h3 id="threads">Threads</h3>
+<p>A process’s instructions are executed by one or more threads. A thread is an independent sequence of instructions that are executed by the CPU without waiting for other threads. Threads within a process share the same memory space, but each has its own processer registers and stack.</p>
+
+<p>Threads have complete control of the CPU when they’re executing. Their context, the <em>thread context</em>, is saved in a structure when a context switch is performed.</p>
+
+<h3 id="mutexes-aka-mutants">Mutexes (aka Mutants)</h3>
+<p>These are global objects used to control access to shared resources. They often use hard-coded names, which acts as a host-based indicator to the malware analyst.</p>
+
+<h3 id="services">Services</h3>
+<p>These are ran by SYSTEM and can only be installed with administrator privilege. There are different types of services, each of which execute in different ways. The most commonly maliciously used type is the <code class="highlighter-rouge">WIN32_SHARE_PROCESS</code>, type, which stores the code for the service in a DLL and combines several different services into a single, shared process.</p>
+
+<p>In Task Manager, there exist several <em>svchost.exe</em> instances, and these run <code class="highlighter-rouge">WIN32_SHARE_PROCESS</code> type services. <code class="highlighter-rouge">WIN32_OWN_PROCESS</code> is also used because it stores the code in a .exe file and runs it as an independent process.</p>
+
+<p>Services information is stored in <code class="highlighter-rouge">HKLM\SYSTEM\CurrentControlset\Services</code>.</p>
+
+<h3 id="com-executables">COM executables</h3>
+<p>The <em>Component Object Model</em> is an interface standard that makes it possible for different software components to call each other’s code without knowledge of specifics of each other. It was designed to support reusable software componets that could be usable by all programs.</p>
+
+<p>COM is implemented as a client-server framework. The clients are what make use of the COM objects, and the servers are the reusable software components. Every thread that uses COM must call <code class="highlighter-rouge">OleInitialize</code> or <code class="highlighter-rouge">CoInitializeEx</code> at least once before calling other COM library functions.</p>
+
+<p>COM objects are accessed via their <em>globally unique identifiers</em> (GUIDs) known as <em>class identifiers (CLSIDs)</em> and <em>interface identifiers (IIDs)</em>.</p>
+
+<p>One common function used by malware is <code class="highlighter-rouge">Navigate</code> which allows a program to launch Internet Explorer and access a web address. <code class="highlighter-rouge">Navigate</code> is part of the <code class="highlighter-rouge">IWebBrowser2</code> interface, which specifies a list of functions that must be implemented, but does not specify which program will provide that functionality. A <em>COM Class</em> is the program that provides said functionality. Interfaces are identified with an <em>IID</em> and the classes are identifed with a <em>CLSID</em>.</p>
+
+<p>COM stuff is tricky and dense. I am going to bookmark this page (by saying here that it’s on and near p155) and come back to it if I encounter such things in malware.</p>
+
+<h3 id="exceptions">Exceptions</h3>
+<p>Windows uses <em>structured exception handling (SEH)</em> to deal with handling exceptions. In 32 bit systems, SEH info is stored on the stack (which means it’s potentially vulnerable to things such as buffer overflows).</p>
+
+<h3 id="kernel-vs-user-mode">Kernel vs. User Mode</h3>
+<p>Nearly all code runs in user mode, save the operating system itself and hardware drivers. Usually, user mode programs do not have direct access to hardware devices and <em>must</em> go through the Windows API. <code class="highlighter-rouge">SYSENTER</code>, <code class="highlighter-rouge">SYSCALL</code>, and <code class="highlighter-rouge">Int 0x2E</code> assembly instructions are all used to do this.</p>
+
+<p>All processes running in the kernel share resources and memory addresses, and kernel code has fewer security checks, not to mention it has ultimate power over a system. It’s basically the priviliged land for malware authors.</p>
+
+<h3 id="the-native-api">The Native API</h3>
+<p>The Native API is a lower-level interface for interacting with Windows that is rarely used by nonmalicious programs. Calling native API functions bypasses the normal Windows API. See p159 for a diagram describing how context switches from user mode to kernel mode when calling native functions. Native functions are usually predicated by Nt.</p>
+
+<p><code class="highlighter-rouge">ntoskrnl.exe</code> contains functions that run in kernel space.</p>
+
+<h2 id="quick-windows-function-cheat-sheet">Quick Windows Function Cheat Sheet</h2>
+<p>I include some unintuitive conceptual ‘gotchas’ here, but I don’t discuss details behind how to use the functions. Check out MSDN documentation for that.</p>
+
+<h3 id="file-system-functions">File System Functions</h3>
+<ul>
+  <li>CreateFile</li>
+  <li>ReadFile and WriteFile</li>
+  <li>CreateFileMapping and MapViewOfFile
+    <ul>
+      <li><em>File Mappings</em> are commonly used by malware writers because they allow a file to be loaded into memory and manipulated easily. <code class="highlighter-rouge">CreateFileMapping</code> loads a file from disk into memory; <code class="highlighter-rouge">MapViewOfFile</code> returns a pointer to the base address of that mapping.</li>
+      <li>File Mappings can be used to replicate the functionality of the Windows loader– after the malware reads in an executable file to memory, it can parse the PE and do whatever it wants with it, (possibly) without the use of Windows API functions, which can help evade monitoring programs.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="common-registry-functions">Common Registry Functions</h3>
+<ul>
+  <li>RegOpenKeyEx</li>
+  <li>RegSetValueEx: Adds a new value to the registry and sets its data (or modifies an existing value)</li>
+  <li>RegGetValue: Get the data for a value entry in the registry</li>
+</ul>
+
+<h4 id="reg-scripts">.reg scripts</h4>
+<p>You can write scripts that interact with the registry. Files with the .reg extension, when double clicked, modifies the registry by merging the info the file contains <em>into</em> the registry.</p>
+
+<h3 id="common-process-functions">Common Process Functions</h3>
+<ul>
+  <li>CreateProcess
+    <ul>
+      <li>One of the parameters to this function is the <code class="highlighter-rouge">startupinfo</code> structure. You can configure <code class="highlighter-rouge">stdin</code>, <code class="highlighter-rouge">stdio</code>, and <code class="highlighter-rouge">stderr</code> streams in this, and potentially set them to sockets that you can send across the wire. See p148 for an example of this.</li>
+    </ul>
+
+    <p>Executables can store other executables in their resource section. An executable can extract an executable from within itself in this manner, write it to disk, and then call <code class="highlighter-rouge">createProcess</code> to run it.</p>
+  </li>
+</ul>
+
+<h3 id="common-thread-functions">Common Thread Functions</h3>
+<ul>
+  <li>CreateThread. The caller of this function specifies the start point of the thread.
+    <ul>
+      <li>The caller of CreateThread can specify the function where the thread starts, and a <strong>single</strong> parameter that can be passed to this function.
+        <ul>
+          <li>Malware can use CreateThread to load a new malicious library into a process when LoadLibrary is what the thread is configured to run, and the parameter is the name of the library that should be passed to LoadLibrary. LoadLibrary could then load a malicious DLL, thereby invoking DllMain, which could do more malicious things.</li>
+          <li>Malware could use CreateThread to create two separate threads– one for input, and one for output.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="common-mutex-functions">Common Mutex Functions</h3>
+<ul>
+  <li>WaitForSingleObject is used by a thread to wait on a mutex.</li>
+  <li>ReleaseMutex is called by a thread when it’s done with a mutex. Obv.</li>
+  <li>CreateMutex: it destroys a mutex. (sarcasm)</li>
+  <li>OpenMutex: One process can get a handle to another process’s mutex by using this. Malware will commonly create a mutex and attempt to open an existing mutex with this technique to ensure only one version of the malware is running on the machine at once.</li>
+</ul>
+
+<h3 id="common-services-related-functions">Common Services-related Functions</h3>
+<ul>
+  <li>OpenSCManager: returns a handle to the service control manager (SCM), which is used for all subsequent service-related function calls.</li>
+  <li>CreateService: adds a new service to the SCM. Caller specifies if the service is to be ran at startup or not.</li>
+  <li>StartService: You guessed it! It starts a service. It’s used only if the service is not configured to start automatically (or, say, if you just freshly installed the malware on a system and it hasn’t rebooted the machine yet).</li>
+</ul>
+
+<h2 id="transferring-execution-among-files">Transferring execution among files</h2>
+
+<h3 id="dll-files">DLL files</h3>
+<p>DLLs export functions and cannot be ran on their own. They must run their code via an executable of some form.</p>
+<ul>
+  <li>They only needed to be loaded into memory once. Then they can be used by multiple programs (unlike static libraries, which would need to be loaded on a per-exectuable-instance basis).</li>
+  <li>DLLs look extremely similar to exectuable files– they use the same format as an execuable (the PE file format).A single flag differentiates the two.</li>
+  <li>DLLs contain DllMain()– a function that has no label and isn’t an export in the DLL, but is specified in the PE header as the file’s entry point. It’s called to notify the DLL when a process loads or unloads the library, creates a new thread, or finishes an existing thread. This allows the DLL to manage any per-process or per-thread resources.</li>
+</ul>
+
+<h2 id="other-page-to-page-notes">Other page-to-page notes</h2>
+
+<p><em>Autoruns</em> is a program downloadable from Microsoft that lists code that’ll run automatically when the OS starts. It pulls from about 25-30 registry locations (albeit not all of the possible ones).</p>
+
+
+  </div><a class="u-url" href="/notes/2018/09/10/ch7_PMA_notes.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Kyle the (Aspiring) Reverser</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Kyle the (Aspiring) Reverser</li><li><a class="u-email" href="mailto:kyle.buchmiller@gmail.com">kyle.buchmiller@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/NexusMaximus"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">NexusMaximus</span></a></li><li><a href="https://www.twitter.com/KyleTheReverser"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">KyleTheReverser</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

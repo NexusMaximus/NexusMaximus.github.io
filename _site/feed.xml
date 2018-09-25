@@ -1,4 +1,523 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-10T16:41:32-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.6 Lab: Recognizing C Constructs in Assembly</title><link href="http://localhost:4000/labs/2018/09/09/PMA_ch6_labs.html" rel="alternate" type="text/html" title="PMA Ch.6 Lab: Recognizing C Constructs in Assembly" /><published>2018-09-09T14:31:00-06:00</published><updated>2018-09-09T14:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/09/PMA_ch6_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/09/PMA_ch6_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-25T16:55:06-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.7 labs: Playing with Windows-specific malware</title><link href="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html" rel="alternate" type="text/html" title="PMA Ch.7 labs: Playing with Windows-specific malware" /><published>2018-09-12T14:31:00-06:00</published><updated>2018-09-12T14:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/12/PMA_ch7_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges encountered in the labs&lt;/h2&gt;
+
+&lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
+
+&lt;h3 id=&quot;71&quot;&gt;7.1&lt;/h3&gt;
+&lt;p&gt;Analyze the malware found in file &lt;em&gt;Lab07-01.exe&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Questions to answer as we go on:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;How does this program acheive persistence?&lt;/p&gt;
+
+    &lt;p&gt;By installing a service known as &lt;code class=&quot;highlighter-rouge&quot;&gt;MalService&lt;/code&gt; that runs a malicious function.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Why does this program use a mutex?&lt;/p&gt;
+
+    &lt;p&gt;It runs a mutex to see if a thread needs to be created or not. If the function obtains the mutex, then the program quits. Otherwise, the program attempts to create the mutex and proceeds to attempt to spin up a malicious thread. (This seems counter-intuitive at this point… see the post-answer-reading section below for a more detailed explanation of this.)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What’s a good host-based signature for detecting this malware?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Having a service named &lt;code class=&quot;highlighter-rouge&quot;&gt;Malservice&lt;/code&gt; on the system.&lt;/li&gt;
+      &lt;li&gt;Identifcation of a mutex called &lt;code class=&quot;highlighter-rouge&quot;&gt;HGL345&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What’s a good network-based signature for detecting this malware?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;User agent of just the string &lt;code class=&quot;highlighter-rouge&quot;&gt;Internet Explorer 8.0&lt;/code&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Connection under that user agent to &lt;code class=&quot;highlighter-rouge&quot;&gt;http://malwareanalysisbook.com/&lt;/code&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What’s the purpose of this program?&lt;/p&gt;
+
+    &lt;p&gt;It looks like this program will attempt to connect to a specific website at a certain time. I believe it’s a program that will turn infected computers into elements of a botnet, which will attack a site at a unified time.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When will this program finish executing?&lt;/p&gt;
+
+    &lt;p&gt;At some time very close to the turn of the 22nd century.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;First, let’s review and apply static analysis techniques and dynamic analysis techniques from chapters 1-3 before doing too much with Ida.&lt;/p&gt;
+
+&lt;h4 id=&quot;cffexplorer&quot;&gt;CFFExplorer&lt;/h4&gt;
+
+&lt;p&gt;The malware loads three DLLs: &lt;code class=&quot;highlighter-rouge&quot;&gt;ADVAPI32.dll&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;WININET.dll&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;KERNEL32.dll&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;From ADVAPI.dll: we have CreateServiceA, OpenSCManagerA, and StartServiceCtrlDispatcherA. The book previously described CreateService and OpenSCManager (see ch7 notes in a previous blog post), but I don’t recall seeing the start service function. Luckily, the book again proves its usefulness with Appendix A– the function is used by a service to connect to the main thread of the process to the service control manager. 
+&lt;em&gt;Any process that runs as a service must call this function within 30 seconds of startup. Locating this function in malware tells you that the function should be ran as a service.&lt;/em&gt; (This is insightful for question 1.)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;From WININET.dll: we have &lt;code class=&quot;highlighter-rouge&quot;&gt;InternetOpenUrlA&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;InternetOpenA&lt;/code&gt;. We know from the book that these functions are used to establish a connection with a specific internet location and to initialize high-level Internet access functions from WinINet. Conveniently for us, InternetOpen requires a user agent parameter, and InternetOpenUrl requires a URL (imagine that). These is insightful for question 4, as each of these could act as network-based signatures if they’re consistent.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;From KERNEL32.dll: There are lots of functions being imported, but the ones that come to mind as notable are:&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;CreateMutexA&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;OpenMutexA&lt;/code&gt; as this will require a mutex name, which could act as a host-based signature. I predict the code around this function call will provide the answer to question 2.&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;CreateThread&lt;/code&gt;, as creating threads for various reasons was discussed in depth in the notes for this chapter.&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;GetCurrentProcess&lt;/code&gt;. This will permit the malware to do things with itself.&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;GetCommandLineA&lt;/code&gt; tells the process how it was called. This could be used to determine if it’s called as a service or if it’s called to install.&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;WriteFile&lt;/code&gt; saves data into a file! Files are always great host-based indicators.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There may be more note-worthy functions used, but none of the others jumped out at me as areas that should be further explored at this moment in time.&lt;/p&gt;
+
+&lt;h4 id=&quot;resource-hacker&quot;&gt;Resource Hacker&lt;/h4&gt;
+&lt;p&gt;ResourceHacker found no resources in this file.&lt;/p&gt;
+
+&lt;h4 id=&quot;stringsexe&quot;&gt;Strings.exe&lt;/h4&gt;
+&lt;p&gt;In addition to all the imports, strings.exe highlights two notable strings: &lt;code class=&quot;highlighter-rouge&quot;&gt;http://www.malwareanalysisbook.com&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Internet Explorer 8.0&lt;/code&gt;, which I expect to see utilized as the C&amp;amp;C server and the user agent respectively.&lt;/p&gt;
+
+&lt;h4 id=&quot;ida-demo&quot;&gt;Ida Demo&lt;/h4&gt;
+
+&lt;p&gt;The first thing we see when opening this file in Ida is how it establishes persistence.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch7sc/01_1main.PNG&quot; alt=&quot;01_1main.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We see that the name of the service is pushed (&lt;code class=&quot;highlighter-rouge&quot;&gt;MalService&lt;/code&gt;) and then a function pointer is pushed. This mimics the structure expected as a parameter to the function, according to MSDN. As such, we can conclude that &lt;code class=&quot;highlighter-rouge&quot;&gt;sub_401040&lt;/code&gt; is what will be called as a service from here on out, which acheives persistence and answers question 1.&lt;/p&gt;
+
+&lt;p&gt;Looking at the function passed to the call above….&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch7sc/02_sub401040.PNG&quot; alt=&quot;02_sub401040&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A mutex &lt;code class=&quot;highlighter-rouge&quot;&gt;HGL345&lt;/code&gt; is attempted to be opened (with all access rights– that’s what the constant 0x1F0001 does) first thing. If the call returns 0 (i.e. NULL), that means the function failed to obtain the mutex, perhaps because it doesn’t exist or because it’s in use. If the call does NOT fail, then the program exits, which is sort of strange. 
+Otherwise, the program proceeds to create the mutex. (Note that if the mutex exists, CreateMutex simply returns a handle to the mutex).&lt;/p&gt;
+
+&lt;p&gt;It makes a service as it has concluded a service doesn’t exist for itself.&lt;/p&gt;
+
+&lt;p&gt;It waits for some time. Not sure what “FileTime” is at this point, but it seems to wait, perhaps for a specific
+date, say, of a planned out DDoS.&lt;/p&gt;
+
+&lt;p&gt;If WaitForSingleObject returns nonzero, the program proceeds to go into an infinite (i.e. INT_MAX) millisecond wait loop. 
+If WaitForSingleObject returns 0 (i.e. it has received a signal that it’s done waiting), a thread is created in which more malicious code is called– Ida calls it &lt;code class=&quot;highlighter-rouge&quot;&gt;StartAddress&lt;/code&gt;. What does this do?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch7sc/03_startAddress.PNG&quot; alt=&quot;03_startAddress&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It appears to just establish a connection with a domain. Considering the fact that it looks like the previous code waits to create a thread until a specific time, and combined with a little cybersecurity intuition, I believe there’s enough evidence to suggest this program’s purpose is to DDoS a computer at a hardcoded time.&lt;/p&gt;
+
+&lt;p&gt;When? I’m not sure of specifics, but the date pushed to CreateWaitableTimerA includes the year 2100 and the rest of the parameters are 0, which makes me think somehwere around the turn of the century. More in-depth analysis may help me figure this out specifically, but I believe it would be more beneficial to read the answers to this and move on to the next sample of malware.&lt;/p&gt;
+
+&lt;h4 id=&quot;realizations-made-after-reading-the-book-answers&quot;&gt;Realizations made after reading the book answers:&lt;/h4&gt;
+
+&lt;p&gt;The first thing I looked up was an explanation behind the wonky-seeming mutex business. It goes like this:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;If the initial mutex call &lt;code class=&quot;highlighter-rouge&quot;&gt;OpenMutex&lt;/code&gt; succeeds, then the program exits. Otherwise, it continues.&lt;/li&gt;
+  &lt;li&gt;If the program continues, the first thing it does is it attempts to create the mutex. The book says that if a copy of the malware was already running, then the first call to &lt;em&gt;OpenMutex&lt;/em&gt; would have succeeded.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I get it now. The program runs forever, so it creates a mutex &lt;em&gt;but does not obtain access to it.&lt;/em&gt; This is an indicator to all future instances of the program that it’s already running. Nothing else will obtain this mutex (or if it is obtained, it’ll be released very soon as the program will obtain it and then exit, which will, I presume, free the mutex). The mutex will simply act as a gatekeeper of sorts.&lt;/p&gt;
+
+&lt;p&gt;But what if the computer restarts? Will the mutex persist? If it will, then, since the function called by the service manager contains the initial mutex check, the service should theoretically end. Is this a bug, or is it author-written protection for newbie malware analysts, or am I just not understanding something? Hmmmm…..&lt;/p&gt;
+
+&lt;p&gt;The answer to this question is answered &lt;a href=&quot;https://blogs.msdn.microsoft.com/oldnewthing/20100903-00/?p=12953&quot;&gt;here&lt;/a&gt;. From what I can conclude, mutexes will not persist after handles to them are closed, so if the computer restarts, the service will recreate the mutex and go on its merry malicious way.&lt;/p&gt;
+
+&lt;p&gt;Anyway. Moving on:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch7sc/04_20threads.PNG&quot; alt=&quot;04_20threads&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;One thing I did not pay close attention to was how the threads were created. I see now that it moves 20 into &lt;code class=&quot;highlighter-rouge&quot;&gt;esi&lt;/code&gt; and then calls CreateThread until &lt;code class=&quot;highlighter-rouge&quot;&gt;esi&lt;/code&gt; is 0. I believe that, since the startAddress is passed to each thread, we will have 20 different instances of connection requests, per bot in the botnet.&lt;/p&gt;
+
+&lt;p&gt;Furthermore, I see now that the program will not end, as in any case, push INT_MAX followed by a sleep occurs.&lt;/p&gt;
+
+&lt;p&gt;Lastly, looking more carefully at &lt;code class=&quot;highlighter-rouge&quot;&gt;StartAddress&lt;/code&gt; will help one see that the loop that attempts connections with &lt;code class=&quot;highlighter-rouge&quot;&gt;http://www.malwareanalysisbook.com&lt;/code&gt; will unconditionally repeat, meaning we will have 20 * unlimited connection attempts, &lt;em&gt;per bot&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;72&quot;&gt;7.2&lt;/h3&gt;
+
+&lt;p&gt;Questions to keep in mind as we go on:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;How does this program acheive persistence?&lt;/p&gt;
+
+    &lt;p&gt;Answer here&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What’s the purpose of this program?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When will this program finish executing?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This time, the first thing I did was open this program in Ida. Upon opening, we see this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch7sc/05_OleInitialize.PNG&quot; alt=&quot;05_OleInitialize.PNG&quot; /&gt;;&lt;/p&gt;
+
+&lt;p&gt;So, the COM library will be initialized, which hints that COM objects will be used. A few other functions will be used, and it’s worth looking them up to get the general idea of what they are used for before diving into the details.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;CoCreateInstance&lt;/code&gt;: Per &lt;a href=&quot;https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cocreateinstance&quot;&gt;MDSN docs&lt;/a&gt;, this creats a single uninitialized object of the class associated with a specified CLSID.  It would be worth looking into what the passed-in CLSID is and see what that corresponds to. &lt;strong&gt;Note that the interface pointer created by the function is stored into var ppv&lt;/strong&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;VariantInit&lt;/code&gt;: This function creates a variant. I believe that a variant is simply a data structure that supports many different data types, according to &lt;a href=&quot;https://docs.microsoft.com/en-us/windows/desktop/winauto/variant-structure&quot;&gt;Microsoft&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SysAllocString&lt;/code&gt;: Allocates a new string and copies the passed string into it. We should look into what is passed to this.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SysFreeString&lt;/code&gt;: Frees an alloc’d string.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s talk about what’s passed to CoCreateInstance. A CLSID is a 128 bit hex number. That’s 128 / 8 = 16 bytes.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch7sc/06_CLSID.PNG&quot; alt=&quot;06_CLSID.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We have a four-part structure here: a DD (define double word), a DW (define word), another DW, and then 8 DB (Define bytes). DD’s are 4 bytes, DWs are 2 bytes, and DBs are 1 byte. The 6 dup (0) just means we have 6 duplicate bbytes of the data 0.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;dd&lt;/td&gt;
+      &lt;td&gt;dw&lt;/td&gt;
+      &lt;td&gt;dw&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0002DF01&lt;/td&gt;
+      &lt;td&gt;0000&lt;/td&gt;
+      &lt;td&gt;0000&lt;/td&gt;
+      &lt;td&gt;C0&lt;/td&gt;
+      &lt;td&gt;00&lt;/td&gt;
+      &lt;td&gt;00&lt;/td&gt;
+      &lt;td&gt;00&lt;/td&gt;
+      &lt;td&gt;00&lt;/td&gt;
+      &lt;td&gt;00&lt;/td&gt;
+      &lt;td&gt;00&lt;/td&gt;
+      &lt;td&gt;46&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;So if we google this CLSID 0002DF01-0000-0000-C000-000000000046, we get a bunch of results that are basically meaningless. Instead, I just found the registry key that contains CLSIDs: &lt;code class=&quot;highlighter-rouge&quot;&gt;HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID&lt;/code&gt;. In here, all the CLSIDs are organized (thank goodness).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch7sc/07_IE.PNG&quot; alt=&quot;07_IE.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So this CLSID corresponds to Internet Explorer.&lt;/p&gt;
+
+&lt;p&gt;Now let’s talk about the RIID. The RIID is a reference to the identifier of the interface to be used to communicate with the object returned by CoCreateInstance. It has the same byte-age as the above CLSID in memory.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;dd&lt;/td&gt;
+      &lt;td&gt;dw&lt;/td&gt;
+      &lt;td&gt;dw&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+      &lt;td&gt;db&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;D30C1661&lt;/td&gt;
+      &lt;td&gt;CDAF&lt;/td&gt;
+      &lt;td&gt;11D0&lt;/td&gt;
+      &lt;td&gt;8A&lt;/td&gt;
+      &lt;td&gt;3E&lt;/td&gt;
+      &lt;td&gt;00&lt;/td&gt;
+      &lt;td&gt;C0&lt;/td&gt;
+      &lt;td&gt;4F&lt;/td&gt;
+      &lt;td&gt;C9&lt;/td&gt;
+      &lt;td&gt;E2&lt;/td&gt;
+      &lt;td&gt;6E&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;I threw the string D30C1661-CDAF-11D0-8A3E-00C04FC9E26E into Google and up pops a Microsoft &lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/api/shdocvw.iwebbrowser2?view=dynamics-usd-3&quot;&gt;page&lt;/a&gt; that tells us this corresponds to the IWebBrowser2 interface.&lt;/p&gt;
+
+&lt;p&gt;By now it’s quite evident that this program is interfacing with Internet Explorer. Further, it doesn’t appear there is any evident persistence mechanism at this time. We just need to figure out what exactly this program is doing and when it’ll finish executing.&lt;/p&gt;
+
+&lt;p&gt;Moving on. Let’s direct attention to this chunk of code.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch7sc/08_magic.PNG&quot; alt=&quot;08_magic&quot; /&gt;.&lt;/p&gt;
+
+&lt;p&gt;The most important thing to note from this part of the code is that the COM object itself is being used to make a special function call. At the time of the &lt;code class=&quot;highlighter-rouge&quot;&gt;call dword ptr [edx+2ch]&lt;/code&gt;, the object is in edx (see how it was dereferenced from [eax] into edx earlier), and the offset 0x2c specifies a function offset from the beginning of the object. 
+Identifying what function that offset corresponds to is explained on page 156 of the book. It says to go to the structures subview and then hit &lt;code class=&quot;highlighter-rouge&quot;&gt;insert&lt;/code&gt; and then click “add standard structure.” I was able to add the structure but I didn’t see a way to utilize this information to identify the function being called in the assembly. Perhaps this is an Ida pro specific feature.&lt;/p&gt;
+
+&lt;p&gt;Either way, based on the fact that we are interfacing with Internet Explorer and we have a string that contains a URL, we can perhaps safely conclude that this program will end up having IE go to the website. Since the URL takes us to a page called “ad.html”, we can conclude this is probably adware. (Of course in the real world, we can’t validly make this assumption since anything could be called “ad.html,” but for purposes of this training, I think it’s acceptable in the interest of time.)&lt;/p&gt;
+
+&lt;p&gt;The program ends immediately after performing these actions, which suggests persistence is not acheived and that it won’t run forever or anything like that. It’s a simple baby adware program.&lt;/p&gt;
+
+&lt;h3 id=&quot;73&quot;&gt;7.3&lt;/h3&gt;
+
+&lt;p&gt;I’m putting this sample on the backburner for now, as I need to move on and learn about some malware obfuscation techniques in lieu of finding a thesis project of some form. Check back later on.&lt;/p&gt;
+
+&lt;!--
+
+Alright, our first big boy malware sample! Apparently this malware was caught in the wild and domesticated for training purposes, so while it will no longer connect to a sketchy domain, it may still have dangerous implications unforeseen by the domesticators (i.e. Sikorski and Honig). Run it in a VM.
+
+1. How does this program acheive persistence to ensure it continues running when the machine is rebooted?
+
+2. What are two good host-based signatures?
+
+3. What is the purpose of this program?
+
+4. How could you remove this malware once it's installed?
+--&gt;</content><author><name></name></author><summary type="html">Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</summary></entry><entry><title type="html">PMA Ch. 7 notes: Analyzing Malicious Windows Programs</title><link href="http://localhost:4000/notes/2018/09/10/ch7_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch. 7 notes: Analyzing Malicious Windows Programs" /><published>2018-09-10T14:31:00-06:00</published><updated>2018-09-10T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/10/ch7_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/10/ch7_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This chapter discusses a plethora of the Windows mechanics that malware authors frequently like to make use of.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;What are the three most important takeaways from this chapter?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The attack surface for Windows-based malware is huge, and it’s important to have a grasp on as much of the workings of Windows internals as possible to be best equipped for analyzing malicious samples.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Windows is the most popular malware target simply because more people use Windows than other operating systems. As such, it pays to know how Windows works.&lt;/p&gt;
+
+&lt;h2 id=&quot;windows-mechanics&quot;&gt;Windows Mechanics&lt;/h2&gt;
+
+&lt;h3 id=&quot;common-windows-api-data-types&quot;&gt;Common Windows API Data Types&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;WORD&lt;/code&gt; (w): 16 bits&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;DWORD&lt;/code&gt; (dw): 32 bits&lt;/li&gt;
+  &lt;li&gt;Handle: a reference to an object. They are like pointers in that they refer to objects or memory addresses, but include more information and cannot be manipulated like pointers.
+    &lt;ul&gt;
+      &lt;li&gt;Examples: &lt;code class=&quot;highlighter-rouge&quot;&gt;HModule&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;HInstance&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;HKey&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Long Pointer (LP): Pointer to another type. 32 bits, I believe.
+    &lt;ul&gt;
+      &lt;li&gt;Examples: &lt;code class=&quot;highlighter-rouge&quot;&gt;LPByte&lt;/code&gt; is a pointer to a byte.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Callback: Represents a function that will be called by the Windows API.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;special-files&quot;&gt;Special Files&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Special File&lt;/strong&gt;: one that can be accessed much like other files, but are not accessed by their drive letter and path. They can be hidden to directory listings.&lt;/p&gt;
+
+&lt;h4 id=&quot;shared-files&quot;&gt;Shared Files&lt;/h4&gt;
+
+&lt;p&gt;These start with &lt;code class=&quot;highlighter-rouge&quot;&gt;\\serverName\share&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;\\?\serverName\share&lt;/code&gt;. The &lt;code class=&quot;highlighter-rouge&quot;&gt;\\?\&lt;/code&gt; prefix tells the OS to disable all string parsing, and allows access to longer filenames.&lt;/p&gt;
+
+&lt;h4 id=&quot;namespaces&quot;&gt;Namespaces&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;Namepsaces&lt;/strong&gt; can be thought of as a fixed number of folders, each storing different types of objects. All namespaces exist within the NT namespace, and this can be browsed using the &lt;em&gt;WinObj Object Manager namespace viewer&lt;/em&gt; from Microsoft. 
+  The Win32 device namespace with the prefix &lt;code class=&quot;highlighter-rouge&quot;&gt;\\.\&lt;/code&gt; can be used to access physical devices directly, and read and write to them like a file. Again, this can be used to get around Windows API calls and avoid detection.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;It seems like namepsaces are a significant threat to analysts due to the covert abilities it equips malware with.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;alternate-data-streams&quot;&gt;Alternate Data Streams&lt;/h4&gt;
+
+&lt;p&gt;This allows additional data to be added to an existing file within NTFS. The extra data does not show up from within a directory listing, nor is it displayed when showing the contents of a file. &lt;em&gt;It’s only visible when viewing the stream.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;ADS data is named according to the convention &lt;em&gt;normalFile.txt:Stream:$DATA&lt;/em&gt;, which is what allows a program to read and write to a stream. (I don’t really understand the concept of streams in this context yet, but if it’s not further answered in the chapter, I’ll look it up elsewhere.)&lt;/p&gt;
+
+&lt;h3 id=&quot;the-windows-registry&quot;&gt;The Windows Registry&lt;/h3&gt;
+&lt;p&gt;The registry is used to store OS and program configuration information, such as settings and options. It is often used by malware to establish persistence in addition to its usual use of configuration. Important terminology related to the registry:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;Root Key&lt;/em&gt;: registry is divided into five top-level sections called root keys. &lt;code class=&quot;highlighter-rouge&quot;&gt;HKEY&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hive&lt;/code&gt; are pseudonyms of this.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Key&lt;/em&gt;: It’s like a folder in the registry.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Subkey&lt;/em&gt;: it’s like a subfolder within a folder. A subkey is a key.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Value Entry&lt;/em&gt;: An ordered pair with a name and a value.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Value or Data&lt;/em&gt;: data stored in a registry entry.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;root-key-101&quot;&gt;Root Key 101&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;HKEY_LOCAL_MACHINE (HKLM)&lt;/code&gt;: Stores settings global to the local machine&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;HKEY_CURRENT_USER (HKCU)&lt;/code&gt;: Stores settings specific to the current user&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;HKEY_CLASSES_ROOT&lt;/code&gt;: Stores info defining types&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;HKEY_CURRENT_CONFIG&lt;/code&gt;: Stores settings about the current hardware configuration (especially differences between current and standard configuration)&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;HKEY_USERS&lt;/code&gt;: Defines settings for default/new/current users&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;popular-ways-to-establish-persistence&quot;&gt;Popular ways to establish persistence&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt; contains values that are executables that are started as soon as a user logs in.&lt;/p&gt;
+
+&lt;h3 id=&quot;networking-apis&quot;&gt;Networking APIs&lt;/h3&gt;
+&lt;p&gt;Note that &lt;code class=&quot;highlighter-rouge&quot;&gt;WSAStartup()&lt;/code&gt; must be called before other networking functions to allocate resources for the networking libraries.&lt;/p&gt;
+
+&lt;h4 id=&quot;berkeley-compatible-sockets&quot;&gt;Berkeley Compatible Sockets&lt;/h4&gt;
+&lt;p&gt;These socket functions provide functionality that is almost identical on Unix and Windows systems, and these functions are implemented in the Winsock libraries– &lt;em&gt;ws2_32.dll&lt;/em&gt;. Most common:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;socket&lt;/code&gt;: Creates a socket.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bind&lt;/code&gt;: Attaches a socket to a particular port, prior to the accept call&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;listen&lt;/code&gt;: Indicates that a socket will be listening for incoming connections&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;accept&lt;/code&gt;: Opens a connection to a remote socket and accepts that connection&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;connect&lt;/code&gt;: Opens a connection to a remote socket that is waiting for the connection&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;recv&lt;/code&gt;: Receives data from the remote socket&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;send&lt;/code&gt;: Sends data to the remote socket&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;wininet-api&quot;&gt;WinINet API&lt;/h4&gt;
+&lt;p&gt;These functions are stored in &lt;em&gt;Wininet.dll&lt;/em&gt; and provide higher-level networking APIs.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;InternetOpen&lt;/code&gt;: used to initialize a connection to the Internet&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;InternetOpenUrl&lt;/code&gt;: used to connect to a HTTP or FTP resource&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;InternetReadFile&lt;/code&gt;: allows the program to read data from a file downloaded from the Internet.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;processes&quot;&gt;Processes&lt;/h3&gt;
+&lt;p&gt;The OS will allocate memory for processes on a per-process basis. One process’s addresses may be the same as another process’s addresses, but due to virtual memory and abstraction by the OS (I believe), these processes will not overlap.&lt;/p&gt;
+
+&lt;h3 id=&quot;threads&quot;&gt;Threads&lt;/h3&gt;
+&lt;p&gt;A process’s instructions are executed by one or more threads. A thread is an independent sequence of instructions that are executed by the CPU without waiting for other threads. Threads within a process share the same memory space, but each has its own processer registers and stack.&lt;/p&gt;
+
+&lt;p&gt;Threads have complete control of the CPU when they’re executing. Their context, the &lt;em&gt;thread context&lt;/em&gt;, is saved in a structure when a context switch is performed.&lt;/p&gt;
+
+&lt;h3 id=&quot;mutexes-aka-mutants&quot;&gt;Mutexes (aka Mutants)&lt;/h3&gt;
+&lt;p&gt;These are global objects used to control access to shared resources. They often use hard-coded names, which acts as a host-based indicator to the malware analyst.&lt;/p&gt;
+
+&lt;h3 id=&quot;services&quot;&gt;Services&lt;/h3&gt;
+&lt;p&gt;These are ran by SYSTEM and can only be installed with administrator privilege. There are different types of services, each of which execute in different ways. The most commonly maliciously used type is the &lt;code class=&quot;highlighter-rouge&quot;&gt;WIN32_SHARE_PROCESS&lt;/code&gt;, type, which stores the code for the service in a DLL and combines several different services into a single, shared process.&lt;/p&gt;
+
+&lt;p&gt;In Task Manager, there exist several &lt;em&gt;svchost.exe&lt;/em&gt; instances, and these run &lt;code class=&quot;highlighter-rouge&quot;&gt;WIN32_SHARE_PROCESS&lt;/code&gt; type services. &lt;code class=&quot;highlighter-rouge&quot;&gt;WIN32_OWN_PROCESS&lt;/code&gt; is also used because it stores the code in a .exe file and runs it as an independent process.&lt;/p&gt;
+
+&lt;p&gt;Services information is stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;HKLM\SYSTEM\CurrentControlset\Services&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;com-executables&quot;&gt;COM executables&lt;/h3&gt;
+&lt;p&gt;The &lt;em&gt;Component Object Model&lt;/em&gt; is an interface standard that makes it possible for different software components to call each other’s code without knowledge of specifics of each other. It was designed to support reusable software componets that could be usable by all programs.&lt;/p&gt;
+
+&lt;p&gt;COM is implemented as a client-server framework. The clients are what make use of the COM objects, and the servers are the reusable software components. Every thread that uses COM must call &lt;code class=&quot;highlighter-rouge&quot;&gt;OleInitialize&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;CoInitializeEx&lt;/code&gt; at least once before calling other COM library functions.&lt;/p&gt;
+
+&lt;p&gt;COM objects are accessed via their &lt;em&gt;globally unique identifiers&lt;/em&gt; (GUIDs) known as &lt;em&gt;class identifiers (CLSIDs)&lt;/em&gt; and &lt;em&gt;interface identifiers (IIDs)&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;One common function used by malware is &lt;code class=&quot;highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; which allows a program to launch Internet Explorer and access a web address. &lt;code class=&quot;highlighter-rouge&quot;&gt;Navigate&lt;/code&gt; is part of the &lt;code class=&quot;highlighter-rouge&quot;&gt;IWebBrowser2&lt;/code&gt; interface, which specifies a list of functions that must be implemented, but does not specify which program will provide that functionality. A &lt;em&gt;COM Class&lt;/em&gt; is the program that provides said functionality. Interfaces are identified with an &lt;em&gt;IID&lt;/em&gt; and the classes are identifed with a &lt;em&gt;CLSID&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;COM stuff is tricky and dense. I am going to bookmark this page (by saying here that it’s on and near p155) and come back to it if I encounter such things in malware.&lt;/p&gt;
+
+&lt;h3 id=&quot;exceptions&quot;&gt;Exceptions&lt;/h3&gt;
+&lt;p&gt;Windows uses &lt;em&gt;structured exception handling (SEH)&lt;/em&gt; to deal with handling exceptions. In 32 bit systems, SEH info is stored on the stack (which means it’s potentially vulnerable to things such as buffer overflows).&lt;/p&gt;
+
+&lt;h3 id=&quot;kernel-vs-user-mode&quot;&gt;Kernel vs. User Mode&lt;/h3&gt;
+&lt;p&gt;Nearly all code runs in user mode, save the operating system itself and hardware drivers. Usually, user mode programs do not have direct access to hardware devices and &lt;em&gt;must&lt;/em&gt; go through the Windows API. &lt;code class=&quot;highlighter-rouge&quot;&gt;SYSENTER&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;SYSCALL&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;Int 0x2E&lt;/code&gt; assembly instructions are all used to do this.&lt;/p&gt;
+
+&lt;p&gt;All processes running in the kernel share resources and memory addresses, and kernel code has fewer security checks, not to mention it has ultimate power over a system. It’s basically the priviliged land for malware authors.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-native-api&quot;&gt;The Native API&lt;/h3&gt;
+&lt;p&gt;The Native API is a lower-level interface for interacting with Windows that is rarely used by nonmalicious programs. Calling native API functions bypasses the normal Windows API. See p159 for a diagram describing how context switches from user mode to kernel mode when calling native functions. Native functions are usually predicated by Nt.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ntoskrnl.exe&lt;/code&gt; contains functions that run in kernel space.&lt;/p&gt;
+
+&lt;h2 id=&quot;quick-windows-function-cheat-sheet&quot;&gt;Quick Windows Function Cheat Sheet&lt;/h2&gt;
+&lt;p&gt;I include some unintuitive conceptual ‘gotchas’ here, but I don’t discuss details behind how to use the functions. Check out MSDN documentation for that.&lt;/p&gt;
+
+&lt;h3 id=&quot;file-system-functions&quot;&gt;File System Functions&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;CreateFile&lt;/li&gt;
+  &lt;li&gt;ReadFile and WriteFile&lt;/li&gt;
+  &lt;li&gt;CreateFileMapping and MapViewOfFile
+    &lt;ul&gt;
+      &lt;li&gt;&lt;em&gt;File Mappings&lt;/em&gt; are commonly used by malware writers because they allow a file to be loaded into memory and manipulated easily. &lt;code class=&quot;highlighter-rouge&quot;&gt;CreateFileMapping&lt;/code&gt; loads a file from disk into memory; &lt;code class=&quot;highlighter-rouge&quot;&gt;MapViewOfFile&lt;/code&gt; returns a pointer to the base address of that mapping.&lt;/li&gt;
+      &lt;li&gt;File Mappings can be used to replicate the functionality of the Windows loader– after the malware reads in an executable file to memory, it can parse the PE and do whatever it wants with it, (possibly) without the use of Windows API functions, which can help evade monitoring programs.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;common-registry-functions&quot;&gt;Common Registry Functions&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;RegOpenKeyEx&lt;/li&gt;
+  &lt;li&gt;RegSetValueEx: Adds a new value to the registry and sets its data (or modifies an existing value)&lt;/li&gt;
+  &lt;li&gt;RegGetValue: Get the data for a value entry in the registry&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;reg-scripts&quot;&gt;.reg scripts&lt;/h4&gt;
+&lt;p&gt;You can write scripts that interact with the registry. Files with the .reg extension, when double clicked, modifies the registry by merging the info the file contains &lt;em&gt;into&lt;/em&gt; the registry.&lt;/p&gt;
+
+&lt;h3 id=&quot;common-process-functions&quot;&gt;Common Process Functions&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;CreateProcess
+    &lt;ul&gt;
+      &lt;li&gt;One of the parameters to this function is the &lt;code class=&quot;highlighter-rouge&quot;&gt;startupinfo&lt;/code&gt; structure. You can configure &lt;code class=&quot;highlighter-rouge&quot;&gt;stdin&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;stdio&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;stderr&lt;/code&gt; streams in this, and potentially set them to sockets that you can send across the wire. See p148 for an example of this.&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;Executables can store other executables in their resource section. An executable can extract an executable from within itself in this manner, write it to disk, and then call &lt;code class=&quot;highlighter-rouge&quot;&gt;createProcess&lt;/code&gt; to run it.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;common-thread-functions&quot;&gt;Common Thread Functions&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;CreateThread. The caller of this function specifies the start point of the thread.
+    &lt;ul&gt;
+      &lt;li&gt;The caller of CreateThread can specify the function where the thread starts, and a &lt;strong&gt;single&lt;/strong&gt; parameter that can be passed to this function.
+        &lt;ul&gt;
+          &lt;li&gt;Malware can use CreateThread to load a new malicious library into a process when LoadLibrary is what the thread is configured to run, and the parameter is the name of the library that should be passed to LoadLibrary. LoadLibrary could then load a malicious DLL, thereby invoking DllMain, which could do more malicious things.&lt;/li&gt;
+          &lt;li&gt;Malware could use CreateThread to create two separate threads– one for input, and one for output.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;common-mutex-functions&quot;&gt;Common Mutex Functions&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;WaitForSingleObject is used by a thread to wait on a mutex.&lt;/li&gt;
+  &lt;li&gt;ReleaseMutex is called by a thread when it’s done with a mutex. Obv.&lt;/li&gt;
+  &lt;li&gt;CreateMutex: it destroys a mutex. (sarcasm)&lt;/li&gt;
+  &lt;li&gt;OpenMutex: One process can get a handle to another process’s mutex by using this. Malware will commonly create a mutex and attempt to open an existing mutex with this technique to ensure only one version of the malware is running on the machine at once.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;common-services-related-functions&quot;&gt;Common Services-related Functions&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;OpenSCManager: returns a handle to the service control manager (SCM), which is used for all subsequent service-related function calls.&lt;/li&gt;
+  &lt;li&gt;CreateService: adds a new service to the SCM. Caller specifies if the service is to be ran at startup or not.&lt;/li&gt;
+  &lt;li&gt;StartService: You guessed it! It starts a service. It’s used only if the service is not configured to start automatically (or, say, if you just freshly installed the malware on a system and it hasn’t rebooted the machine yet).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;transferring-execution-among-files&quot;&gt;Transferring execution among files&lt;/h2&gt;
+
+&lt;h3 id=&quot;dll-files&quot;&gt;DLL files&lt;/h3&gt;
+&lt;p&gt;DLLs export functions and cannot be ran on their own. They must run their code via an executable of some form.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;They only needed to be loaded into memory once. Then they can be used by multiple programs (unlike static libraries, which would need to be loaded on a per-exectuable-instance basis).&lt;/li&gt;
+  &lt;li&gt;DLLs look extremely similar to exectuable files– they use the same format as an execuable (the PE file format).A single flag differentiates the two.&lt;/li&gt;
+  &lt;li&gt;DLLs contain DllMain()– a function that has no label and isn’t an export in the DLL, but is specified in the PE header as the file’s entry point. It’s called to notify the DLL when a process loads or unloads the library, creates a new thread, or finishes an existing thread. This allows the DLL to manage any per-process or per-thread resources.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;other-page-to-page-notes&quot;&gt;Other page-to-page notes&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Autoruns&lt;/em&gt; is a program downloadable from Microsoft that lists code that’ll run automatically when the OS starts. It pulls from about 25-30 registry locations (albeit not all of the possible ones).&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions</summary></entry><entry><title type="html">PMA Ch.6 Lab: Recognizing C Constructs in Assembly</title><link href="http://localhost:4000/labs/2018/09/09/PMA_ch6_labs.html" rel="alternate" type="text/html" title="PMA Ch.6 Lab: Recognizing C Constructs in Assembly" /><published>2018-09-09T14:31:00-06:00</published><updated>2018-09-09T14:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/09/PMA_ch6_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/09/PMA_ch6_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
@@ -1098,327 +1617,4 @@ C:\&amp;gt; net start serviceNameHere
 &lt;p&gt;&lt;a href=&quot;https://www.vmware.com/products/workstation-pro.html&quot;&gt;VMWare Workstation&lt;/a&gt;: potentially the most important piece of software for malware analysis.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Record and replay seemed especially neat and potentially useful. It records &lt;em&gt;every&lt;/em&gt; instruction executed in the process of a recording session. I’m sure there are uses for this.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">PMA Ch.1 Labs: Basic Static Analysis</title><link href="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html" rel="alternate" type="text/html" title="PMA Ch.1 Labs: Basic Static Analysis" /><published>2018-07-31T14:12:00-06:00</published><updated>2018-07-31T14:12:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/07/31/PMA_Ch1_Labs.html">&lt;p&gt;In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).&lt;/p&gt;
-
-&lt;p&gt;I’ll also answer the following general questions in an attempt to keep the big picture of the assignments in mind:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/li&gt;
-  &lt;li&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab Summary questions&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
-
-    &lt;p&gt;Super important! Static analysis is one of those things that seems easy and straightforward, but ends up being trickier to conduct than expected (for me, at least), due to the fact that I find myself questioning if the information I find is legit or planted.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;Look &lt;strong&gt;very&lt;/strong&gt; carefully at the strings of the file– specifically at the names of .dll files!&lt;/li&gt;
-      &lt;li&gt;Modification time and compilation time are definitely not the same thing. Compilation time can be found by putting the file into PEView and going to IMAGE_NT_HEADERS -&amp;gt; IMAGE_FILE_HEADER -&amp;gt; Time Date Stamp.&lt;/li&gt;
-      &lt;li&gt;Virtual vs. raw sizes, identifiable using PEiD (at least for 32 bit exes) can be an indicator of packing. Per this &lt;a href=&quot;http://www.asmcommunity.net/forums/topic/?id=29605&quot;&gt;post&lt;/a&gt;:
-        &lt;ul&gt;
-          &lt;li&gt;Raw size: exactly the size of the section’s data &lt;em&gt;in the file&lt;/em&gt;&lt;/li&gt;
-          &lt;li&gt;Virtual size: The size of the section &lt;em&gt;in memory&lt;/em&gt;
- So it makes sense that, if the section is larger in memory, something is unpacking into that section. Usually, the virtual size is smaller than the raw size.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;It seems evident now, but LoadResource, FindResource, and SizeOfResource functions imply the existence of something that ResourceHacker can help extract. As such, look around with ResourceHacker if you see these functions in the import list.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges Encountered in the labs&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I wasn’t sure how to find the compilation time and wasn’t sure of if the modification time sufficed. The answer to this was made clear after checking the answers in the back of the book.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
-
-&lt;h3 id=&quot;11&quot;&gt;1.1&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Upload to VT. Does the file match any existing antivirus signatures?&lt;/p&gt;
-
-    &lt;p&gt;Indeed!&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch1_sc/1.1.1dll.PNG&quot; alt=&quot;1.1.1dll&quot; title=&quot;yee&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch1_sc/1.1.1exe.PNG&quot; alt=&quot;1.1.1exe&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;When were these files compiled?&lt;/p&gt;
-
-    &lt;p&gt;Not positive on how to find the exact date using a tool, but just viewing file properties and looking at the “last modified” entry gives the right answer for the .exe. Alternatively, this info is also provided by CFFExplorer.&lt;/p&gt;
-
-    &lt;p&gt;After reading answers: see question 2 of the above section&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Are there any indicators that these files are packed or obfuscated? If so, what are the indicators?&lt;/p&gt;
-
-    &lt;p&gt;I argue no:&lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;The .exe and .dll disassemble successfully in IDA Demo&lt;/li&gt;
-      &lt;li&gt;There are several imports identifiable by CFFExplorer which would otherwise be obfuscated &lt;img src=&quot;/files/ch1_sc/1.1.3dll.PNG&quot; alt=&quot;1.1.3dll&quot; /&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Do the imports hint at what the malware does?&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;Lab1.dll:
-        &lt;ul&gt;
-          &lt;li&gt;CreateProcess indicates it runs something.&lt;/li&gt;
-          &lt;li&gt;from the book: WS2_32.dll provides network functions. So perhaps it’s exfiltrating stuff-n-things&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Lab1.exe:
-        &lt;ul&gt;
-          &lt;li&gt;CreateFileA/FindFileA: maybe it’s creating a log file, or checking for its own existence, or searching for specific files on a system (like SAM files)&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Any other host-based indicators?&lt;/p&gt;
-
-    &lt;p&gt;Running strings shows that the .exe has hard-coded within it “WARNING_THIS_WILL_DESTROY_YOUR_MACHINE” which can be easily grepped for.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What network-based indicators could be used to find this malware on infected machines?&lt;/p&gt;
-
-    &lt;p&gt;Running strings on the .dll yields an IP address: 127.26.152.13. So look for traffic going to that IP address&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Guess as to the purpose of the files:&lt;/p&gt;
-
-    &lt;p&gt;Search for certain files (and/or create them) and exfil them to an external site. My guess is it’s a keylogger or it’s seeking password files or something of the like.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;after-reading-the-book&quot;&gt;After reading the book:&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Ahh, the .exe has a string “kerne132.dll”… ‘1’… didn’t notice that at first. Perfect host-based indicator.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;12&quot;&gt;1.2&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Existing antivirus definitions?&lt;/p&gt;
-
-    &lt;p&gt;Absolutely: 43/66 say it’s malicious.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Obfuscation signs?&lt;/p&gt;
-
-    &lt;p&gt;At a glance– some imports are clearly visible and are more in quantity than for typical packed malware.&lt;/p&gt;
-
-    &lt;p&gt;However, Ida claims the imports section was destroyed. I trust Ida more than CFFExplorer since Ida costs like $2000.&lt;/p&gt;
-
-    &lt;p&gt;Looking at strings from within Ida indicates a section called UPX1. UPX is a packer. Obfuscated it is!&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Do imports provide any juicy knowledge?&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;GetProcAddressA and VirtualAlloc suggest this might be doing process injection.&lt;/li&gt;
-      &lt;li&gt;CreateService suggests the malware establishes persistence.&lt;/li&gt;
-      &lt;li&gt;InternetOpenA suggests the program talks out somewhere.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Indicators!&lt;/p&gt;
-
-    &lt;p&gt;First, I unpacked the file using CFFExplorer and then put it back into Ida to discover, with Ida’s strings utility:&lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Host-based: strings shows “MalService” in our presence, and that string is passed as a parameter to CreateService: &lt;img src=&quot;/files/ch1_sc/1.2.4malservice.PNG&quot; alt=&quot;malservice&quot; /&gt; This would be a great indicator (albeit not reflective of what real malware might actually do (probably)). Further, there is a strange string “HGL345” used as a parameter to CreateMutex, which suggests if a mutex named HGL345 is on the system, we know this malware probably ran. &lt;img src=&quot;/files/ch1_sc/1.2.4HGL345.PNG&quot; alt=&quot;HGL345&quot; /&gt;&lt;/li&gt;
-      &lt;li&gt;Network-based: strings yet again comes in clutch to show the presence of “http://malwareanalysisbook.com”.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;after-reading-the-book-1&quot;&gt;After reading the book:&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;PEiD can be used to identify virtual vs. raw sizes of sections in memory. Therefore, a raw size of 0 but a virtual size of &amp;gt;0 is strong evidence of shenanigans. &lt;img src=&quot;/files/ch1_sc/1.2.4peid.PNG&quot; alt=&quot;peid&quot; title=&quot;Raw size: 0; yet virtual size=0x4000? HMMMMMMM&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;13&quot;&gt;1.3&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;VirusTotal it up.&lt;/p&gt;
-
-    &lt;p&gt;55/66 claim EVIL (at this point, duh). Also, they say it’s packed.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Obfuscations?&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;For starters, VT claims it’s packed (i.e. a lot of the warnings say “Packer.FSG.A”).&lt;/li&gt;
-      &lt;li&gt;Secondly, the ONLY two imports that exist within the file are “LoadLibraryA” and “GetProcAddress” which are the two imports associated with unpacking an executable.&lt;/li&gt;
-      &lt;li&gt;Moreover, we have sections identified by PEiD as having a raw size of 0 and a virtual size of larger. It’s definitely packed.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Imports hinting at functionality?&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;can’t really answer without unpacking&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;indicators?&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;can’t really answer without unpacking&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;14&quot;&gt;1.4&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;VT?
- 53/67&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Obfuscations?&lt;/p&gt;
-
-    &lt;p&gt;Ida disassembled it just fine. It has lots of imports. That’s reason enough for me to believe it’s not obfuscated.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Program compilation date?&lt;/p&gt;
-
-    &lt;p&gt;PEView tells us the compilation date is 8/30/2019, which is BS since it isn’t 2019. Clearly this is spoofed.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Imports hinting as to functionality?&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;GetProcAddress/LoadLibraryA: searching for external code to run&lt;/li&gt;
-      &lt;li&gt;CreateFile/MoveFile/WriteFile: It’s got the ability to create and write files. Keylogger? Reverse shell?&lt;/li&gt;
-      &lt;li&gt;CreateRemoteThread: has ability to execute code in other programs. Process injection?&lt;/li&gt;
-      &lt;li&gt;LookupPrivilegeValue: looking to see what permissions its running with perhaps?
- All this, combined with the antivirus vendor tags that say “backdoor”, tell me this is probably a backdoor into a machine that will give an adversary control.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;host/network based indicators?&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;Ida Strings: \system32\wupdmgr.exe is in there, which suggests this malware writes or modifies a file at that location with that name. Same with \winup.exe (which, &lt;a href=&quot;https://www.bleepingcomputer.com/startups/winup.exe-18972.html&quot;&gt;according to bleepingcomputer&lt;/a&gt;, is BAD and EVIL!&lt;/li&gt;
-      &lt;li&gt;No clue WHY Ida doesn’t show ALL the strings, but it doesn’t. Strings.exe found the string “http://practicalmalwareanalysis.com/updater.exe” in the program. This may be a host-based AND network-based indicator!&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;one resource in the resource section. Use ResourceHacker to examine it, and then to extract it. What does the resource tell us?&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch1_sc/1.4.6resource.PNG&quot; alt=&quot;resource&quot; /&gt; 
- This appears to be another executable file. Saving it and submitting the hash resulted in interestingness:
- &lt;img src=&quot;/files/ch1_sc/1.4.6resourceVT.PNG&quot; alt=&quot;resource2&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;Cool– we get TWO malware samples for the price of ONE! My guess is that this sample drops a second executable and names it one of the above things (perhaps winup.exe).&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The book tells us that we can use Resource Hacker to save just the resource. “Action -&amp;gt; save resource as binary file” takes care of that.&lt;/p&gt;
-
-&lt;h6 id=&quot;la-ur-18-27643&quot;&gt;LA-UR-18-27643&lt;/h6&gt;</content><author><name></name></author><summary type="html">In this category of posts, I’ll be detailing how I go about answering the end-of-chapter lab questions. There ARE going to be spoilers in the lab towards the end of the post (but I will clearly mark where the spoilers begin).</summary></entry><entry><title type="html">PMA Ch.1: Basic Static Analysis Techniques</title><link href="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.1: Basic Static Analysis Techniques" /><published>2018-07-31T14:11:00-06:00</published><updated>2018-07-31T14:11:00-06:00</updated><id>http://localhost:4000/notes/2018/07/31/ch1_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/07/31/ch1_PMA_notes.html">&lt;p&gt;As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.&lt;/p&gt;
-
-&lt;p&gt;In addition to including technical details inscribed within the chapter, I’ll be answering the following questions in an attempt to keep in mind the big picture of the chapter.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/li&gt;
-  &lt;li&gt;What are the three most important takeaways from this chapter?&lt;/li&gt;
-  &lt;li&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Let’s get started.&lt;/p&gt;
-
-&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
-
-    &lt;p&gt;This chapter discusses basic static analysis of executable files and provides a slew of tools used to do so. Static analysis of a file is analysis that does NOT involve running the file, such as by examining the header of the file and looking for strings contained within.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;Static analysis is one tool in the toolbox for identifying malware, but there are ways to make static analysis virtually useless.&lt;/li&gt;
-      &lt;li&gt;Section names are merely convention. They can be renamed to be misleading.&lt;/li&gt;
-      &lt;li&gt;There are three kinds of linking: &lt;em&gt;static&lt;/em&gt;, &lt;em&gt;runtime&lt;/em&gt;, and &lt;em&gt;dynamic&lt;/em&gt;. Malware more frequently makes use of runtime linking due to how it’s easier to conceal runtime behavior using this version.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
-
-    &lt;p&gt;Static analysis is the first step in analyzing any executable, and you should do it. It can provide clues that will pave the way for productive dynamic analysis.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Ascii strings use 1 byte per char; Unicode strings use two per char.&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Packed and otherwise obfuscated code will usually include library functions “GetProcAddress” and “LoadLibrary” as those two are typically used to decrypt/deobfuscate other functions. &lt;strong&gt;These two functions can be used to access any function in any library on the system.&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Linking is used to connect code in libraries to an executable. There are three kinds of linking:
-    &lt;ul&gt;
-      &lt;li&gt;&lt;em&gt;Static:&lt;/em&gt; the library code is copied ver batim into the executable. Common in malware due to how it can be obfuscated; rare in goodware as there’s little purpose to do it other than to hide meaning of a program.&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Runtime:&lt;/em&gt; Library code is searched for only when needed within a program, as opposed to at the beginning of execution of a program (see dynamic linking). It’s popular with malware writers as the imports can be concealed at the beginning of the program’s execution and revealed at some point in the runtie of the program, making static analysis harder.&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Dynamic:&lt;/em&gt; The host OS searches for necessary libraries only when the program is loaded. When executing library code, the code executed is within the library’s space (i.e. it’s not copied somewhere and executed there).&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Appendix A contains lots of DLLs of high interest to malware analysts.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;a-little-about-the-pe-file-format&quot;&gt;A little about the PE file format&lt;/h4&gt;
-
-&lt;p&gt;Consists of a header followed by a series of sections:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;.text&lt;/strong&gt;: Contains instructions that the CPU executes&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;.rdata&lt;/strong&gt;: typically contains import and export information, which is the same info available from Dependency Walker (a tool) and PEViEW (a slightly out of date tool).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;.data&lt;/strong&gt;: Contains program’s global data, accessable from anywhere in the program.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;.rsrc&lt;/strong&gt;: includes resources used by the executable that are not ocnsidered part of the executable (such as icons, images, menus, and strings). Strings are usually (but not necessarily) stored here for multilanguage support.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;These section names are convention; Windows doesn’t require them to be labeled as above. It determines what section is what based on info in the PE header.&lt;/p&gt;
-
-&lt;h2 id=&quot;tools-discussed-in-this-section&quot;&gt;Tools discussed in this section&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;http://dependencywalker.com/&quot;&gt;Dependency Walker&lt;/a&gt; is a free utility that scans Windows executables and builds a hierarchical tree diagram of all dependent modules. 
-P16 discusses a bit about how to use it.&lt;/p&gt;
-
-&lt;p&gt;PeID: support was discontinued in 2011, but it is still helpful for detecting packed files.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://wjradburn.com/software/&quot;&gt;PEview&lt;/a&gt;: used to view executable file metadata (i.e. information in the headers of an executable).&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://angusj.com/&quot;&gt;Resource Hacker&lt;/a&gt;: browses the .rsrc section of an executable. P25 discusses usage of this tool. It also enables one to extract embedded files from within executable files.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://www.smidgeonsoft.prohosting.com/pebrowse-pro-file-viewer.html&quot;&gt;PEBrowse Professional&lt;/a&gt; is similar to PEview and allows you to look at the bytes from each section. It does a good job of presenting info from the resource (.rsrc) section.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://heaventools.com/&quot;&gt;PE Explorer&lt;/a&gt; has a rich GUI that allows one to navigate through the various parts of a PE file. It permits editing files, too. RIP if you don’t have money to pay for it, though.&lt;/p&gt;
-
-&lt;h2 id=&quot;questions-encountered-and-answers-if-found&quot;&gt;Questions encountered (and answers, if found)&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;Ascii  representation of “BAD”:&lt;/em&gt;
-0x42 0x41 0x44 0x00&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Unicode representation of “BAD”:&lt;/em&gt;
-0x42 0x00 0x41 0x00 0x44 0x00 0x00 0x00&lt;/p&gt;
-
-&lt;p&gt;What are the extra null terminators after each character typically used for?&lt;/p&gt;
-
-&lt;h6 id=&quot;la-ur-18-27643&quot;&gt;LA-UR-18-27643&lt;/h6&gt;</content><author><name></name></author><summary type="html">As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry></feed>
