@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-25T16:55:06-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.7 labs: Playing with Windows-specific malware</title><link href="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html" rel="alternate" type="text/html" title="PMA Ch.7 labs: Playing with Windows-specific malware" /><published>2018-09-12T14:31:00-06:00</published><updated>2018-09-12T14:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/12/PMA_ch7_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-25T17:11:58-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.7 labs: Playing with Windows-specific malware</title><link href="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html" rel="alternate" type="text/html" title="PMA Ch.7 labs: Playing with Windows-specific malware" /><published>2018-09-12T14:31:00-06:00</published><updated>2018-09-12T14:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/12/PMA_ch7_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
@@ -153,8 +153,6 @@ If WaitForSingleObject returns 0 (i.e. it has received a signal that it’s done
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;How does this program acheive persistence?&lt;/p&gt;
-
-    &lt;p&gt;Answer here&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;What’s the purpose of this program?&lt;/p&gt;
