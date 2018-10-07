@@ -1,0 +1,179 @@
+<h2 id="lab-summary-questions">Lab summary questions</h2>
+<ol>
+  <li>
+    <p>Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</p>
+
+    <p>Very important. Applying the dynamic analysis processes described in this chapter and becoming used to the tools discussed within is going to be helpful experience for when it comes to analyze just about any other piece of malware.</p>
+  </li>
+  <li>
+    <p>What did doing the lab exercises teach that was not gained from reading the chapter?</p>
+
+    <p>In this case, it was mainly just practice using the tools.</p>
+  </li>
+</ol>
+
+<h2 id="challenges-encountered-in-the-labs">Challenges encountered in the labs</h2>
+
+<ul>
+  <li>Using ProcMon to find imports wasn’t done <em>quite</em> how the book indicated it would be done– I didn’t have a way to launch “depends.exe” in the options generated from right clicking the malicious process. After consulting a <a href="https://support.microsoft.com/en-us/help/970920/using-process-explorer-to-list-dlls-running-under-the-outlook-exe-proc">post from Microsoft on how to view imports using ProcMon</a>, it was made clear that all I needed to do was go to view -&gt; click show lower pane, and then imports could be viewed in the lower pane for whatever process I had selected.</li>
+</ul>
+
+<h2 id="lab-walkthrough-includes-answers">Lab Walkthrough (includes answers!)</h2>
+
+<h3 id="31">3.1</h3>
+<p>Analyze the malware found in the file <em>Lab03-01.exe</em> using basic dynamic analysis tools.</p>
+
+<ol>
+  <li>
+    <p>What are this malware’s imports and strings?</p>
+
+    <p>Imports:</p>
+
+    <p><img src="/files/ch3_sc2/3.1.1imports.PNG" alt="3.1.1imports" title="imports" /></p>
+
+    <p>Strings:</p>
+
+    <p><img src="/files/ch3_sc2/3.1.1strings.PNG" alt="3.1.1strings" title="strings" /></p>
+
+    <p>Note that ProcExp found that the strings on the image as well as on disk were identical.</p>
+  </li>
+  <li>
+    <p>What are the malware’s host-based indicators?</p>
+
+    <p>It doesn’t create any files. It doesn’t seem to modify keys (for, say, persistence). I don’t see any evident host based indicators.</p>
+
+    <p><strong>This seems weird.</strong> The file crashes. At first I thought that was part of the operation of the file, but with no strange seeming imports and relatively normal strings and no indicators, the file seemed especially well-behaved. After looking into what the “error” message I recieved meant, I now know that the file doesn’t run well on a 64-bit Windows 7 VM.</p>
+
+    <p><img src="/files/ch3_sc2/3.1.2fail1.PNG" alt="fail1" title="64-bit Windows 7 runtime error" /></p>
+
+    <p>And after reading up a little on <a href="https://superuser.com/questions/610495/the-application-was-unable-to-start-correctly-0xc0000018-windows-8-x64">what this cryptic error might have meant</a>, and after trying the top answer in the question to no avail, I decided I needed to try it in a 32 bit environment.</p>
+
+    <p>So, I spun up a 32-bit windows VM real quick and ran it again…:</p>
+
+    <p><img src="/files/ch3_sc2/3.1.2fail2.PNG" alt="fail2" title="32-bit Windows 7 runtime error" /></p>
+
+    <p>Ugh. That’s probably not normal either. So, I looked into what <a href="https://jmprsp.wordpress.com/2016/01/28/practical-malware-analysis-basic-dynamic-techniques-lab-3-01/">someone else did</a> and discovered an explanation that seemed to hint towards how this particular sample was built to leverage a Windows XP-specific function– one that was changed in Windows 7.</p>
+
+    <p>No wonder this sample seemed well-behaved on the 64-bit version of Windows 7– it doesn’t do anything. Unfortunately, I don’t currently have access to a Windows XP .iso, so I’m going to have to put this problem on the backburner. In any case, after reading the answers and what jmprsp did, I’m thinking it wouldn’t have been too difficult to identify this malware’s pesky behavior in an environment in which the malware would actually properly run.</p>
+  </li>
+  <li>
+    <p>Are there any useful network-based signatures for this malware? If so, what are they?</p>
+
+    <p>Strings shows the presence of <code class="highlighter-rouge">www.practicalmalwareanalysis.com</code> but due to previously described problems, a true analysis of this sample could not be completed.</p>
+  </li>
+</ol>
+
+<h3 id="32">3.2</h3>
+
+<ol>
+  <li>
+    <p>How can you get this malware to install itself?</p>
+
+    <p>After strictly reading this question, the first thing that comes to mind is we need to use rundll32.exe to run this file, but we need to know what DLL functions should be ran. If we use Ida to check out the exports, we find there exist a few:</p>
+
+    <p><img src="/files/ch3_sc2/3.2.1dllexports.PNG" alt="3.2.1dllexports" />)</p>
+
+    <p><code class="highlighter-rouge">Install</code> and <code class="highlighter-rouge">installA</code> look promising. Let’s try running <code class="highlighter-rouge">Install</code> with rundll32.exe and see what happens.</p>
+
+    <p>First, I start up Procmon and…</p>
+
+    <p><code class="highlighter-rouge">rundll32.exe Lab03-02.dll, Install</code></p>
+
+    <p><img src="/files/ch3_sc2/3.2.2fail.PNG" alt="3.2.2fail.PNG" /></p>
+
+    <p>UGH. WHY.</p>
+
+    <p>It doesn’t work on 32 bit versions of Windows 7 either, even when ran as an administrator. It looks like this is another piece of Windows XP-specific malware. Unfortunately, I cannot continue with this sample either. Review <a href="https://jmprsp.wordpress.com/2016/01/31/practical-malware-analysis-basic-dynamic-techniques-lab-3-02/">jmprsp’s work here</a> and move on.</p>
+
+    <p>We will return to this problem as soon as I hit chapter 5 (i.e. the Ida chapter), and identify the exact problem behind why it won’t run. Maybe it’s something that can be fixed.</p>
+  </li>
+  <li>
+    <p>How would you get this malware to run after installation?</p>
+  </li>
+  <li>
+    <p>How can you find the process under which this malware is running?</p>
+  </li>
+  <li>
+    <p>Which filters could you set in order to use procmon to glean information?</p>
+  </li>
+  <li>
+    <p>What are the malware’s host-based indicators?</p>
+  </li>
+  <li>
+    <p>Are there any useful network-based signatures for this malware?</p>
+  </li>
+</ol>
+
+<h4 id="realizations-made-after-reading-the-book-answers">Realizations made after reading the book answers:</h4>
+
+<ul>
+  <li>here</li>
+</ul>
+
+<h3 id="33">3.3</h3>
+
+<ol>
+  <li>
+    <p>What do you notice when monitoring this malware with Process Explorer?</p>
+
+    <p>I notice that I get yet another Windows error. This time, it’s 0xc0000142. Frustrating.</p>
+
+    <p><img src="/files/ch3_sc2/3.3.1svchostfail.PNG" alt="3.3.1svchostfail.PNG" /></p>
+
+    <p>Although, the failure is coming from svchost.exe – NOT Lab03-03.exe. After running it again, I noticed that Lab03-03.exe appears to spawn this svchost.exe and then exits, which leaves svchost.exe a zombie process. I’m not sure what that svchost.exe is trying to do yet. We know it’s failing with error 0xc0000142, and if we look into <a href="https://answers.microsoft.com/en-us/windows/forum/windows_10-performance-winpc/error-0xc0000142/3da27a75-178c-4de5-b43c-c538e6005540">what causes this error</a> we find that it has something to do with system files not existing, which is indicative of another Windows XP vs 7 problem.</p>
+
+    <p>In either case, however, running the program in a 32 bit environment yielded a different error than when in a 64 bit environment. Upon viewing the procmon logs on the 32-bit version, it looks like svchost, before crashing, successfully completes a <em>lot</em> of registry querying.</p>
+
+    <p>Further, if we look at HOW svchost.exe is called, we notice it’s not called in any special way:</p>
+
+    <p><img src="/files/ch3_sc2/3.3.2svchostcall.PNG" alt="3.3.2svchostcall.PNG" /></p>
+
+    <p>Yet, it appears to be querying the entire registry. I don’t think this is svchost.exe’s main function. This smells like process injection, which could be what ends up causing the Windows error when this malware arrives at the functionality that is supposed to come after the registry querying. Further, process injection often works only for specific builds of Windows (i.e. injecting a process in Windows 7 may not work the same way as injecting a process in Windows XP). I think that’s why we receive a runtime error when runnign this in Windows 7.</p>
+  </li>
+  <li>
+    <p>Can you identify any live memory modifications?</p>
+
+    <p>If svchost didn’t unexpectedly crash, I would view the process properties from within procexp and compare the strings in the image to the strings on disk, and, as is confirmed by <a href="https://jmprsp.wordpress.com/2016/01/31/practical-malware-analysis-basic-dynamic-techniques-lab-3-03/">jmprsp in his post on ch3 lab3</a>, we would find that they are indeed very different, which demonstrates process injection as well.</p>
+  </li>
+  <li>
+    <p>What are the malware’s host-based indicators?</p>
+
+    <p>This question would be easier to answer if the program ran correctly.</p>
+  </li>
+  <li>
+    <p>What is the purpose of this program?</p>
+  </li>
+</ol>
+
+<h3 id="34">3.4</h3>
+
+<ol>
+  <li>
+    <p>What happens when you run this file?</p>
+
+    <p>Running the file results in the file’s deleting itself!  (FINALLY, MALWARE THAT RUNS PROPERLY IN A WINDOWS 7 ENVIRONMENT WOOOO).</p>
+
+    <p><img src="/files/ch3_sc2/3.4.1proctree.PNG" alt="3.4.1proctree.PNG" /></p>
+
+    <p>The process tree provided by ProcMon (view -&gt; process tree) shows that cmd is spawned by Lab03-04.exe with a delete command for the initial binary. It doesn’t appear to do much more, despite the fact that there is lots of potential functionality, judging from the imported functions.</p>
+  </li>
+  <li>
+    <p>What is causing the roadblock in dynamic analysis?</p>
+
+    <p>If we look at the code using Ida, we see that it calls main passing in command line arguments…</p>
+
+    <p><img src="/files/ch3_sc2/3.4.1callmain.PNG" alt="3.4.1callmain.PNG" /></p>
+
+    <p>and that something happens if there is only one argument passed to the program (i.e. if no command line arguments are passed in).</p>
+
+    <p><img src="/files/ch3_sc2/3.4.2main.PNG" alt="3.4.2main.PNG" /></p>
+
+    <p>Perhaps this is the issue.</p>
+  </li>
+  <li>
+    <p>Are there other ways to run this program?</p>
+
+    <p>If we running the program on the command line (i.e. cmd.exe) we can easily pass in more arguments. However, without doing a deeper dive into what sorts of arguments it may require/need, we can’t further process what this program does. I suspect we’ll return to this program shortly after the Ida chapter.</p>
+  </li>
+</ol>
+

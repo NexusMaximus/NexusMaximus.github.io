@@ -1,0 +1,206 @@
+<h2 id="lab-summary-questions">Lab summary questions</h2>
+<ol>
+  <li>
+    <p>Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</p>
+
+    <p>This lab may prove to be less challenging for those already aquainted with C programming, but it was still very helpful because of the way it starts off very easy and builds up. I’d argue that this lab was the most fun one I’ve done so far.</p>
+  </li>
+  <li>
+    <p>What did doing the lab exercises teach that was not gained from reading the chapter?</p>
+
+    <p>This lab helps fortify the necessity of paying attention to details, and knowing <em>exactly</em> what the functionality of MSDN functions are.</p>
+  </li>
+</ol>
+
+<h2 id="challenges-encountered-in-the-labs">Challenges encountered in the labs</h2>
+
+<p>I didn’t encounter too many challenges in this lab, but I believe that was due to my knowledge of C programming. It <strong>significantly</strong> sped up how fast I was able to gather the semantic meaning of the program because I didn’t need to look up nearly as many functions or parameters as I otherwise would have.</p>
+
+<h2 id="lab-walkthrough-includes-answers">Lab Walkthrough (includes answers!)</h2>
+
+<h3 id="61">6.1</h3>
+
+<ol>
+  <li>
+    <p>What is the major code construct found in the only subroutine called by <code class="highlighter-rouge">main</code>?</p>
+
+    <p><img src="/files/ch6sc/1_6.1.PNG" alt="1_6.1.PNG" /></p>
+
+    <p>It’s an ‘if’ condition checking whether or not we’re connected to the internet.</p>
+  </li>
+  <li>
+    <p>What is the subroutine located at <code class="highlighter-rouge">0x40105F</code>?</p>
+
+    <p><code class="highlighter-rouge">sub_40105F</code> is called if the code finds there is an internet connection. The first function call in this _stbuf(), which <a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/838011e2-7404-4922-989e-3ceacd6e3127/how-about-the-function-stbufstdout-woks-?forum=vclanguage">appears to be called in preparation for sending content to stdout</a>. This is enough for me to believe that this function is simply a print function.</p>
+  </li>
+  <li>
+    <p>What is the purpose of this program?</p>
+
+    <p>The purpose of this program is to print whether or not an internet connection can be made.</p>
+  </li>
+</ol>
+
+<h3 id="62">6.2</h3>
+
+<ol>
+  <li>
+    <p>What operation does the first subroutine called by <code class="highlighter-rouge">main</code> perform?</p>
+
+    <p>The first subroutine called by main is <code class="highlighter-rouge">sub_401000</code>, which appears to be the exact same subroutine we analyzed in the problem above (i.e. the one that checks to see if we have an internet connection).</p>
+  </li>
+  <li>
+    <p>What is the subroutine located at <code class="highlighter-rouge">0x40117F</code>?</p>
+
+    <p>This is printf (same answer to 6.1.2).</p>
+  </li>
+  <li>
+    <p>What does the second subroutine called by <code class="highlighter-rouge">main</code> do?</p>
+
+    <p><code class="highlighter-rouge">sub_401040</code>, the second subroutine, phones home looking to get a command, presumably to execute on the infected machine.</p>
+
+    <p>The function opens a handle to an internet resource (in this case practicalmalwareanalysis.com/cc.htm), and then, if that succeeds, heads to loc_40109d to read 0x200 bytes into a buffer using the InternetReadFile function.</p>
+
+    <p><img src="/files/ch6sc/6_6.2.PNG" alt="6_6.2.PNG" /></p>
+
+    <p>We see here that it moves in the dereferenced pointer to the buffer into ecx (i.e. the first character of the buffer), and then compares it to ascii 60. Ascii 60 corresponds to the “&lt;” character, which is the first character of an HTML tag. Immediately after that, it compares to ascii 33, which is the “!” character. Then, it looks for 0x2d or 45 in decimal, which is a “-“ character. It does this twice. If at any time it detects characters that are not these, in this order, it breaks to loc_40111D, which yields an error.</p>
+
+    <p>So it’s looking for the string “&lt;!–”. This is how a comment in an HTML document is started. We can conclude it’s looking for an HTML comment.</p>
+  </li>
+  <li>
+    <p>What type of code construct is used in this subroutine?</p>
+
+    <p><img src="/files/ch6sc/2_6.2.PNG" alt="2_6.2.PNG" /></p>
+
+    <p>This looks like a switch nested within an if-statement.</p>
+
+    <p>Note from after reading the book: the answer they were looking for was an array. There is an array at work here as well, as one can tell from the above screenshot. Bytes of data one byte apart from each other, and referenced in terms of ebp, are sequentially compared, which is indicative of an array.</p>
+  </li>
+  <li>
+    <p>Are there any network-based indicators for this program?</p>
+
+    <p>Absolutely. We see that this block of data gets pushed as a parameter to InternetOpenUrlA:</p>
+
+    <p><img src="/files/ch6sc/3_6.2.PNG" alt="3_6.2.PNG" /></p>
+
+    <p>And we can see what the rest of the data is by clicking szUrl.</p>
+
+    <p><img src="/files/ch6sc/4_6.2.PNG" alt="4_6.2.PNG" /></p>
+
+    <p><code class="highlighter-rouge">http://www.practicalmalwareanalysis.com/cc.htm</code> is what the network fellas should look for.</p>
+
+    <p>The book also mentions that we can look for the user agent that this program uses, which makes sense.</p>
+  </li>
+  <li>
+    <p>What is the purpose of this malware?</p>
+
+    <p>The purpose of this malware is to phone home and get commands to execute on the infected machine.</p>
+
+    <p>If the code passes the HTML comment check, then it moves the character immediately proceeding the comment into al (which is eax’s lowest 8 bits) and returns. Then, that single character is moved into the pointer pointing to the memory address contained within ebp+var_8. This character is then pushed to be in a function that prints a single character immediately before a command, which is indicative that there are a predefined set of commands, each corresponding to a single character, that this malware can run. The purpose of the malware is to get a single character command and do something with it.</p>
+  </li>
+</ol>
+
+<h3 id="63">6.3</h3>
+
+<ol>
+  <li>
+    <p>Compare the calls in <code class="highlighter-rouge">main</code> to Lab 6.2’s <code class="highlighter-rouge">main</code> method. What is the new funtion called from <code class="highlighter-rouge">main</code>?</p>
+
+    <p><img src="/files/ch6sc/5_6.3.PNG" alt="5_6.3.PNG" /></p>
+
+    <p>The new function appears to be shortly after the parsing actions. I presume this function will execute the command received and parsed from the internet.</p>
+  </li>
+  <li>
+    <p>What parameters does this new function take?</p>
+
+    <p>Function sub_401130 takes two arguments:</p>
+
+    <ul>
+      <li>
+        <p>LpExistingfileName, which is, <em>I believe</em>, the name of itself. The <code class="highlighter-rouge">argv</code> pointer is equivalent to <code class="highlighter-rouge">argv[0]</code>, and <code class="highlighter-rouge">argv[0]</code> is conventionally the name of the program being executed.</p>
+      </li>
+      <li>
+        <p>a magic character. From analysis of 6.2, we are highly confident that this particular character corresponds to a command to execute.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>What major code construct does this function contain?</p>
+
+    <p>Ida has identified a switch. BEAUTIFUL.</p>
+
+    <p><img src="/files/ch6sc/7_6.3switch.PNG" alt="7_6.3switch.PNG" /></p>
+  </li>
+  <li>
+    <p>What can this function do?</p>
+
+    <p>The function puts the character into ecx and subtracts 97. 97 corresponds to ascii ‘a’. It then jumps to a default case if the resulting number is above 4 (i.e. if the character command was not a, b, c, d, or e).</p>
+
+    <p><img src="/files/ch6sc/8_6.3.PNG" alt="8_6.3.PNG" /></p>
+
+    <p>We see now why it subtracted 97– the resulting number is used as an index in a 5-case jump table.</p>
+
+    <p>The cases are:</p>
+    <ol start="0">
+ <li> Create directory <code class="highlighter-rouge">C:\\Temp</code></li>
+ <li> Copy itself into directory <code class="highlighter-rouge">C:\\Temp</code>, renaming itself <code class="highlighter-rouge">cc.exe</code> (but if the file exists it will not overwrite the existing file)</li>
+ <li> Delete file <code class="highlighter-rouge">C:\\Temp\\cc.exe</code></li>
+ <li> Modify the <code class="highlighter-rouge">Software\\Microsoft\\Windows\\CurrentVersion\\Run</code> registry key. It adds a new service <code class="highlighter-rouge">malware</code> and sets it to execute <code class="highlighter-rouge">C:\\Temp\\cc.exe</code>. This establishes persistence on the infected machine. </li>
+ <li> Sleep for 100000. The sleep function accepts an integer that represents milliseconds, so it sleeps for 100000/1000 = 100 seconds. </li>
+ <li> (Default case) Print an error message that says it's not a valid command. </li></ol>
+  </li>
+  <li>
+    <p>Are there any host-based indicators for this malware?</p>
+
+    <p>Most definitely.</p>
+    <ul>
+      <li>From case 1 above: if <code class="highlighter-rouge">C:\Temp</code> exists, you may be infected.</li>
+      <li>From case 2 above: if <code class="highlighter-rouge">C:\Temp\cc.exe</code> exists, you are almost surely infected.</li>
+      <li>From case 3 above: if the registry has added <code class="highlighter-rouge">Malware</code> as a service that executes <code class="highlighter-rouge">C:\Temp\cc.exe</code>, you’re certainly infected.</li>
+    </ul>
+  </li>
+  <li>
+    <p>What is the purpose of this malware?</p>
+
+    <p>The purpose of this malware is to copy itself into a folder and establish persistence, depending on commands it receives from the internet. If the internet cannot be reached, it terminates. My guess is switch case 4 will be a cooler evil payload in 6.4.</p>
+  </li>
+</ol>
+
+<h3 id="64">6.4</h3>
+
+<ol>
+  <li>
+    <p>What’s the difference between the calls made from the <code class="highlighter-rouge">main</code> method in Labs 6-3 and 6-4?</p>
+
+    <p>They are at different addresses, I believe. I’m not going to put too much time into comparing the two, because being able to compare things is a skill I already have.</p>
+  </li>
+  <li>
+    <p>What new code construct has been added to <code class="highlighter-rouge">main</code>?</p>
+
+    <p>Ah, now we have the same functionality wrapped in a loop. It will wait 60 seconds every iteration, and execute 1440 times (presuming it’s connected to the internet).</p>
+  </li>
+  <li>
+    <p>What’s the difference between this lab’s parse HTML function and those of the previous labs?</p>
+
+    <p>Different user agent?</p>
+
+    <p>After reading book: Ah yes, it builds a separate user agent using <code class="highlighter-rouge">sprintf</code>.</p>
+
+    <p><img src="/files/ch6sc/9_6.4.PNG" alt="9_6.4.PNG" /></p>
+  </li>
+  <li>
+    <p>How long will this program run? (Assume it’s connected to the internet.)</p>
+
+    <p>It runs 1440 times * 60 seconds. That’s 1440 minutes, which is 24 hours.</p>
+  </li>
+  <li>
+    <p>Are there any new network-based indicators for this malware?</p>
+
+    <p>A different user agent that’ll follow the format of <code class="highlighter-rouge">Internet Explorer 7.50/pma%d</code>, where the number substituted for %d is the iteration number that the malware is on. This can be used as input to the command &amp; control server to serve a HTML file with a different command depending on what iteration the malware is on.</p>
+  </li>
+  <li>
+    <p>What’s the purpose of this malware?</p>
+
+    <p>The same as previous samples, but upgraded grab MULTIPLE commands from the command and control server back home.</p>
+  </li>
+</ol>
+

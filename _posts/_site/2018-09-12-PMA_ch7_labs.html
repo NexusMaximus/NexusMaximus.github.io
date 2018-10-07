@@ -1,0 +1,293 @@
+<h2 id="lab-summary-questions">Lab summary questions</h2>
+<ol>
+  <li>
+    <p>Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</p>
+  </li>
+  <li>
+    <p>What did doing the lab exercises teach that was not gained from reading the chapter?</p>
+  </li>
+</ol>
+
+<h2 id="challenges-encountered-in-the-labs">Challenges encountered in the labs</h2>
+
+<h2 id="lab-walkthrough-includes-answers">Lab Walkthrough (includes answers!)</h2>
+
+<h3 id="71">7.1</h3>
+<p>Analyze the malware found in file <em>Lab07-01.exe</em>.</p>
+
+<p>Questions to answer as we go on:</p>
+
+<ol>
+  <li>
+    <p>How does this program acheive persistence?</p>
+
+    <p>By installing a service known as <code class="highlighter-rouge">MalService</code> that runs a malicious function.</p>
+  </li>
+  <li>
+    <p>Why does this program use a mutex?</p>
+
+    <p>It runs a mutex to see if a thread needs to be created or not. If the function obtains the mutex, then the program quits. Otherwise, the program attempts to create the mutex and proceeds to attempt to spin up a malicious thread. (This seems counter-intuitive at this point… see the post-answer-reading section below for a more detailed explanation of this.)</p>
+  </li>
+  <li>
+    <p>What’s a good host-based signature for detecting this malware?</p>
+
+    <ul>
+      <li>Having a service named <code class="highlighter-rouge">Malservice</code> on the system.</li>
+      <li>Identifcation of a mutex called <code class="highlighter-rouge">HGL345</code>.</li>
+    </ul>
+  </li>
+  <li>
+    <p>What’s a good network-based signature for detecting this malware?</p>
+
+    <ul>
+      <li>User agent of just the string <code class="highlighter-rouge">Internet Explorer 8.0</code>
+        <ul>
+          <li>Connection under that user agent to <code class="highlighter-rouge">http://malwareanalysisbook.com/</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>What’s the purpose of this program?</p>
+
+    <p>It looks like this program will attempt to connect to a specific website at a certain time. I believe it’s a program that will turn infected computers into elements of a botnet, which will attack a site at a unified time.</p>
+  </li>
+  <li>
+    <p>When will this program finish executing?</p>
+
+    <p>At some time very close to the turn of the 22nd century.</p>
+  </li>
+</ol>
+
+<p>First, let’s review and apply static analysis techniques and dynamic analysis techniques from chapters 1-3 before doing too much with Ida.</p>
+
+<h4 id="cffexplorer">CFFExplorer</h4>
+
+<p>The malware loads three DLLs: <code class="highlighter-rouge">ADVAPI32.dll</code>, <code class="highlighter-rouge">WININET.dll</code>, and <code class="highlighter-rouge">KERNEL32.dll</code>.</p>
+<ul>
+  <li>
+    <p>From ADVAPI.dll: we have CreateServiceA, OpenSCManagerA, and StartServiceCtrlDispatcherA. The book previously described CreateService and OpenSCManager (see ch7 notes in a previous blog post), but I don’t recall seeing the start service function. Luckily, the book again proves its usefulness with Appendix A– the function is used by a service to connect to the main thread of the process to the service control manager. 
+<em>Any process that runs as a service must call this function within 30 seconds of startup. Locating this function in malware tells you that the function should be ran as a service.</em> (This is insightful for question 1.)</p>
+  </li>
+  <li>
+    <p>From WININET.dll: we have <code class="highlighter-rouge">InternetOpenUrlA</code> and <code class="highlighter-rouge">InternetOpenA</code>. We know from the book that these functions are used to establish a connection with a specific internet location and to initialize high-level Internet access functions from WinINet. Conveniently for us, InternetOpen requires a user agent parameter, and InternetOpenUrl requires a URL (imagine that). These is insightful for question 4, as each of these could act as network-based signatures if they’re consistent.</p>
+  </li>
+  <li>
+    <p>From KERNEL32.dll: There are lots of functions being imported, but the ones that come to mind as notable are:</p>
+    <ul>
+      <li><code class="highlighter-rouge">CreateMutexA</code> and <code class="highlighter-rouge">OpenMutexA</code> as this will require a mutex name, which could act as a host-based signature. I predict the code around this function call will provide the answer to question 2.</li>
+      <li><code class="highlighter-rouge">CreateThread</code>, as creating threads for various reasons was discussed in depth in the notes for this chapter.</li>
+      <li><code class="highlighter-rouge">GetCurrentProcess</code>. This will permit the malware to do things with itself.</li>
+      <li><code class="highlighter-rouge">GetCommandLineA</code> tells the process how it was called. This could be used to determine if it’s called as a service or if it’s called to install.</li>
+      <li><code class="highlighter-rouge">WriteFile</code> saves data into a file! Files are always great host-based indicators.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>There may be more note-worthy functions used, but none of the others jumped out at me as areas that should be further explored at this moment in time.</p>
+
+<h4 id="resource-hacker">Resource Hacker</h4>
+<p>ResourceHacker found no resources in this file.</p>
+
+<h4 id="stringsexe">Strings.exe</h4>
+<p>In addition to all the imports, strings.exe highlights two notable strings: <code class="highlighter-rouge">http://www.malwareanalysisbook.com</code> and <code class="highlighter-rouge">Internet Explorer 8.0</code>, which I expect to see utilized as the C&amp;C server and the user agent respectively.</p>
+
+<h4 id="ida-demo">Ida Demo</h4>
+
+<p>The first thing we see when opening this file in Ida is how it establishes persistence.</p>
+
+<p><img src="/files/ch7sc/01_1main.PNG" alt="01_1main.PNG" /></p>
+
+<p>We see that the name of the service is pushed (<code class="highlighter-rouge">MalService</code>) and then a function pointer is pushed. This mimics the structure expected as a parameter to the function, according to MSDN. As such, we can conclude that <code class="highlighter-rouge">sub_401040</code> is what will be called as a service from here on out, which acheives persistence and answers question 1.</p>
+
+<p>Looking at the function passed to the call above….</p>
+
+<p><img src="/files/ch7sc/02_sub401040.PNG" alt="02_sub401040" /></p>
+
+<p>A mutex <code class="highlighter-rouge">HGL345</code> is attempted to be opened (with all access rights– that’s what the constant 0x1F0001 does) first thing. If the call returns 0 (i.e. NULL), that means the function failed to obtain the mutex, perhaps because it doesn’t exist or because it’s in use. If the call does NOT fail, then the program exits, which is sort of strange. 
+Otherwise, the program proceeds to create the mutex. (Note that if the mutex exists, CreateMutex simply returns a handle to the mutex).</p>
+
+<p>It makes a service as it has concluded a service doesn’t exist for itself.</p>
+
+<p>It waits for some time. Not sure what “FileTime” is at this point, but it seems to wait, perhaps for a specific
+date, say, of a planned out DDoS.</p>
+
+<p>If WaitForSingleObject returns nonzero, the program proceeds to go into an infinite (i.e. INT_MAX) millisecond wait loop. 
+If WaitForSingleObject returns 0 (i.e. it has received a signal that it’s done waiting), a thread is created in which more malicious code is called– Ida calls it <code class="highlighter-rouge">StartAddress</code>. What does this do?</p>
+
+<p><img src="/files/ch7sc/03_startAddress.PNG" alt="03_startAddress" /></p>
+
+<p>It appears to just establish a connection with a domain. Considering the fact that it looks like the previous code waits to create a thread until a specific time, and combined with a little cybersecurity intuition, I believe there’s enough evidence to suggest this program’s purpose is to DDoS a computer at a hardcoded time.</p>
+
+<p>When? I’m not sure of specifics, but the date pushed to CreateWaitableTimerA includes the year 2100 and the rest of the parameters are 0, which makes me think somehwere around the turn of the century. More in-depth analysis may help me figure this out specifically, but I believe it would be more beneficial to read the answers to this and move on to the next sample of malware.</p>
+
+<h4 id="realizations-made-after-reading-the-book-answers">Realizations made after reading the book answers:</h4>
+
+<p>The first thing I looked up was an explanation behind the wonky-seeming mutex business. It goes like this:</p>
+
+<ol>
+  <li>If the initial mutex call <code class="highlighter-rouge">OpenMutex</code> succeeds, then the program exits. Otherwise, it continues.</li>
+  <li>If the program continues, the first thing it does is it attempts to create the mutex. The book says that if a copy of the malware was already running, then the first call to <em>OpenMutex</em> would have succeeded.</li>
+</ol>
+
+<p>I get it now. The program runs forever, so it creates a mutex <em>but does not obtain access to it.</em> This is an indicator to all future instances of the program that it’s already running. Nothing else will obtain this mutex (or if it is obtained, it’ll be released very soon as the program will obtain it and then exit, which will, I presume, free the mutex). The mutex will simply act as a gatekeeper of sorts.</p>
+
+<p>But what if the computer restarts? Will the mutex persist? If it will, then, since the function called by the service manager contains the initial mutex check, the service should theoretically end. Is this a bug, or is it author-written protection for newbie malware analysts, or am I just not understanding something? Hmmmm…..</p>
+
+<p>The answer to this question is answered <a href="https://blogs.msdn.microsoft.com/oldnewthing/20100903-00/?p=12953">here</a>. From what I can conclude, mutexes will not persist after handles to them are closed, so if the computer restarts, the service will recreate the mutex and go on its merry malicious way.</p>
+
+<p>Anyway. Moving on:</p>
+
+<p><img src="/files/ch7sc/04_20threads.PNG" alt="04_20threads" /></p>
+
+<p>One thing I did not pay close attention to was how the threads were created. I see now that it moves 20 into <code class="highlighter-rouge">esi</code> and then calls CreateThread until <code class="highlighter-rouge">esi</code> is 0. I believe that, since the startAddress is passed to each thread, we will have 20 different instances of connection requests, per bot in the botnet.</p>
+
+<p>Furthermore, I see now that the program will not end, as in any case, push INT_MAX followed by a sleep occurs.</p>
+
+<p>Lastly, looking more carefully at <code class="highlighter-rouge">StartAddress</code> will help one see that the loop that attempts connections with <code class="highlighter-rouge">http://www.malwareanalysisbook.com</code> will unconditionally repeat, meaning we will have 20 * unlimited connection attempts, <em>per bot</em>.</p>
+
+<h3 id="72">7.2</h3>
+
+<p>Questions to keep in mind as we go on:</p>
+
+<ol>
+  <li>
+    <p>How does this program acheive persistence?</p>
+  </li>
+  <li>
+    <p>What’s the purpose of this program?</p>
+  </li>
+  <li>
+    <p>When will this program finish executing?</p>
+  </li>
+</ol>
+
+<p>This time, the first thing I did was open this program in Ida. Upon opening, we see this:</p>
+
+<p><img src="/files/ch7sc/05_OleInitialize.PNG" alt="05_OleInitialize.PNG" />;</p>
+
+<p>So, the COM library will be initialized, which hints that COM objects will be used. A few other functions will be used, and it’s worth looking them up to get the general idea of what they are used for before diving into the details.</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">CoCreateInstance</code>: Per <a href="https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cocreateinstance">MDSN docs</a>, this creats a single uninitialized object of the class associated with a specified CLSID.  It would be worth looking into what the passed-in CLSID is and see what that corresponds to. <strong>Note that the interface pointer created by the function is stored into var ppv</strong>.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">VariantInit</code>: This function creates a variant. I believe that a variant is simply a data structure that supports many different data types, according to <a href="https://docs.microsoft.com/en-us/windows/desktop/winauto/variant-structure">Microsoft</a>.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">SysAllocString</code>: Allocates a new string and copies the passed string into it. We should look into what is passed to this.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">SysFreeString</code>: Frees an alloc’d string.</p>
+  </li>
+</ul>
+
+<p>Let’s talk about what’s passed to CoCreateInstance. A CLSID is a 128 bit hex number. That’s 128 / 8 = 16 bytes.</p>
+
+<p><img src="/files/ch7sc/06_CLSID.PNG" alt="06_CLSID.PNG" /></p>
+
+<p>We have a four-part structure here: a DD (define double word), a DW (define word), another DW, and then 8 DB (Define bytes). DD’s are 4 bytes, DWs are 2 bytes, and DBs are 1 byte. The 6 dup (0) just means we have 6 duplicate bbytes of the data 0.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>dd</td>
+      <td>dw</td>
+      <td>dw</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+    </tr>
+    <tr>
+      <td>0002DF01</td>
+      <td>0000</td>
+      <td>0000</td>
+      <td>C0</td>
+      <td>00</td>
+      <td>00</td>
+      <td>00</td>
+      <td>00</td>
+      <td>00</td>
+      <td>00</td>
+      <td>46</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>So if we google this CLSID 0002DF01-0000-0000-C000-000000000046, we get a bunch of results that are basically meaningless. Instead, I just found the registry key that contains CLSIDs: <code class="highlighter-rouge">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID</code>. In here, all the CLSIDs are organized (thank goodness).</p>
+
+<p><img src="/files/ch7sc/07_IE.PNG" alt="07_IE.PNG" /></p>
+
+<p>So this CLSID corresponds to Internet Explorer.</p>
+
+<p>Now let’s talk about the RIID. The RIID is a reference to the identifier of the interface to be used to communicate with the object returned by CoCreateInstance. It has the same byte-age as the above CLSID in memory.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>dd</td>
+      <td>dw</td>
+      <td>dw</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+      <td>db</td>
+    </tr>
+    <tr>
+      <td>D30C1661</td>
+      <td>CDAF</td>
+      <td>11D0</td>
+      <td>8A</td>
+      <td>3E</td>
+      <td>00</td>
+      <td>C0</td>
+      <td>4F</td>
+      <td>C9</td>
+      <td>E2</td>
+      <td>6E</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>I threw the string D30C1661-CDAF-11D0-8A3E-00C04FC9E26E into Google and up pops a Microsoft <a href="https://docs.microsoft.com/en-us/dotnet/api/shdocvw.iwebbrowser2?view=dynamics-usd-3">page</a> that tells us this corresponds to the IWebBrowser2 interface.</p>
+
+<p>By now it’s quite evident that this program is interfacing with Internet Explorer. Further, it doesn’t appear there is any evident persistence mechanism at this time. We just need to figure out what exactly this program is doing and when it’ll finish executing.</p>
+
+<p>Moving on. Let’s direct attention to this chunk of code.</p>
+
+<p><img src="/files/ch7sc/08_magic.PNG" alt="08_magic" />.</p>
+
+<p>The most important thing to note from this part of the code is that the COM object itself is being used to make a special function call. At the time of the <code class="highlighter-rouge">call dword ptr [edx+2ch]</code>, the object is in edx (see how it was dereferenced from [eax] into edx earlier), and the offset 0x2c specifies a function offset from the beginning of the object. 
+Identifying what function that offset corresponds to is explained on page 156 of the book. It says to go to the structures subview and then hit <code class="highlighter-rouge">insert</code> and then click “add standard structure.” I was able to add the structure but I didn’t see a way to utilize this information to identify the function being called in the assembly. Perhaps this is an Ida pro specific feature.</p>
+
+<p>Either way, based on the fact that we are interfacing with Internet Explorer and we have a string that contains a URL, we can perhaps safely conclude that this program will end up having IE go to the website. Since the URL takes us to a page called “ad.html”, we can conclude this is probably adware. (Of course in the real world, we can’t validly make this assumption since anything could be called “ad.html,” but for purposes of this training, I think it’s acceptable in the interest of time.)</p>
+
+<p>The program ends immediately after performing these actions, which suggests persistence is not acheived and that it won’t run forever or anything like that. It’s a simple baby adware program.</p>
+
+<h3 id="73">7.3</h3>
+
+<p>I’m putting this sample on the backburner for now, as I need to move on and learn about some malware obfuscation techniques in lieu of finding a thesis project of some form. Check back later on.</p>
+
+<!--
+
+Alright, our first big boy malware sample! Apparently this malware was caught in the wild and domesticated for training purposes, so while it will no longer connect to a sketchy domain, it may still have dangerous implications unforeseen by the domesticators (i.e. Sikorski and Honig). Run it in a VM.
+
+1. How does this program acheive persistence to ensure it continues running when the machine is rebooted?
+
+2. What are two good host-based signatures?
+
+3. What is the purpose of this program?
+
+4. How could you remove this malware once it's installed?
+-->
+

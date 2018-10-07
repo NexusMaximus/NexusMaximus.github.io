@@ -14,7 +14,7 @@ I’ll be adding to it continuously over the next few days (probably weeks) as I
 
 <p><code class="highlighter-rouge"># One pound</code></p>
 
-<p>Question: Why does one pound result in smaller text than two? I don’t know yet.</p>
+<p>Question: Why does one pound result in smaller text than two?</p>
 
 <h2 id="two-pounds">Two pounds</h2>
 
@@ -92,6 +92,46 @@ or
 </ol>
 
 <p>Sadly, it seems that <a href="https://meta.stackexchange.com/questions/85474/how-to-write-nested-numbered-lists">markdown doesn’t support numbered sublists</a> (such as 1, 2, 2.1, 2.2, 3, etc).</p>
+
+<h2 id="tables">Tables</h2>
+
+<p>Credit to the real MVP <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Adam-P</a> for this sweet table example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+</code></pre></div></div>
+
+<p>Renders as:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tables</th>
+      <th style="text-align: center">Are</th>
+      <th style="text-align: right">Cool</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>col 3 is</td>
+      <td style="text-align: center">right-aligned</td>
+      <td style="text-align: right">$1600</td>
+    </tr>
+    <tr>
+      <td>col 2 is</td>
+      <td style="text-align: center">centered</td>
+      <td style="text-align: right">$12</td>
+    </tr>
+    <tr>
+      <td>zebra stripes</td>
+      <td style="text-align: center">are neat</td>
+      <td style="text-align: right">$1</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="markdown-comments">Markdown Comments</h2>
 
@@ -183,4 +223,6 @@ code stuff here
 <p><code class="highlighter-rouge">![sweet pic](/files/zz.jpeg "caption here")</code></p>
 
 <p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>
+
+<h6 id="la-ur-18-27643">LA-UR-18-27643</h6>
 
