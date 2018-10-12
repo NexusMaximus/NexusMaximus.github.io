@@ -1,4 +1,135 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-07T12:12:48-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch8 Notes: Debuggers</title><link href="http://localhost:4000/notes/2018/10/07/PMA_ch8_notes.html" rel="alternate" type="text/html" title="PMA Ch8 Notes: Debuggers" /><published>2018-10-07T12:02:00-06:00</published><updated>2018-10-07T12:02:00-06:00</updated><id>http://localhost:4000/notes/2018/10/07/PMA_ch8_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/10/07/PMA_ch8_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-12T16:16:55-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.9 Notes: OllyDbg</title><link href="http://localhost:4000/notes/2018/10/12/ch9_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.9 Notes: OllyDbg" /><published>2018-10-12T14:31:00-06:00</published><updated>2018-10-12T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/10/12/ch9_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/10/12/ch9_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
+
+    &lt;p&gt;This chapter covers how to use many features that OllyDbg provides.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
+
+    &lt;p&gt;For this chapter, it’s hard to choose three &lt;em&gt;most&lt;/em&gt; important takeaways, simply because all the information inside the chapter is helpful in some form of malware analysis scenario.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
+
+    &lt;p&gt;We should care about this chapter as it gives us the introducton to one of the most powerful and popular tools in the malware analyst’s toolbox.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;using-ollydbg&quot;&gt;Using OllyDbg&lt;/h2&gt;
+
+&lt;h3 id=&quot;opening-a-file&quot;&gt;Opening a file&lt;/h3&gt;
+&lt;p&gt;EZ. &lt;strong&gt;File -&amp;gt; open.&lt;/strong&gt; The only time in which you can pass in command line arguments is at this time.&lt;/p&gt;
+
+&lt;p&gt;You can also attach OllyDbg to a running process using &lt;strong&gt;File -&amp;gt; attach&lt;/strong&gt;. When you do this, OllyDbg will foist itself upon the running process and break all threads. It’ll display the current executing thread’s code. This may be windows API code, so you should have the program break upon access to the entire code section.&lt;/p&gt;
+
+&lt;h3 id=&quot;understanding-ollys-gui&quot;&gt;Understanding Olly’s GUI&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch9sc/n1.PNG&quot; alt=&quot;n1.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Upon opening a program with OllyDbg (in my case, Lab09-01.exe), we have four different windows.&lt;/p&gt;
+
+&lt;h4 id=&quot;top-left-the-disassembler-window&quot;&gt;Top left: the disassembler window&lt;/h4&gt;
+&lt;p&gt;This is the disassember window. It shows the debugged program’s code– the current instruction pointer with several instructions before and after it. To modify instructions or data (or add new instructions), press spacebar within this window.&lt;/p&gt;
+
+&lt;h4 id=&quot;top-right-registers-window&quot;&gt;Top right: registers window&lt;/h4&gt;
+&lt;p&gt;You guessed it– it shows registers. They will change color as the program executes. Red is to highlight a recently changed value. You can right click any register value and select &lt;strong&gt;modify&lt;/strong&gt; to change any register value.&lt;/p&gt;
+
+&lt;h4 id=&quot;bottom-right-stack-window&quot;&gt;Bottom right: stack window&lt;/h4&gt;
+&lt;p&gt;This shows the stack of the program. It’ll always show the top of the stack for a given thread. You can manipulate it in the same way as you can manipulate registers– right clicking a spot on the stack and selecting &lt;strong&gt;modify&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;bottom-left-memory-dump-window&quot;&gt;Bottom left: memory dump window&lt;/h4&gt;
+&lt;p&gt;This window shows a dump of live memory for the debugged process. Pressing &lt;strong&gt;ctrl+G&lt;/strong&gt; in this window permits you to go to a specific spot in memory. Clicking a memory address and selecting &lt;strong&gt;Follow in Dump&lt;/strong&gt; permits you to dump tha tmemory address.&lt;/p&gt;
+
+&lt;p&gt;You can edit memory in this window, too. Right click some memory and choose &lt;strong&gt;Binary -&amp;gt; edit&lt;/strong&gt; to do so. This can be used to modify global variables and other data that malware stores in RAM.&lt;/p&gt;
+
+&lt;h3 id=&quot;executing-code&quot;&gt;Executing code&lt;/h3&gt;
+
+&lt;p&gt;See page 186 for a nice table on the hotkeys used to execute code. There are a few notable features worth mentioning:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;When paused within library code, do a &lt;strong&gt;Debug -&amp;gt; Execute until User Code&lt;/strong&gt; to run until you’re no longer in the library.&lt;/li&gt;
+  &lt;li&gt;Step-into: F7.&lt;/li&gt;
+  &lt;li&gt;Step-over: F8&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;breakpoints&quot;&gt;Breakpoints&lt;/h4&gt;
+
+&lt;p&gt;You can add or remove a breakpoin tby selecting the instruction in the disassembler window and pressing F2. You can view active breakpoints by selecting ** View -&amp;gt; Breakpoints** or clicking the B icon in the toolbar.&lt;/p&gt;
+
+&lt;p&gt;You can generally select what breakpoints you want to use by right-clicking and going from &lt;strong&gt;Breakpoint -&amp;gt; [breakpoint type here]&lt;/strong&gt;. There are hotkeys for some of these too– see p188.&lt;/p&gt;
+
+&lt;h3 id=&quot;buttons-and-other-windows&quot;&gt;Buttons and other windows&lt;/h3&gt;
+
+&lt;h4 id=&quot;memory-map-window-m&quot;&gt;Memory map window (M)&lt;/h4&gt;
+&lt;p&gt;Click the M box or click &lt;strong&gt;View -&amp;gt; Memory&lt;/strong&gt; to display all memory blocks allocated by the debugged program. This is a great way to see how a program is laid out in memory. All DLLs and their code sections are also visible. You cna double-click any row in the memory map to show a memory dump of that section, or you can send the data in a memory dump to the disassembler window by right-clicking and selecting &lt;strong&gt;View in Disassembler.&lt;/strong&gt; &lt;strong&gt;This seems very helpful for obfuscated malware.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;dlls&quot;&gt;DLLs&lt;/h3&gt;
+&lt;p&gt;OllyDbg can debug DLL files. Since DLLs cannot be executed directly, OllyDbg uses a dummy program called &lt;em&gt;loaddll.exe&lt;/em&gt; to load them. By default, OllyDbg breaks at the DLL entry point (dllmain) when the DLL is loaded.&lt;/p&gt;
+
+&lt;p&gt;To call exported functions with arguments inside the debugged DLL:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Load the DLL&lt;/li&gt;
+  &lt;li&gt;Click the play button to run &lt;code class=&quot;highlighter-rouge&quot;&gt;DllMain&lt;/code&gt; and any other intialization code the DLL requires&lt;/li&gt;
+  &lt;li&gt;Olly will pause, and you can call specific exports with arguments and debug them by selecting &lt;strong&gt;Debug -&amp;gt; Call DLL Export&lt;/strong&gt; from the main menu. (See an example of this on p191/p192.)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;tracing&quot;&gt;Tracing&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Tracing&lt;/strong&gt; is a powerful debugging technique that records detailed execution information for you to examine.&lt;/p&gt;
+
+&lt;h4 id=&quot;standard-back-trace&quot;&gt;Standard Back Trace&lt;/h4&gt;
+&lt;p&gt;Whenever you’re moving through the disassembler window with the Step Into and Step Over functions, OllyDbg is recording the movement. You can use the minus key on the keyboard to move back in time and see the instructions previously executed. The plus key takes you forward.&lt;/p&gt;
+
+&lt;h4 id=&quot;call-stack&quot;&gt;Call Stack&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;View -&amp;gt; Call Stack&lt;/strong&gt; will allow you to view the call stack. Imagine that.&lt;/p&gt;
+
+&lt;p&gt;To walk the call stack, click the Address or Called From sections of the call stack window. The registers and stack will not show you what was going on when in that location, unless you are performing a run trace.&lt;/p&gt;
+
+&lt;h4 id=&quot;run-trace&quot;&gt;Run Trace&lt;/h4&gt;
+&lt;p&gt;A &lt;strong&gt;run trace&lt;/strong&gt; allows you to execute code and have OllyDbg save every executed instruction and all changes made to the registers and flags.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Highlight code you wish to trace. Select &lt;strong&gt;Run Trace -&amp;gt; Add Selection&lt;/strong&gt;. After, choose &lt;strong&gt;View -&amp;gt; Run Trace&lt;/strong&gt; to see the instructions. Use the + and - keys as discussed above to run through the trace.&lt;/li&gt;
+  &lt;li&gt;You can also use the &lt;strong&gt;Trace Into&lt;/strong&gt; and &lt;strong&gt;Trace Over&lt;/strong&gt; options. These will simply trace until a breakpoint is hit.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;patching&quot;&gt;Patching&lt;/h3&gt;
+&lt;p&gt;You can modify instructions or memory by highlighting a region, right-clicking the region, and selecting &lt;strong&gt;Binary -&amp;gt; Edit&lt;/strong&gt;. This just changes the live memory; to take patching a step further and saving the on-disk executable, right click the disassembler window wher eyou patched the code and select &lt;strong&gt;Copy to Executable-&amp;gt;All Modifications&lt;/strong&gt;, and then select &lt;strong&gt;Save file&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;analyzing-shellcode-or-other-random-instructions&quot;&gt;Analyzing shellcode (or other random instructions)&lt;/h3&gt;
+
+&lt;p&gt;See the step by step process on p196. All I would do in these notes is copy that ordered list of instructions, more or less otherwise.&lt;/p&gt;
+
+&lt;h2 id=&quot;rebasing&quot;&gt;Rebasing&lt;/h2&gt;
+&lt;p&gt;This occurs when a module in Windows is not loaded at its preferred &lt;em&gt;base address.&lt;/em&gt; All PE files in Windows have a preferred base address, known as the &lt;em&gt;image base&lt;/em&gt; defined in the PE header. Most executables are designed to be loaded at &lt;code class=&quot;highlighter-rouge&quot;&gt;0x400000&lt;/code&gt;, which is probably why so many variables and functions in Ida are named using 0x400000 or some close number in some fashion.&lt;/p&gt;
+
+&lt;p&gt;Of course, this is a preferred address, but it doesn’t guarantee a program will be loaded there. For example, if a program has two DLLs and they each have the same base address, they can’t both be loaded at the same address.&lt;/p&gt;
+
+&lt;p&gt;Some instructions rely on the data being loaded at a specifc address, such as this instruction:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mov eax, dword__40CF60&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;That won’t work if the DLL with that instruction isn’t loaded in the right spot due to the use of an absolute address. Most DLLs come packaged with a list of fix-up locations in the &lt;code class=&quot;highlighter-rouge&quot;&gt;.reloc&lt;/code&gt; section of the PE header.&lt;/p&gt;
+
+&lt;p&gt;DLLs are loaded after the .exe and are loaded in any order, meaning you can’t generally predict where DLLs will be located in memory if they’re rebased. If a DLL lacking a relocation section can’t be loaded at its preferred base address, then it cannot be loaded.&lt;/p&gt;
+
+&lt;h2 id=&quot;wrapping-up&quot;&gt;Wrapping up&lt;/h2&gt;
+
+&lt;p&gt;Assistance features– p197&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Logging&lt;/li&gt;
+  &lt;li&gt;Watches window (i.e. watching when certain things change)&lt;/li&gt;
+  &lt;li&gt;Help&lt;/li&gt;
+  &lt;li&gt;Labelling
+    &lt;ul&gt;
+      &lt;li&gt;right click an address and select &lt;strong&gt;Label&lt;/strong&gt; which will prop up a window, promting for a label name. Works like in Ida.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;How to use plugins– p197&lt;/p&gt;
+
+&lt;p&gt;Scriptable debugging – using Python to do plugins.&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">PMA Ch8 Notes: Debuggers</title><link href="http://localhost:4000/notes/2018/10/07/PMA_ch8_notes.html" rel="alternate" type="text/html" title="PMA Ch8 Notes: Debuggers" /><published>2018-10-07T12:02:00-06:00</published><updated>2018-10-07T12:02:00-06:00</updated><id>http://localhost:4000/notes/2018/10/07/PMA_ch8_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/10/07/PMA_ch8_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
@@ -72,7 +203,122 @@
       &lt;li&gt;As analysts, we don’t typically care about first-chance exceptions since it’s common that they are used to direct control flow. However, we do care about second-chance exceptions. There may be bugs in the malware, or it’s possible that the malware does not like the environment in which it’s running.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">PMA Ch.7 labs: Playing with Windows-specific malware</title><link href="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html" rel="alternate" type="text/html" title="PMA Ch.7 labs: Playing with Windows-specific malware" /><published>2018-09-12T14:31:00-06:00</published><updated>2018-09-12T14:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/12/PMA_ch7_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">PMA Ch.18 Notes: Packers and Unpacking</title><link href="http://localhost:4000/notes/2018/09/25/ch18_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.18 Notes: Packers and Unpacking" /><published>2018-09-25T14:31:00-06:00</published><updated>2018-09-25T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/25/ch18_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/25/ch18_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/li&gt;
+  &lt;li&gt;What are the three most important takeaways from this chapter?&lt;/li&gt;
+  &lt;li&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;overview-of-how-packing-works&quot;&gt;Overview of how packing works&lt;/h2&gt;
+&lt;p&gt;Packers generally follow the same pattern: they transform an executable to create a new executable that stores the transformed executable as data and contains an unpacking stub that is called by the OS. In order for the maliciously packed executable to run, there &lt;em&gt;must&lt;/em&gt; be some part of the executable that is unpacked, as the OS requires this to be able to run the program. This is what the unpacking stub is.&lt;/p&gt;
+
+&lt;p&gt;To maintain the functionality of the original program, a packing program needs to store the program’s import information. The information can be stored in any format, and there are several common strategies which will be discussed later.&lt;/p&gt;
+
+&lt;p&gt;Packers can pack the entire executable, including all data and the resource section, or they can pack only the code and data sections.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-unpacking-stub&quot;&gt;The Unpacking Stub&lt;/h2&gt;
+&lt;p&gt;The purpose of the unpacking stub is typically to load the packed packed program, unpack it, resolve imports of the original executable, and transfer execution to the original entry point. It need not unpack the entire executable. Understanding how the stub works is almost always crucial to understanding the malware.&lt;/p&gt;
+
+&lt;h2 id=&quot;resolving-imports&quot;&gt;Resolving imports&lt;/h2&gt;
+&lt;p&gt;Because the Windows loader cannot read import information that is packed, the unpacking stub must resolve the imports. There are a few approaches that can be taken to do this.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Most common: have the unpacking stub import &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt; functions. After the unpacking stub unpacks the original executable, it reads the original import information, uses &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; to load those libraries, and uses &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt; to get the address for functions in each library.&lt;/li&gt;
+  &lt;li&gt;Another approach: Keep the imports table intact.&lt;/li&gt;
+  &lt;li&gt;A third approach: keep one import function from each DLL in the original import table. In this case, &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; will not be needed, but the stub will still need to resolve the other functions.&lt;/li&gt;
+  &lt;li&gt;The final discussed approach is to remove all imports including &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt;. Then, the packer must find all functions needed from other libraries without using those functions, or it must find &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt; and then use them to load other libraries. This is the stealthiest method, but also the most difficult to implement.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;recognizing-packed-programs&quot;&gt;Recognizing packed programs&lt;/h2&gt;
+&lt;p&gt;There are often giveaways that are indicative of a packed program.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Program has few imports, and those imports are often just &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;When the program is opened in IDA, only a small amount of code is recognized by the automatic analysis.&lt;/li&gt;
+  &lt;li&gt;When the program is opened in OllyDbg, there is a warning that the program is packed.
+    &lt;ul&gt;
+      &lt;li&gt;How does OllyDbg identify this? Do we even care in 64-bit land?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The program shows section names that indicate a particular packer
+    &lt;ul&gt;
+      &lt;li&gt;What are section names typically for executables?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;the program has abnormal section sizes, such as a &lt;code class=&quot;highlighter-rouge&quot;&gt;.text&lt;/code&gt; section that has a raw size of 0 but a virtual size of nonzero.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;entropy-calculation&quot;&gt;Entropy Calculation&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Entropy Calculation&lt;/em&gt; is a technique where packed executables can be detected based on the randomness of the executable. Encrypted or otherwise packed programs usually have high entropy.&lt;/p&gt;
+
+&lt;h2 id=&quot;unpacking-executables&quot;&gt;Unpacking executables&lt;/h2&gt;
+&lt;p&gt;Three options:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Automated static unpacking.&lt;/li&gt;
+  &lt;li&gt;Automated dynamic unpacking.&lt;/li&gt;
+  &lt;li&gt;Manual dynamic unpacking.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Manual static unpacking is completely infeasible.&lt;/p&gt;
+
+&lt;h3 id=&quot;automated-static-unpacking&quot;&gt;Automated static unpacking&lt;/h3&gt;
+&lt;p&gt;This is generally the best and fastest method, when it works, because it unpacks a program but does not run the unpacked program. Programs that perform automated static unpacking generally only work for one type of packer.&lt;/p&gt;
+
+&lt;h3 id=&quot;automated-dynamic-unpacking&quot;&gt;Automated dynamic unpacking&lt;/h3&gt;
+&lt;p&gt;These run the packed program and allow the unpacking stub to unpack the original executable code. Once the unpacking stub finishes, it writes the unpacked program to disk, and the unpacker reconstructs the import table.&lt;/p&gt;
+
+&lt;p&gt;The unpacking program must determine where the unpacking stub ends and where the original executable begins, which is difficult.&lt;/p&gt;
+
+&lt;p&gt;As of the time of this book’s writing, “there are no good publicly available automated dynamic unpackers.”&lt;/p&gt;
+
+&lt;h3 id=&quot;automated-static-unpacking-1&quot;&gt;Automated static unpacking&lt;/h3&gt;
+&lt;p&gt;There are two common approaches to manually unpacking a program.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Discover the packing algorithm and write a program to run it in reverse. This is generally less efficient, but may be useful if dealing with many different executables that are packed in the same manner.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Run the packed program up to the point where the unpacking stub finishes and does the work for you, and then dump the process out of memory and manually fix up the PE header so that the program is complete.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;manually-finding-the-oep-of-a-packed-program&quot;&gt;Manually finding the OEP of a packed program&lt;/h2&gt;
+
+&lt;p&gt;A &lt;em&gt;tail jump&lt;/em&gt; is the jump a packed program makes between wrapping up the unpacking stub’s code and beginning the unpacked executable’s code.&lt;/p&gt;
+
+&lt;p&gt;In order to&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;jumps that are very far away (think hundreds to thousands of bytes) are typically signs of being a tail jump.&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Idea: Determine the feasibility of writing a program or a plugin of sorts that looks for the tail jump to help manual unpacking, by statically analyzing all the transfer of execution instructions and looking for signs that could help cross them off the list of potential tail jump instructions. There’s only a finite number of them and a good chunk of them will be used in unpacking.&lt;/p&gt;
+
+&lt;p&gt;NEEDS:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;testing: a few packers, maybe a custom one&lt;/li&gt;
+  &lt;li&gt;A debugger for 64 bit programs (?). Thinking x64dbg is the current standard&lt;/li&gt;
+  &lt;li&gt;malware. if 32 bit works, then this’ll be developed as an ollydbg plugin and i’ll use my textbook as my
+  intro to ollydbg&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;terminology&quot;&gt;Terminology&lt;/h2&gt;
+
+&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;here
+    &lt;ul&gt;
+      &lt;li&gt;here&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tools-discussed-in-this-section&quot;&gt;Tools discussed in this section&lt;/h2&gt;
+&lt;p&gt;here&lt;/p&gt;
+
+&lt;h2 id=&quot;questions-encountered-and-answers-if-found&quot;&gt;Questions encountered (and answers, if found)&lt;/h2&gt;
+&lt;p&gt;here&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. What are the three most important takeaways from this chapter? What problems does this chapter address? In other words, why should we care about this chapter?</summary></entry><entry><title type="html">PMA Ch.7 labs: Playing with Windows-specific malware</title><link href="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html" rel="alternate" type="text/html" title="PMA Ch.7 labs: Playing with Windows-specific malware" /><published>2018-09-12T14:31:00-06:00</published><updated>2018-09-12T14:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/12/PMA_ch7_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
@@ -1350,299 +1596,4 @@ Furthermore, I struggled with the symbolic constant naming portion of the lab si
 
 &lt;p&gt;Note that the stack grows upward (i.e. as things are pushed onto the stack, memory addresses of ‘higher’ items are lower in value than memory addresses of ‘lower’ items.&lt;/p&gt;
 
-&lt;p&gt;Finally, note that function &lt;em&gt;arguments&lt;/em&gt; are going to be at a positive offset relative to EBP, while &lt;em&gt;local variables&lt;/em&gt; are going to be at a negative offset relative to EBP.&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. This chapter lays the foundation of assembly and computer architecture required for effective malware analysis.</summary></entry><entry><title type="html">PMA Ch.3 Lab: Basic Dynamic Analysis</title><link href="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html" rel="alternate" type="text/html" title="PMA Ch.3 Lab: Basic Dynamic Analysis" /><published>2018-08-29T12:31:00-06:00</published><updated>2018-08-29T12:31:00-06:00</updated><id>http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs</id><content type="html" xml:base="http://localhost:4000/lab_assignment/2018/08/29/PMA_Ch3_Labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
-
-    &lt;p&gt;Very important. Applying the dynamic analysis processes described in this chapter and becoming used to the tools discussed within is going to be helpful experience for when it comes to analyze just about any other piece of malware.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
-
-    &lt;p&gt;In this case, it was mainly just practice using the tools.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges encountered in the labs&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Using ProcMon to find imports wasn’t done &lt;em&gt;quite&lt;/em&gt; how the book indicated it would be done– I didn’t have a way to launch “depends.exe” in the options generated from right clicking the malicious process. After consulting a &lt;a href=&quot;https://support.microsoft.com/en-us/help/970920/using-process-explorer-to-list-dlls-running-under-the-outlook-exe-proc&quot;&gt;post from Microsoft on how to view imports using ProcMon&lt;/a&gt;, it was made clear that all I needed to do was go to view -&amp;gt; click show lower pane, and then imports could be viewed in the lower pane for whatever process I had selected.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
-
-&lt;h3 id=&quot;31&quot;&gt;3.1&lt;/h3&gt;
-&lt;p&gt;Analyze the malware found in the file &lt;em&gt;Lab03-01.exe&lt;/em&gt; using basic dynamic analysis tools.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;What are this malware’s imports and strings?&lt;/p&gt;
-
-    &lt;p&gt;Imports:&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.1.1imports.PNG&quot; alt=&quot;3.1.1imports&quot; title=&quot;imports&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;Strings:&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.1.1strings.PNG&quot; alt=&quot;3.1.1strings&quot; title=&quot;strings&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;Note that ProcExp found that the strings on the image as well as on disk were identical.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What are the malware’s host-based indicators?&lt;/p&gt;
-
-    &lt;p&gt;It doesn’t create any files. It doesn’t seem to modify keys (for, say, persistence). I don’t see any evident host based indicators.&lt;/p&gt;
-
-    &lt;p&gt;&lt;strong&gt;This seems weird.&lt;/strong&gt; The file crashes. At first I thought that was part of the operation of the file, but with no strange seeming imports and relatively normal strings and no indicators, the file seemed especially well-behaved. After looking into what the “error” message I recieved meant, I now know that the file doesn’t run well on a 64-bit Windows 7 VM.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.1.2fail1.PNG&quot; alt=&quot;fail1&quot; title=&quot;64-bit Windows 7 runtime error&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;And after reading up a little on &lt;a href=&quot;https://superuser.com/questions/610495/the-application-was-unable-to-start-correctly-0xc0000018-windows-8-x64&quot;&gt;what this cryptic error might have meant&lt;/a&gt;, and after trying the top answer in the question to no avail, I decided I needed to try it in a 32 bit environment.&lt;/p&gt;
-
-    &lt;p&gt;So, I spun up a 32-bit windows VM real quick and ran it again…:&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.1.2fail2.PNG&quot; alt=&quot;fail2&quot; title=&quot;32-bit Windows 7 runtime error&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;Ugh. That’s probably not normal either. So, I looked into what &lt;a href=&quot;https://jmprsp.wordpress.com/2016/01/28/practical-malware-analysis-basic-dynamic-techniques-lab-3-01/&quot;&gt;someone else did&lt;/a&gt; and discovered an explanation that seemed to hint towards how this particular sample was built to leverage a Windows XP-specific function– one that was changed in Windows 7.&lt;/p&gt;
-
-    &lt;p&gt;No wonder this sample seemed well-behaved on the 64-bit version of Windows 7– it doesn’t do anything. Unfortunately, I don’t currently have access to a Windows XP .iso, so I’m going to have to put this problem on the backburner. In any case, after reading the answers and what jmprsp did, I’m thinking it wouldn’t have been too difficult to identify this malware’s pesky behavior in an environment in which the malware would actually properly run.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Are there any useful network-based signatures for this malware? If so, what are they?&lt;/p&gt;
-
-    &lt;p&gt;Strings shows the presence of &lt;code class=&quot;highlighter-rouge&quot;&gt;www.practicalmalwareanalysis.com&lt;/code&gt; but due to previously described problems, a true analysis of this sample could not be completed.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;32&quot;&gt;3.2&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;How can you get this malware to install itself?&lt;/p&gt;
-
-    &lt;p&gt;After strictly reading this question, the first thing that comes to mind is we need to use rundll32.exe to run this file, but we need to know what DLL functions should be ran. If we use Ida to check out the exports, we find there exist a few:&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.2.1dllexports.PNG&quot; alt=&quot;3.2.1dllexports&quot; /&gt;)&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Install&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;installA&lt;/code&gt; look promising. Let’s try running &lt;code class=&quot;highlighter-rouge&quot;&gt;Install&lt;/code&gt; with rundll32.exe and see what happens.&lt;/p&gt;
-
-    &lt;p&gt;First, I start up Procmon and…&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rundll32.exe Lab03-02.dll, Install&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.2.2fail.PNG&quot; alt=&quot;3.2.2fail.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;UGH. WHY.&lt;/p&gt;
-
-    &lt;p&gt;It doesn’t work on 32 bit versions of Windows 7 either, even when ran as an administrator. It looks like this is another piece of Windows XP-specific malware. Unfortunately, I cannot continue with this sample either. Review &lt;a href=&quot;https://jmprsp.wordpress.com/2016/01/31/practical-malware-analysis-basic-dynamic-techniques-lab-3-02/&quot;&gt;jmprsp’s work here&lt;/a&gt; and move on.&lt;/p&gt;
-
-    &lt;p&gt;We will return to this problem as soon as I hit chapter 5 (i.e. the Ida chapter), and identify the exact problem behind why it won’t run. Maybe it’s something that can be fixed.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;How would you get this malware to run after installation?&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;How can you find the process under which this malware is running?&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Which filters could you set in order to use procmon to glean information?&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What are the malware’s host-based indicators?&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Are there any useful network-based signatures for this malware?&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;realizations-made-after-reading-the-book-answers&quot;&gt;Realizations made after reading the book answers:&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;here&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;33&quot;&gt;3.3&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;What do you notice when monitoring this malware with Process Explorer?&lt;/p&gt;
-
-    &lt;p&gt;I notice that I get yet another Windows error. This time, it’s 0xc0000142. Frustrating.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.3.1svchostfail.PNG&quot; alt=&quot;3.3.1svchostfail.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;Although, the failure is coming from svchost.exe – NOT Lab03-03.exe. After running it again, I noticed that Lab03-03.exe appears to spawn this svchost.exe and then exits, which leaves svchost.exe a zombie process. I’m not sure what that svchost.exe is trying to do yet. We know it’s failing with error 0xc0000142, and if we look into &lt;a href=&quot;https://answers.microsoft.com/en-us/windows/forum/windows_10-performance-winpc/error-0xc0000142/3da27a75-178c-4de5-b43c-c538e6005540&quot;&gt;what causes this error&lt;/a&gt; we find that it has something to do with system files not existing, which is indicative of another Windows XP vs 7 problem.&lt;/p&gt;
-
-    &lt;p&gt;In either case, however, running the program in a 32 bit environment yielded a different error than when in a 64 bit environment. Upon viewing the procmon logs on the 32-bit version, it looks like svchost, before crashing, successfully completes a &lt;em&gt;lot&lt;/em&gt; of registry querying.&lt;/p&gt;
-
-    &lt;p&gt;Further, if we look at HOW svchost.exe is called, we notice it’s not called in any special way:&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.3.2svchostcall.PNG&quot; alt=&quot;3.3.2svchostcall.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;Yet, it appears to be querying the entire registry. I don’t think this is svchost.exe’s main function. This smells like process injection, which could be what ends up causing the Windows error when this malware arrives at the functionality that is supposed to come after the registry querying. Further, process injection often works only for specific builds of Windows (i.e. injecting a process in Windows 7 may not work the same way as injecting a process in Windows XP). I think that’s why we receive a runtime error when runnign this in Windows 7.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Can you identify any live memory modifications?&lt;/p&gt;
-
-    &lt;p&gt;If svchost didn’t unexpectedly crash, I would view the process properties from within procexp and compare the strings in the image to the strings on disk, and, as is confirmed by &lt;a href=&quot;https://jmprsp.wordpress.com/2016/01/31/practical-malware-analysis-basic-dynamic-techniques-lab-3-03/&quot;&gt;jmprsp in his post on ch3 lab3&lt;/a&gt;, we would find that they are indeed very different, which demonstrates process injection as well.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What are the malware’s host-based indicators?&lt;/p&gt;
-
-    &lt;p&gt;This question would be easier to answer if the program ran correctly.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What is the purpose of this program?&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;34&quot;&gt;3.4&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;What happens when you run this file?&lt;/p&gt;
-
-    &lt;p&gt;Running the file results in the file’s deleting itself!  (FINALLY, MALWARE THAT RUNS PROPERLY IN A WINDOWS 7 ENVIRONMENT WOOOO).&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.4.1proctree.PNG&quot; alt=&quot;3.4.1proctree.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;The process tree provided by ProcMon (view -&amp;gt; process tree) shows that cmd is spawned by Lab03-04.exe with a delete command for the initial binary. It doesn’t appear to do much more, despite the fact that there is lots of potential functionality, judging from the imported functions.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What is causing the roadblock in dynamic analysis?&lt;/p&gt;
-
-    &lt;p&gt;If we look at the code using Ida, we see that it calls main passing in command line arguments…&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.4.1callmain.PNG&quot; alt=&quot;3.4.1callmain.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;and that something happens if there is only one argument passed to the program (i.e. if no command line arguments are passed in).&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch3_sc2/3.4.2main.PNG&quot; alt=&quot;3.4.2main.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;Perhaps this is the issue.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Are there other ways to run this program?&lt;/p&gt;
-
-    &lt;p&gt;If we running the program on the command line (i.e. cmd.exe) we can easily pass in more arguments. However, without doing a deeper dive into what sorts of arguments it may require/need, we can’t further process what this program does. I suspect we’ll return to this program shortly after the Ida chapter.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</summary></entry><entry><title type="html">PMA Ch.3 notes: Basic Dynamic Analysis</title><link href="http://localhost:4000/notes/2018/08/22/ch3_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.3 notes: Basic Dynamic Analysis" /><published>2018-08-22T14:31:00-06:00</published><updated>2018-08-22T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/08/22/ch3_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/08/22/ch3_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
-
-    &lt;p&gt;This chapter introduces dynamic analysis as well as the main tools used to perform it and how to use those tools. &lt;strong&gt;Dynamic analysis&lt;/strong&gt; is the act of observing a program run, and gathering information about what it’s doing by watching it do its thing in real time while monitoring the state of the machine with several tools.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
-
-    &lt;p&gt;Dynamic Analysis is powerful for analytic reasons, but dangerous, since it involves actually running malware. It’s important to have properly set up a malware analysis environment before doing this form of analysis.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
-
-    &lt;p&gt;The workflow introduced in this chapter is &lt;em&gt;typically&lt;/em&gt; the same workflow used to analyze most malware samples, and provides overview information to the analyst about what the malware does. It is effectively the second step of the analysis process and it will generally help direct the analyst’s efforts by showing them what they need to look more in depth at.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;terminology-and-keys&quot;&gt;Terminology and Keys&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Dynamic Analysis&lt;/strong&gt; is any examination performed during or after executing malware. It permits viewing of the malware’s true functionality.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Do static analysis first. Dynamic analysis is (obviously) much more dangerous.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Sandboxes&lt;/strong&gt; are ($$$$) security mechanisms for running untrusted programs in a safe environment without fear of harming “real” systems.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;They are automated, and often make use of the CVD to check for common vulnerabilities being exploited.&lt;/li&gt;
-  &lt;li&gt;They do, however, tend to just run the executable without command line options, which may not mimic the environment in which the malware was designed to execute in.&lt;/li&gt;
-  &lt;li&gt;Like virtual machines, sandboxes are detectable and may report an exectuable as not malicious if it senses its in a sandbox and reacts differently than in normal circumstances.&lt;/li&gt;
-  &lt;li&gt;Sandboxes can tell you specifics behind what a malware sample does, but it cannot perform overall semantic analysis.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Service Entries key: &lt;code class=&quot;highlighter-rouge&quot;&gt;HKLM\SYSTEM\CurrentControlSet\Services&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Services ran at startup: &lt;code class=&quot;highlighter-rouge&quot;&gt;HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
-
-&lt;h3 id=&quot;running-dlls&quot;&gt;Running DLLs&lt;/h3&gt;
-&lt;p&gt;&lt;em&gt;rundll32.exe&lt;/em&gt; is what we use to run functions or ordinals from DLL files. Syntax:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:\rundll32.exe DLLname, export arguments
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;So, imagine you open up a file &lt;em&gt;rip.dll&lt;/em&gt; and examine its exports with PEView or with PE Explorer, and you see it has two exports: Install, Uninstall. You can run of these as such:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:\rundll32.exe rip.dll, Install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Or if there are functions exported by ordinal (i.e. as an exported function with only an ordinal number), you do this sort of thing:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:\rundll32.exe someDll.exe, #5
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;The pound (#) is important.&lt;/p&gt;
-
-&lt;p&gt;DLLMain() is executed whenever a DLL is loaded, so you can often get information dynamically by forcing the DLL to load using runndll32.exe. Alternatively, a DLL can be turned into an executable by modifying the PE header and changing its extension to force Windows to load the DLL as it would an executable.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Modifying the PE header: wipe the &lt;code class=&quot;highlighter-rouge&quot;&gt;IMAGE_FILE_DLL&lt;/code&gt; (0x2000) flag from teh characteristics field in the &lt;code class=&quot;highlighter-rouge&quot;&gt;IMAGE_FILE_HEADER&lt;/code&gt;. This won’t run imported functions, but it will run the DLLMain() method.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Malware may install itself as a service too, potentially using a legit utility such as the convenient export &lt;code class=&quot;highlighter-rouge&quot;&gt;InstallService&lt;/code&gt; from ipr32x.dll:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:\&amp;gt; rundll32 ipr32x.dll,InstallService serviceNameHere
-C:\&amp;gt; net start serviceNameHere
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;You can use &lt;code class=&quot;highlighter-rouge&quot;&gt;sc&lt;/code&gt; on cmd to play with services as well.&lt;/p&gt;
-
-&lt;p&gt;(I presume there is a 64 bit version of rundll for Windows but I’ve not looked into what it is at time of writing.)&lt;/p&gt;
-
-&lt;h3 id=&quot;faking-a-network&quot;&gt;Faking a Network&lt;/h3&gt;
-&lt;p&gt;If the malware reaches out to an external domain, it’s helpful to fake being that external domain to further watch how the malware behaves. The book discusses using ApateDNS and Netcat on p51, but I’m going to use INetSim on a Remnux box and Wireshark to observe network behavior (see further down for more details on INetSim).&lt;/p&gt;
-
-&lt;h2 id=&quot;tools-discussed-in-this-section&quot;&gt;Tools discussed in this section&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;procmon&lt;/strong&gt; is an advanced, extremely helpful monitoring tool for Windows that provides a way to monitor certain registry, file system, network, process, and thread activity.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;It can miss device driver activity of a user-mode component talking to a rootkit via device I/O controls, and can miss certain GUI calls such as &lt;code class=&quot;highlighter-rouge&quot;&gt;SetWindowsHookEx&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Generally, it shouldn’t be used for logging network activity, as it doesn’t work consistently across Microsoft Windows versions.&lt;/li&gt;
-  &lt;li&gt;Using procmon: at and around pg44.&lt;/li&gt;
-  &lt;li&gt;Filtering is super important with Procmon.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Process Explorer&lt;/strong&gt; is a free utility provided by Microsoft, probably as part of &lt;a href=&quot;https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite&quot;&gt;sysinternals&lt;/a&gt;.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Use it for listing active processes, DLLs loaded by a process, various process properties, and overall system information. It can also be used to kill processes, log out users, and launch/validate processes.&lt;/li&gt;
-  &lt;li&gt;It dynamically shows when new processes are created or modified, as well as what created them.&lt;/li&gt;
-  &lt;li&gt;You can &lt;em&gt;verify&lt;/em&gt; binaries with it. There’s a verify button on the image tab, and the image tab is found when viewing a process’s properties. The verify button checks to see if the image on disk is the microsoft signed binary.
-    &lt;ul&gt;
-      &lt;li&gt;This can be used to identify process replacement/injection, since that involves modifying the executable, which’ll screw up the signature of the file.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;There is a strings window in the process properties collection of tabs as well. It can check for strings in the in-memory process as well as the on-disk image. If the strings vary greatly, you know that something fishy is going on.&lt;/li&gt;
-  &lt;li&gt;You can use process explorer to launch depends.exe – Dependency Walker – on a running process. Right click a process name and select “Launch Depends.”&lt;/li&gt;
-  &lt;li&gt;It can be used to analyze malicious documents by observing processes opened when clicking a malicious document. The image tab will tell you exactly where the malicious payload executed by the document is on disk.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Regshot&lt;/strong&gt; is used to take snapshots of the registry. Take the first shot before running the malware, and take the second shot after. It then tells you of all differences between the two snapshots.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Wireshark&lt;/strong&gt; is briefly discussed on page 53.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;INetSim&lt;/strong&gt; is free, Linux-based software for simulating common Internet servies. It’s widely accepted as the best tool for providing fake services, allowing you to analyze the network behavior by emulating servies such as HTTP(S), FTP, IRC, DNS, SMTP, and others. See page 55 of the book for a full list.&lt;/p&gt;
-
-&lt;h2 id=&quot;malware-analysis-work-flow&quot;&gt;Malware Analysis Work Flow&lt;/h2&gt;
-&lt;p&gt;Typically, you will use many of the tools simultaneously when executing and observing malware. My generic work flow sessions tend to go like this:&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;If you’re observing network traffic, set up your virtual network (instructions to do this will be provided later).&lt;/li&gt;
-  &lt;li&gt;Run procmon but don’t capture events yet.&lt;/li&gt;
-  &lt;li&gt;Start process explorer.&lt;/li&gt;
-  &lt;li&gt;Start regshot.&lt;/li&gt;
-  &lt;li&gt;If you’re observing network business, start Wireshark and INetSim on the remnux box.&lt;/li&gt;
-  &lt;li&gt;Take a VMWare Snapshot so you can return to this point multiple times for multiple detonations of the malware.&lt;/li&gt;
-  &lt;li&gt;Take the first registry snapshot.&lt;/li&gt;
-  &lt;li&gt;Begin capturing procmon events. (regshot is super noisy and doing it outside of the procmon analysis window makes it such that that noise is ignored).&lt;/li&gt;
-  &lt;li&gt;Detonate the malware!&lt;/li&gt;
-  &lt;li&gt;Stop the capture of events after malware finishes running (or you’re done running it or whatever)&lt;/li&gt;
-  &lt;li&gt;Take the second registry snapshot.&lt;/li&gt;
-  &lt;li&gt;Analyze.&lt;/li&gt;
-  &lt;li&gt;Revert back to the previous VMWare snapshot and do it again making whatever changes you want to make.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The book also provides a solid sample analysis sesh starting on page 57.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+&lt;p&gt;Finally, note that function &lt;em&gt;arguments&lt;/em&gt; are going to be at a positive offset relative to EBP, while &lt;em&gt;local variables&lt;/em&gt; are going to be at a negative offset relative to EBP.&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. This chapter lays the foundation of assembly and computer architecture required for effective malware analysis.</summary></entry></feed>
