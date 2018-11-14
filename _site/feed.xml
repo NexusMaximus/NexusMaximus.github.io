@@ -1,4 +1,571 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-12T16:16:55-06:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">PMA Ch.9 Notes: OllyDbg</title><link href="http://localhost:4000/notes/2018/10/12/ch9_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.9 Notes: OllyDbg" /><published>2018-10-12T14:31:00-06:00</published><updated>2018-10-12T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/10/12/ch9_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/10/12/ch9_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-11-14T15:14:55-07:00</updated><id>http://localhost:4000/</id><title type="html">Kyle the (Aspiring) Reverser</title><subtitle>A home for a slew of miscellaneous technical (or not) blogs I write in the process of completing my Masters thesis.</subtitle><entry><title type="html">Paper review: Binary-Code Obfuscations in Prevalent Packer Tools</title><link href="http://localhost:4000/notes/2018/11/10/binary-code_obfs_paper_review.html" rel="alternate" type="text/html" title="Paper review: Binary-Code Obfuscations in Prevalent Packer Tools" /><published>2018-11-10T10:31:00-07:00</published><updated>2018-11-10T10:31:00-07:00</updated><id>http://localhost:4000/notes/2018/11/10/binary-code_obfs_paper_review</id><content type="html" xml:base="http://localhost:4000/notes/2018/11/10/binary-code_obfs_paper_review.html">&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
+
+&lt;p&gt;Security analysts’ understanding of malware samples depends on the ability to build high-level analysis products from the raw bytes of program binaries. As such, the first step to analyzing defensive malware samples is understanding what obfuscations are present in these binaries, and how the obfuscations hinder analysis. This paper provides details on those techniques.&lt;/p&gt;
+
+&lt;p&gt;Section 2 is all about the methodology and tools used to perform the study. Section 3 is a taxonomy of the obfuscation techniques, along with current approaches to dealing with the techniques. Section 4 provides a summary table of the obfuscation techniques that shows their relative prevalence in real-world malware.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2-methodology&quot;&gt;Section 2: Methodology&lt;/h2&gt;
+
+&lt;p&gt;– to be written, maybe –&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3-obfuscation-techniques&quot;&gt;Section 3: Obfuscation techniques&lt;/h2&gt;
+
+&lt;h3 id=&quot;binary-code-extraction&quot;&gt;Binary code extraction&lt;/h3&gt;
+&lt;p&gt;This is the ultimate goal of analysis– to extract the code from a sample so it can be analyzed. On unpacked/nondefensive binaries, this is trivial, as we simply need to read from the executable portions of the binary file. It gets more challenging with programs that create code or self-modify at runtime.&lt;/p&gt;
+
+&lt;p&gt;In practice, most malware authors create an unpacked executable and then pack it with a packer tool to create a packed version. Most packers can be thought of as elaborations on UPX’s packing scheme.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-upx-works&quot;&gt;How UPX works&lt;/h4&gt;
+
+&lt;p&gt;UPX (or almost any other packing tool) sets the executable’s entry point to the entry point of the bootstrap code that unpacks the payload and then transfers control to the payload’s OEP. When the bootstrap code unrolls packed code and data, it places them at the same memory addresses that they occupied in the original binary, so that position-dependant instructions do not move and data accesses find the data in their expected locations.&lt;/p&gt;
+
+&lt;p&gt;UPX also packs the PE’s Import Table and Import Address Table data structures. These tables list functions to import from other shared libraries. They are packed because just knowing these functions can reveal significant information about the payload code (and also because the tables are highly amenable to compression).&lt;/p&gt;
+
+&lt;h4 id=&quot;building-on-this-technique&quot;&gt;Building on this technique&lt;/h4&gt;
+
+&lt;p&gt;The most common elaboration of this basic recipe is one in which portions of the packer’s bootstrap code itself are also packed. Most packers use a small unpacking loop to decompress a more sophisticated decompression or decryption algorithm that unpacks the actual payload. For example, ASProtect unpacks 99% of its unpacking code, in addition to the program payload itself.&lt;/p&gt;
+
+&lt;h4 id=&quot;the-x-ray-technique-perriot-and-ferrie-2004&quot;&gt;The X-Ray technique [Perriot and Ferrie 2004]&lt;/h4&gt;
+
+&lt;p&gt;This technique statically analyzes the program binary with the aim of seeing through the compression and encryption transformation with which the payload code is packed. It leverages statistical properties of packed code to recognize compression algorithms and uses &lt;em&gt;known cipher-text attacks&lt;/em&gt; to crack weak encryption schemes. Weakness: ineffective against strong encryption and multiple layers of compression or encryption. Further work has been done to improve the technique, but it hasn’t yet been shown to work on a broad collection of samples (as of when this paper was written, in 2013).&lt;/p&gt;
+
+&lt;h4 id=&quot;identifying-written-then-executed-code&quot;&gt;Identifying written-then-executed code&lt;/h4&gt;
+
+&lt;p&gt;This technique is used by a host of dynamic analysis tools. They detect and capture unpacked code bytes by tracing the program’s execution at a fine granularity and logging memory writes to identify written-then-executed code. Some leverage the Qemu whole-system emulator and the Xen virtual machine monitor respectively, which allows them to observe execution of monitored malware without being easily detected. [2007ish time frame– Renovo and EtherUnpack]&lt;/p&gt;
+
+&lt;p&gt;There exist unpacker tools that run packed programs either for a certain timeout period, or until they exhibit behavior that could indicate that they are done unpacking. The primary limitations of fine-grained monitoring techniques are that they only identify code bytes that are actually executed and they incur orders of magnitude slowdowns in execution time (those conditional breakpoints tho). This technique is good for antivirus products, but the coarse memory-page granularity means they cannot identify the actual code bytes on unpacked code pages and they cannot identify or capture overwritten code bytes.&lt;/p&gt;
+
+&lt;h4 id=&quot;code-overwriting&quot;&gt;Code Overwriting&lt;/h4&gt;
+
+&lt;p&gt;Self-modifying programs move beyond unpacking by overwriting existing code with new code at runtime. Code overwriting often occurs in small amounts, affecting just a single instruction or even just a single instruction operand. For example, ASPack modifies the push operand of a &lt;code class=&quot;highlighter-rouge&quot;&gt;push 0, ret&lt;/code&gt; instruction sequence at runtime to plug in the OEP address onto the call stack. UPack, however, has a second unpacking loop that overwrites the first one, removing several basic blocks at once from the function currently executing.&lt;/p&gt;
+
+&lt;p&gt;Packers surveyed in this paper only overwrite their own metacode, but it’s possible to have more complex overwriting scenarios. Packers generally probably only overwrite their own code in an effort to maintain correctness and to be able to be used in a general case (i.e. for any malicious binary passed to it). An example of more complex unpackers: the MoleBox packer tool and the DarkParanoid virus repeatedly unpack sensitive code into a buffer, so only one buffer-full of the protected code is exposed to the analyst at any given time. This approach is sufficiently hard to implement, however, according to a paper in 2002.&lt;/p&gt;
+
+&lt;p&gt;Self-modifying code presents a problem to all approaches of anlaysis because there is no point in time in which all of the program’s code is present in the binary. The only way to account for this is to take snapshots of basic blocks (i.e those without jumps in our out) as soon as the basic blocks execute.&lt;/p&gt;
+
+&lt;h3 id=&quot;disassembly&quot;&gt;Disassembly&lt;/h3&gt;
+
+&lt;p&gt;Once code bytes have been captured, static analysis techniques can accurately disassemble most of the code in compiler-generated program binaries, even when those binaries have been stripped of all symbol information. The general technique employed by disassembly tools is to disassemble the binary code starting from known entry points into the program.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Linear-sweep parsing&lt;/em&gt; disassembles sequentially from the beginning of the code section and assumes that the section contains nothing but code. The problem with this is the code section frequently contains non-code bytes such as string data and padding.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;recursive-traversal approach&lt;/em&gt; finds instructions by following all statically traversable paths through the program’s control flow starting from known function addresses. While more accurate, this technique misses control-transfer targets of instrucions that determine their targets dynamically based on register values and memory contents. 
+Binaries stripped of symbol information can still have machine learning techniques applied to them to identify enough function entry points (by recognizing compiler-generated boiler plate code) to help recursive-traversal parsing. 
+Of course, the weakness behind this approach is that the malware author would only need to modify the boiler-plate code of the compiler to trick the machine learning algorithms expecting a specific instruction pattern. 
+Furthermore, to limit the amount of code that can be found by following control-transfer edges from the entry point (which must be left visible in the binary, or the OS can’t begin executing it), one can handwrite extremely irregular assembly code that a parser will have significant trouble interpreting.&lt;/p&gt;
+
+&lt;p&gt;Here are some techniques that hide code, followed by techniques that corrupt analysis with non-code bytes or uncover errors in the disassembler.&lt;/p&gt;
+
+&lt;h4 id=&quot;non-returning-calls&quot;&gt;Non-returning Calls&lt;/h4&gt;
+
+&lt;p&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; instruction is basically a glorified &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; instruction. Its job is to push a return location onto the stack, and then jump to another section of code. It is intended to be used with a corresponding &lt;code class=&quot;highlighter-rouge&quot;&gt;ret&lt;/code&gt; instruction, which pops the previously-pushed value into a register or area in memory and unconditionally jumps to it. This can be abused by, well, using the instructions in unconventional ways. This causes problems for analysis tools in three ways.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Recursive-traversal parsers assume that bytes following a non-returning call represent a valid instruction, because they presume the call will return execution to the area immediately after the call, but it doesn’t need to.&lt;/li&gt;
+  &lt;li&gt;The attack breaks an important assumption made by code parsers for identifying function boundaries; namely, that the target of a call belongs to a different function than that of the call itself. There’s no reason why you can’t use a call to transfer execution somewhere else in the current function.&lt;/li&gt;
+  &lt;li&gt;A binary instrumenter cannot move the call instruction of a call-pop sequence without changing the PC-relative address that the pop stores into a general-purpose register. Moving the call instruction without compensating for this change usually results in incorrect program execution, as packer metacode frequently uses the PC-relative address as a base pointer from which to access data.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Researchers have proposed removing the assumption that there is valid code at the fall-through address of each call instruction, but doing so drastically reduces the percentage of code that the parser can find, presumably since it can no longer be assumed that any code after a call is actually code. Kruegel et al. compensate by speculatively parsing after call instructions and use a statistical model of real code sequences to determine whether the speculatively parsed instruction sequences are valid. However, this technique was done by researchers in an attempt to just handle one kind of obfuscator, and made assumptions that were valid only for that obfuscator.&lt;/p&gt;
+
+&lt;h4 id=&quot;call-stack-tampering&quot;&gt;Call-stack Tampering&lt;/h4&gt;
+
+&lt;p&gt;One can semantically generate a &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; instruction with a &lt;code class=&quot;highlighter-rouge&quot;&gt;push [value], ret&lt;/code&gt; combination, since &lt;code class=&quot;highlighter-rouge&quot;&gt;ret&lt;/code&gt; pops and jumps. ASProtect does this frequently. Furthermore, you could have this series of instructions:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pop ebp
+inc ebp
+push ebp
+ret
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This would jump to an area immediately after a call, offset by +1 bytes, which would totally break the assumption that code &lt;strong&gt;immediately&lt;/strong&gt; following a &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; is valid, since the valid code is now offset by an amount.&lt;/p&gt;
+
+&lt;p&gt;The authors of this paper implement a technique to deal with this. They apply static analysis techniques to a &lt;code class=&quot;highlighter-rouge&quot;&gt;ret&lt;/code&gt; target prediction, which allows them to improve coverage and accuracy of pre-execution analyses. They use backwards slices at return instructions to determine whether a  &lt;code class=&quot;highlighter-rouge&quot;&gt;ret&lt;/code&gt; jumps to a function’s return address as expected or to another address, and falls back on dynamic analysis if static analysis fails.&lt;/p&gt;
+
+&lt;h4 id=&quot;obfuscated-control-transfer-targets&quot;&gt;Obfuscated control-transfer targets&lt;/h4&gt;
+
+&lt;p&gt;Using indirect versions of the &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; instructions obfuscates control-transfer targets by using register or memory values to determine their targets at runtime. Furthermore, it provides some space savings, which is significant motivation for small packers. Obfuscation is also a considerable motivating factor as static analysis tools often let these jumps go unresolved. Single indirect jumps can have multiple targets as well over the course of an unpacker’s runtime lifetime.&lt;/p&gt;
+
+&lt;p&gt;Static analysis of indirect control-transfer targets is particularly difficult in packed binaries, as they frequently use instructions whose targets depend on register values. Value-set analyses [Balakrishnan and Reps 2004] can theoretically reveal all possible targets for such indirect control-transfer instructions, but this requires knowing all the code in the binary, which is not a satisfiable condition in the realm of packed binaries. Dynamic analysis trivially discovers targets of indirect control transfers that execute, but may leave a significant fraction of code unexecuted. There has been research done on forcing program execution down multiple execution paths [Babic et. al. 2011; Moser et al. 2007] but these are extremely resource-intensive techniques and do not acheive perfect code coverage.&lt;/p&gt;
+
+&lt;h4 id=&quot;exception-based-control-transfers&quot;&gt;Exception-based control transfers&lt;/h4&gt;
+&lt;p&gt;Signal- and exception-handling mechanisms allow for the creation of obfuscated control transfers whose source instruction and target address are well-hidden from static analysis techniques. Statically identifying sources of control transfers such as these requires predicting which instructions will raise exceptions, which is difficult in theory and practice [Muth and Debray 2000]. This means current disassembly algorithms wil usually parse through fault-raising instructions into what may be non-code bytes that’ll never execute. Furthermore, at least on Windows, it is hard to find exception handlers, since they can be registered on the call stack at runtime with no need to perform any Windows API or system calls.&lt;/p&gt;
+
+&lt;p&gt;Using a debugger is the easiest way to detect exception-based control transfers, as it informs the debugger process of any fault-raising instructions and identifies all registered exception handlers whenever a fault occurs. However, use of a debugger interface can be detectd unless extensive precautions are taken.&lt;/p&gt;
+
+&lt;h4 id=&quot;ambiguous-code-and-data&quot;&gt;Ambiguous code and data&lt;/h4&gt;
+
+&lt;p&gt;Yet another form of control flow obfuscation involves using conditional branches to introduce a fork in the program’s control flow with only one path that ever executes, while junk code (fake code bytes or non-code) populates the other path.&lt;/p&gt;
+
+&lt;p&gt;Using current techniques, the only way to identify code with perfect exclusion of data is to disassemble only those instruction sthat appear in an execution trace of a program.&lt;/p&gt;
+
+&lt;h4 id=&quot;disassembler-fuzz-testing&quot;&gt;Disassembler Fuzz Testing&lt;/h4&gt;
+&lt;p&gt;Fuzz testing refers to the practice of stress testing a software component by feeding it large quantities of unusual inputs int eh hope of detecting a case that the component hadles incorrectly. By fuzz testing binary-code disassemblers, packer tools can cause the diassembler to misparse instructions or mistake valid instructions for invalid ones.&lt;/p&gt;</content><author><name></name></author><summary type="html">Abstract</summary></entry><entry><title type="html">Evading OllyDump’s ‘Find OEP by Section Hop’ feature</title><link href="http://localhost:4000/notes/2018/11/03/getting_around_section_hop.html" rel="alternate" type="text/html" title="Evading OllyDump's 'Find OEP by Section Hop' feature" /><published>2018-11-03T14:31:00-06:00</published><updated>2018-11-03T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/11/03/getting_around_section_hop</id><content type="html" xml:base="http://localhost:4000/notes/2018/11/03/getting_around_section_hop.html">&lt;h2 id=&quot;ollydump&quot;&gt;OllyDump&lt;/h2&gt;
+
+&lt;p&gt;One of the best tools in the malware analyst’s toolbox is OllyDbg’s ‘OllyDump’ plugin. It sports the ability to dump a debugged program’s memory, meaning if you can unpack a packed executable up to the point in which it transfers execution to the malicious payload, OllyDump can write out that program to a file that you can further analyze. This point in execution is called the &lt;em&gt;original entry point&lt;/em&gt;, or OEP. The jump that the program makes from unpacking code to execution of the malicious payload is called the &lt;em&gt;tail jump&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;finding-the-oep-by-section-hop&quot;&gt;Finding the OEP by section hop&lt;/h3&gt;
+&lt;p&gt;Finding the OEP of a program isn’t always trivial. That’s why OllyDump provides two methods that can be used to help you. Labeled “Find OEP by Section Hop,” OllyDump creates a conditional breakpoint that monitors the section of the executable that is currently executing. When execution hops out of that section, the breakpoint triggers. Often times, the section will change when making the tail jump, since the malicious payload likely won’t be in the same section as the unpacker code. OllyDump has two versions of this functionality: a trace over feature and a trace into feature. From what I understand, the trace over feature won’t monitor section transfers within calls. For example, if the code you’re looking at calls a library function, the EIP will definitely be out of range of the current section, but Trace Over won’t trigger a break in execution. Trace into will, however. As such, Trace Into goes into more depth, but can also churn out more false positives. Trace Over goes into less depth, but is less likely to churn out false positives. Each is useful in certain situations. Sometimes using a combination of both is the best strategy. Sometimes, neither one will work well.&lt;/p&gt;
+
+&lt;h3 id=&quot;evading-this-tool&quot;&gt;Evading this tool&lt;/h3&gt;
+&lt;p&gt;So, how can malware nullify these tools? I can think of a couple ways:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;If the unpacking stub is contained within two or more sections and transfers execution between them frequently. Then, the section would change frequently, causing both versions of the section hop feature to trigger. Of course, this could be combatted by adding a multi-section conditional check, but I don’t believe this feature is currently available within OllyDump.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Self-modifying code/partially unpacking malware will cause problems. If the code only partially unpacks itself into memory, we may find the section in which it executes using OllyDump’s features, but we can’t dump the file into a complete executable at any given moment in time.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In order to further understand how to get around this technique, it will pay to read up on general obfuscation techniques. That will, in turn, lead me to theorize about which can be detected with OllyDbg and which can’t.&lt;/p&gt;
+
+&lt;h3 id=&quot;details-on-how-a-few-common-packers-work-and-how-to-augment-ollydumps-find-oep-by-section-hop-functionality-to-be-able-to-handle-these-packers&quot;&gt;Details on how a few common packers work, and how to augment OllyDump’s “Find OEP by section hop” functionality to be able to handle these packers&lt;/h3&gt;
+
+&lt;h4 id=&quot;fsg-fast-small-good&quot;&gt;FSG: FAst, Small, Good&lt;/h4&gt;
+
+&lt;h4 id=&quot;upx-ultimate-packer-for-executables&quot;&gt;UPX: Ultimate Packer for eXecutables&lt;/h4&gt;
+
+&lt;h4 id=&quot;upack&quot;&gt;UPack&lt;/h4&gt;
+
+&lt;h4 id=&quot;polyene&quot;&gt;PolyEnE&lt;/h4&gt;
+
+&lt;h4 id=&quot;mew&quot;&gt;MEW&lt;/h4&gt;
+
+&lt;h4 id=&quot;pecompact&quot;&gt;PECompact&lt;/h4&gt;
+
+&lt;h4 id=&quot;nspack&quot;&gt;NSPack&lt;/h4&gt;
+
+&lt;h4 id=&quot;npack&quot;&gt;nPack&lt;/h4&gt;
+
+&lt;h4 id=&quot;aspack&quot;&gt;ASPack&lt;/h4&gt;
+
+&lt;h4 id=&quot;petite&quot;&gt;PEtite&lt;/h4&gt;
+
+&lt;h4 id=&quot;yodas-protector&quot;&gt;Yoda’s Protector&lt;/h4&gt;
+
+&lt;h4 id=&quot;asprotect&quot;&gt;ASProtect&lt;/h4&gt;</content><author><name></name></author><summary type="html">OllyDump</summary></entry><entry><title type="html">PMA Ch.18 Labs: Packed Malware</title><link href="http://localhost:4000/labs/2018/10/28/PMA_ch18_labs.html" rel="alternate" type="text/html" title="PMA Ch.18 Labs: Packed Malware" /><published>2018-10-28T12:31:00-06:00</published><updated>2018-10-28T12:31:00-06:00</updated><id>http://localhost:4000/labs/2018/10/28/PMA_ch18_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/10/28/PMA_ch18_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges encountered in the labs&lt;/h2&gt;
+
+&lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
+
+&lt;p&gt;The goal of each of these labs is to unpack the code for further analysis so that other static techniques can be used. Try to avoid using automated unpackers and use the skills taught in this chapter. Each lab is a packed version of a previous lab.&lt;/p&gt;
+
+&lt;h3 id=&quot;181&quot;&gt;18.1&lt;/h3&gt;
+
+&lt;p&gt;I opened the file in OllyDbg and Ida, and just tried OllyDump’s “Find OEP by section hop (trace over)” option. You can verify that the program is progressing by clicking in the registers window. If the registers update when you click, you know the plugin is working.&lt;/p&gt;
+
+&lt;p&gt;After waiting about a minute, OllyDbg broke due to a conditional breakpoint: “EIP outside the range 407000…409FFF (i.e. a hop outside of that section). The code points directly to what looks like a function now located at 40154F.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch18sc/1_01unpacked.PNG&quot; alt=&quot;1_01unpacked.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I used OllyDbg to dump the process (** plugins -&amp;gt; OllyDump -&amp;gt; Dump debugged process **) (no changes to the dump options screen) and loaded the new exe into Ida, and it appears to be a good-looking, unpacked sample.&lt;/p&gt;
+
+&lt;h3 id=&quot;182&quot;&gt;18.2&lt;/h3&gt;
+
+&lt;p&gt;Upon first opening this sample with Ida, we get a warning that said&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Truncated section &quot; at file offsets 0x1000..0x2000 
+Will read 0x290 bytes
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;which I don’t understand, but that’s okay for now.&lt;/p&gt;
+
+&lt;p&gt;Furthermore, when opening the file with OllyDbg, we get this message:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch18sc/2_02open.PNG&quot; alt=&quot;2_02open.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Stepping through the code a few times yields a pretty obfuscated seeming loop pattern. I’m not sure what it’s doing or how it’s doing it, but the classic approach is to let Olly do that for you. So I did, and it broke here.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch18sc/3_wat.PNG&quot; alt=&quot;3_wat.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This looks like data. Or perhaps it’s just in the data section of the executable. These are just bytes; let’s get Olly to interpret it as code: &lt;strong&gt;right click in the disassembly window -&amp;gt; analysis -&amp;gt; analyse code&lt;/strong&gt; and boom, there we are. A function.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch18sc/4_02unpacked.PNG&quot; alt=&quot;4_02unpacked.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I dumped the program (default options) and opened the new executable in Ida, and it revealed something that looked similar to a ch7 sample analyzed earlier. Specifically the second lab.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch18sc/5_0702.PNG&quot; alt=&quot;5_0702.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;183&quot;&gt;18.3&lt;/h3&gt;
+
+&lt;p&gt;I ran this file in OllyDbg and observed a pattern: it’s unpacking some code into another section, and then calling it, and that code unpacks some code into another section and then calls it, and etc. I bet this will mess with the &lt;code class=&quot;highlighter-rouge&quot;&gt;Find OEP by Section Hop&lt;/code&gt; functionality– at least the “step over” part, since calls don’t return to the right place (as that’s how it transfers execution– by pushing a new variable onto the stack and then calling a ‘ret’ (I believe)).&lt;/p&gt;
+
+&lt;p&gt;Sections: 40Axxx, 407xxx, and some kernel calls. Arriving in these sections triggers OllyDump’s plugin to stop execution.&lt;/p&gt;
+
+&lt;p&gt;And, after attempting to find the OEP by section hop, I discovered it does indeed render the technique much less helpful. I sort of stumbled through and kept trying it and it would run to the next point in the code that was out of the current section. Theoretically, I can keep doing this until I finally hit a breakpoint that doesn’t look like unpacking code, but I don’t know if this is the most helpful strategy. I continued trying to resume the code for a while (i.e. using OllyDump’s trace into feature and then OllyDbg’s execute until user code feature), and it beame clear to me that this strategy isn’t very feasible.&lt;/p&gt;
+
+&lt;p&gt;I was hesitant to try the other “find section hop by jumping over” as I believe this code transfers execution by modifying where “ret” transfers execution to. In other words, we may have calls that never return to the instruction immediately after the call. Either way, I tried it, and it took me to a section that looks like data. I got Olly to treat it as code and disassemble it in the same way I did for the previous problem.&lt;/p&gt;
+
+&lt;p&gt;As it turns out, this was indeed the entry point– 0x401577. I am wondering if using a combination of section jumps with trace over and with trace into is a viable strategy.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch18sc/6_ollyEntry3.PNG&quot; alt=&quot;6_ollyEntry3.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Interestingly, after exporting the file with the EIP at this location, the imports section is still destroyed according to Ida, and furthermore, Ida’s disassembly code differs slightly (but makes more sense) than Olly’s.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch18sc/7_idaUnpacked3.PNG&quot; alt=&quot;7_idaUnpacked3.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In either case, after looking around this file with Ida, it appears to look much more like non-unpacking code, which further confirms my suspicion that this is the payload we’re after.&lt;/p&gt;
+
+&lt;h4 id=&quot;after-reading-the-book-answers&quot;&gt;After reading the book answers…&lt;/h4&gt;
+
+&lt;p&gt;The book acknowledges a pushf and a pusha at the very, very beginning of the file. It suggests that a packer will likely have corresponding popa and popf instructions at the end of the unpacking loop, and suggests putting a breakpoint on access of that pushed memory. I tried this, and it worked great.&lt;/p&gt;</content><author><name></name></author><summary type="html">Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</summary></entry><entry><title type="html">PMA Ch.18 Notes: Packers and Unpacking</title><link href="http://localhost:4000/notes/2018/10/15/ch18_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.18 Notes: Packers and Unpacking" /><published>2018-10-15T14:31:00-06:00</published><updated>2018-10-15T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/10/15/ch18_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/10/15/ch18_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/li&gt;
+  &lt;li&gt;What are the three most important takeaways from this chapter?&lt;/li&gt;
+  &lt;li&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;overview-of-how-packing-works&quot;&gt;Overview of how packing works&lt;/h2&gt;
+&lt;p&gt;Packers generally follow the same pattern: they transform (compress, encrypt, etc) an executable into raw data. This is the act of packing. Packers then prepend a valid executable (called an unpacking stub) to that data. The unpacking stub exists to decrypt or decode or unzip the packed portion of the executable into memory at run time, and then transfer execution to the unpacked code. This is significant because it conceals the program’s instructions to static analysis tools (excluding the instructions of the unpacking stub).&lt;/p&gt;
+
+&lt;p&gt;To maintain the functionality of the original program, a packing program needs to store the program’s import information. The information can be stored in any format, and there are several common strategies which will be discussed later.&lt;/p&gt;
+
+&lt;p&gt;Packers can pack the entire executable, including all data and the resource section, or they can pack only the code and data sections.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-unpacking-stub&quot;&gt;The Unpacking Stub&lt;/h2&gt;
+&lt;p&gt;The purpose of the unpacking stub is typically to load the packed packed program, unpack it, resolve imports of the original executable, and transfer execution to the original entry point. It need not unpack the entire executable at any given point in time. Understanding how the stub works is almost always crucial to understanding the malware.&lt;/p&gt;
+
+&lt;h2 id=&quot;resolving-imports&quot;&gt;Resolving imports&lt;/h2&gt;
+&lt;p&gt;Because the Windows loader cannot read import information that is packed, the unpacking stub must resolve the imports. There are a few approaches that can be taken to do this.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Most common: have the unpacking stub import &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt; functions. After the unpacking stub unpacks the original executable, it reads the original import information, uses &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; to load those libraries, and uses &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt; to get the address for functions in each library.&lt;/li&gt;
+  &lt;li&gt;Another approach: Keep the imports table intact.&lt;/li&gt;
+  &lt;li&gt;A third approach: keep one import function from each DLL in the original import table. In this case, &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; will not be needed, but the stub will still need to resolve the other functions.&lt;/li&gt;
+  &lt;li&gt;The final discussed approach is to remove all imports including &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt;. Then, the packer must find all functions needed from other libraries without using those functions, or it must find &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt; and then use them to load other libraries. This is the stealthiest method, but also the most difficult to implement.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;recognizing-packed-programs&quot;&gt;Recognizing packed programs&lt;/h2&gt;
+&lt;p&gt;There are often giveaways that are indicative of a packed program.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;One sign is a program has few imports, and those imports are often just &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;When the program is opened in IDA, only a small amount of code is recognized by the automatic analysis.&lt;/li&gt;
+  &lt;li&gt;When the program is opened in OllyDbg, there is a warning that the program is packed.
+    &lt;ul&gt;
+      &lt;li&gt;How does OllyDbg identify this? Do we even care in 64-bit land?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The program shows section names that indicate a particular packer
+    &lt;ul&gt;
+      &lt;li&gt;What are section names typically for executables?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;the program has abnormal section sizes, such as a &lt;code class=&quot;highlighter-rouge&quot;&gt;.text&lt;/code&gt; section that has a raw size of 0 but a virtual size of nonzero.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;entropy-calculation&quot;&gt;Entropy Calculation&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Entropy Calculation&lt;/em&gt; is a technique where packed executables can be detected based on the randomness of the executable. Encrypted or otherwise packed programs usually have high entropy.&lt;/p&gt;
+
+&lt;h2 id=&quot;unpacking-executables&quot;&gt;Unpacking executables&lt;/h2&gt;
+&lt;p&gt;Three options:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Automated static unpacking.&lt;/li&gt;
+  &lt;li&gt;Automated dynamic unpacking.&lt;/li&gt;
+  &lt;li&gt;Manual dynamic unpacking.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Manual static unpacking is completely infeasible.&lt;/p&gt;
+
+&lt;h3 id=&quot;automated-static-unpacking&quot;&gt;Automated static unpacking&lt;/h3&gt;
+&lt;p&gt;This is generally the best and fastest method, when it works, because it unpacks a program but does not run the unpacked program. Programs that perform automated static unpacking generally only work for one type of packer.&lt;/p&gt;
+
+&lt;h3 id=&quot;automated-dynamic-unpacking&quot;&gt;Automated dynamic unpacking&lt;/h3&gt;
+&lt;p&gt;These run the packed program and allow the unpacking stub to unpack the original executable code. Once the unpacking stub finishes, it writes the unpacked program to disk, and the unpacker reconstructs the import table.&lt;/p&gt;
+
+&lt;p&gt;The unpacking program must determine where the unpacking stub ends and where the original executable begins, which is difficult.&lt;/p&gt;
+
+&lt;p&gt;As of the time of this book’s writing, “there are no good publicly available automated dynamic unpackers.”&lt;/p&gt;
+
+&lt;h3 id=&quot;manual-unpacking&quot;&gt;Manual unpacking&lt;/h3&gt;
+&lt;p&gt;There are two common approaches to manually unpacking a program.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Discover the packing algorithm and write a program to run it in reverse. This is generally less efficient, but may be useful if dealing with many different executables that are packed in the same manner.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Run the packed program up to the point where the unpacking stub finishes and does the work for you, and then dump the process out of memory and manually fix up the PE header so that the program is complete.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;a-walkthrough-of-the-manual-unpacking-process-for-ideal-packed-executables&quot;&gt;A walkthrough of the manual unpacking process for ideal packed executables&lt;/h4&gt;
+
+&lt;p&gt;The first step is to use the following workflow to see if OllyDbg’s OllyDump plugin can unpack the executable for you. To begin, open the packed program with OllyDbg.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Select &lt;strong&gt;Plugins -&amp;gt; OllyDump -&amp;gt; Find OEP by Section Hop&lt;/strong&gt;. Olly will hit a breakpoint just before the OEP executes. (It’s sort of slow to run, mind you!)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Write down where OllyDbg broke. This is the OEP.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Select &lt;strong&gt;Plugins -&amp;gt; OllyDump -&amp;gt; Dump Debugged Process.&lt;/strong&gt; This dumps everything from process memory to disk.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;using-import-reconstructor&quot;&gt;Using Import Reconstructor&lt;/h4&gt;
+
+&lt;p&gt;If OllyDbg fails, you can try to use Import Reconstructor (ImpRec) to repair the import table for packed programs.In this case, see p390 for more details.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-ollydumps-find-oep-by-section-hop-tool-works&quot;&gt;How OllyDump’s Find OEP by Section Hop tool works&lt;/h4&gt;
+
+&lt;p&gt;Normally, the unpacking stub is in one section and the executable is packed in another section. OllyDbg detects whenthere is a transfer from one section to another and breaks there, using either the step-over or step-into method.&lt;/p&gt;
+
+&lt;p&gt;The step-over method will step over any &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; instruction. Calls are often used to execute code in another section, and this method is designed to prevent OllyDbg from incorrectly labeling one of those calls as the OEP. But, if a call never returns, of course OllyDbg won’t locate the OEP.&lt;/p&gt;
+
+&lt;p&gt;The step-into method will step into calls, but it might provide false positives as well.&lt;/p&gt;
+
+&lt;h4 id=&quot;things-to-look-for-when-manually-finding-the-oep&quot;&gt;Things to look for when manually finding the OEP&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;Jumps outside of a section&lt;/li&gt;
+  &lt;li&gt;Jumps that are followed by a bunch of invalid code&lt;/li&gt;
+  &lt;li&gt;Jumps that are unreasonably far away&lt;/li&gt;
+  &lt;li&gt;Jumps immediately followed by classic function boiler plate code (&lt;code class=&quot;highlighter-rouge&quot;&gt;push ebp, mov ebp, esp&lt;/code&gt; for example)
+:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;terminology&quot;&gt;Terminology&lt;/h2&gt;
+
+&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;here
+    &lt;ul&gt;
+      &lt;li&gt;here&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tools-discussed-in-this-section&quot;&gt;Tools discussed in this section&lt;/h2&gt;
+&lt;p&gt;here&lt;/p&gt;
+
+&lt;h2 id=&quot;questions-encountered-and-answers-if-found&quot;&gt;Questions encountered (and answers, if found)&lt;/h2&gt;
+&lt;p&gt;here&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. What are the three most important takeaways from this chapter? What problems does this chapter address? In other words, why should we care about this chapter?</summary></entry><entry><title type="html">PMA Ch9 Lab: Using OllyDbg</title><link href="http://localhost:4000/labs/2018/10/12/PMA_ch9_labs.html" rel="alternate" type="text/html" title="PMA Ch9 Lab: Using OllyDbg" /><published>2018-10-12T16:28:00-06:00</published><updated>2018-10-12T16:28:00-06:00</updated><id>http://localhost:4000/labs/2018/10/12/PMA_ch9_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/10/12/PMA_ch9_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges encountered in the labs&lt;/h2&gt;
+
+&lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
+
+&lt;h3 id=&quot;91&quot;&gt;9.1&lt;/h3&gt;
+
+&lt;p&gt;Analyze the malware found in Lab09-01.exe using OllyDbg and IDA Pro to answer the following questions. Note that this malware was initially analyzed in the Chapter 3 labs using basic static and dynamic techniques. (Uh oh…)&lt;/p&gt;
+
+&lt;h4 id=&quot;questions-to-answer&quot;&gt;Questions to answer&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;How can you get this malware to install itself?&lt;/p&gt;
+
+    &lt;p&gt;One way (of at least two) is to call it as such: &lt;code class=&quot;highlighter-rouge&quot;&gt;./Lab09-01.exe -in abcd&lt;/code&gt; (90% confidence)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the command-line options for the program? What is the password requirement?&lt;/p&gt;
+
+    &lt;p&gt;The last command-line argument of the program is the password. The password must be ‘abcd’.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How can you use OllyDbg to permanently patch this malware, so it doesn’t require the special command-line password?&lt;/p&gt;
+
+    &lt;p&gt;Simply overwrite the function call to the password checking program with NOPs.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the host-based indicators of this program?&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;A service called “ Manager Service”.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What are the different actions this malware can be instructed to take via the network?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Are there any useful network-based signatures for this malware?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;walkthrough-process&quot;&gt;Walkthrough process&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;NOTE&lt;/strong&gt;: Before running this program or beginning to analyze it with Ida or OllyDbg, I recommend making a couple copies of it for backup purposes.&lt;/p&gt;
+
+&lt;p&gt;First, I opened the files in OllyDbg and Ida. I looked through main() on Ida to see what sorts of things we could expect to see, and did a little bit of initial commenting.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch9sc/01_startup.PNG&quot; alt=&quot;01_initial.PNG&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I opened up sub_402510 to discover a big mess of movs and some repne scasbs and other things. After putting about 5 minutes of effort into trying to understand how all this worked, I realized it would be a lot brighter to, you know, use the tool I just learned about. I migrated over to Olly with the mindset that I wanted to watch how sub_402510 works, since I believe this function is what determines if the malware will install, or delete itself.&lt;/p&gt;
+
+&lt;p&gt;Upon first looking at this new tool’s interface, I noticed OllyDbg broke at _start, while Ida starts up at main(). So, I stepped through code in Olly until I hit where main was called. As I walked through code and matched where Olly was vs. where we were in Ida, I discovered/confirmed:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl + g&lt;/code&gt; is how you do goto address in OllyDbg&lt;/li&gt;
+  &lt;li&gt;Return back after going somewhere by using &lt;code class=&quot;highlighter-rouge&quot;&gt;-&lt;/code&gt;. It doesn’t necessarily go “back” mind you… but that hasn’t gotten in the way enough for me to put time into it, yet.&lt;/li&gt;
+  &lt;li&gt;Place a breakpoint by hitting F2.&lt;/li&gt;
+  &lt;li&gt;To change the contents of some registers, you just right click it and choose the appropriate option. EIP doesn’t follow this convention. To change EIP, you must goto the location you want EIP to execute next, right click it, and choose &lt;strong&gt;New Origin Here&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;To rename a memory label in Olly (such as for a call instruction), goto that address and then right click the first instruction at that address and type “:” or right-click the address and click &lt;strong&gt;label&lt;/strong&gt;, and type the new name. This will have all references to that address propogate with the new name. In this way, I made the functions I named in Ida have the same names in Olly, which is very helpful when I’m switching between both programs so much.&lt;/li&gt;
+  &lt;li&gt;Double clicking an address will make all addresses around it appear with numbers relative to the one you clicked. This can be helpful for finding out how far away two instructions or bits of data in memory are.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In the first run of this program where there are no command line arguments, the argument passed to sub_402510 is the program’s path.&lt;/p&gt;
+
+&lt;p&gt;Let’s look into the function that processes the last command line argument.&lt;/p&gt;
+
+&lt;h4 id=&quot;is-this-the-password-checking-function&quot;&gt;Is this the password checking function?&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch9sc/02_processArgvLast.PNG&quot; alt=&quot;processArgvLast&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It contains a &lt;code class=&quot;highlighter-rouge&quot;&gt;repne scasb&lt;/code&gt; instruction. This instruction is not something I know off the top of my head, so I checked out a &lt;a href=&quot;https://reverseengineering.stackexchange.com/questions/2774/what-does-the-assembly-instruction-repne-scas-byte-ptr-esedi&quot;&gt;post on the reverse engineering stackexchange&lt;/a&gt; that explains how the command breaks down.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;repne: repeat while not equal.&lt;/li&gt;
+  &lt;li&gt;scas: SCan A String. It compares values in a string (the one pointed to by the ES:[EDI] register) to the value in the accumulator register (&lt;code class=&quot;highlighter-rouge&quot;&gt;EAX&lt;/code&gt;) until it finds a match.
+    &lt;ul&gt;
+      &lt;li&gt;ES: a segment register. These are used to derive memory addresses. How? I’m not sure, and I am not sure it matters for purposes of this assignment yet. WEEDS&lt;/li&gt;
+      &lt;li&gt;EDI: contains a pointer to the string. Why yes, OllyDbg is indeed reporting that the string is in EDI!&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Overall, it scans the string until it finds an element in it equal to the element in the accumulator. So, in this case, since EAX is 0, it’s looking for the null terminator.&lt;/p&gt;
+
+&lt;p&gt;Hitting F7 (i.e. step into) shows how the string in EDI shrinks one by one from the left side, and each time that happens, ECX is decremented. (ECX was 0xFFFFFFFF at the beginning). (Just to be clear, it’s not that the string is “shrinking”… We are just changing the pointer in EDI to look one character ahead, and that is what gives the illusion that the string is shrinking.)&lt;/p&gt;
+
+&lt;p&gt;ECX is manipulated to contain the string length!&lt;/p&gt;
+
+&lt;p&gt;Moving on, we see that a comparison of the string length to 4 happens. Since the string length is not 4, it leaves the function. Clearly, it’s looking for something that is a 4 character argument. I reran the program with the argument “asdf” by clicking Olly’s black X in the top left corner, opening a file, and putting “asdf” in the arguments field, and then I stepped through until at the same block of code discussed right above.&lt;/p&gt;
+
+&lt;p&gt;CL, the lower byte of ECX, had moved into it the first letter of the argument being processed by this function. That was then moved into var_4. So, what Ida labeled as var_4 is actually the first character of the command line parameter.  We can tell by reading the assembly in Ida that a comparison of 61 (hex) happens shortly after, and the code leaves if it detects the comparison is not equal. 61 is an ‘a’ in ascii. How convenient. The first guess takes us to step 2 of the checking process.&lt;/p&gt;
+
+&lt;p&gt;Step two (starting at memory location 402563) threw me off for a little, until I just ran it in Olly and observed what happened.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch9sc/03_step2.PNG&quot; alt=&quot;step2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It did a bunch of pointer math, and compared to 1 shortly after. Instead of spending too much time trying to know exactly what the assembly was doing, I just ran the code up to 0x40255A, and discovered that with “asdf”, the value resulting in ECX after the pointer math occurs was 0x12. I also noticed that 0x12 is just about the value that results if you subtract the second character of my current password from the first– s - a = 12. So, this step checks to see if the second character is one more than the first– i.e. ‘b’. So I reran the code with the password ‘abcd’.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch9sc/04_step3and4.PNG&quot; alt=&quot;step3and4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Step three employs more strange pointer math. We’ll notice that, however, at 0x402566, 63h (i.e. ‘c’) is moved into dl. After skipping past all but one of the movs, we see an &lt;code class=&quot;highlighter-rouge&quot;&gt;[ecx + 2]&lt;/code&gt; is part of the final mov. This is probably somehow referencing the third char of our string (the second, if we refer to the characters in a zero-indexed fashion). Either way, 0x63 is compared to 0x63 with my password of ‘abcd’, and the code moves on to check four.&lt;/p&gt;
+
+&lt;p&gt;Step 4 takes the current char ‘c’ and adds 1 to it. That makes a ‘d’! Stepping through yields a comparison of ‘d’ to ‘d’, and we know that the password is now ‘abcd’ as a 1 is put into eax and we return.&lt;/p&gt;
+
+&lt;h4 id=&quot;we-have-the-password-but-how-can-we-patch-the-program-to-not-require-one-at-all-question-3&quot;&gt;We have the password, but how can we patch the program to not require one at all (question 3)?&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch9sc/05_prePatchingObservation.PNG&quot; alt=&quot;prePatchingObservation&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If the password checking function runs successfully, it puts the value ‘1’ into EAX. Otherwise, it zeroes EAX. The &lt;code class=&quot;highlighter-rouge&quot;&gt;test&lt;/code&gt; instruction combined with a &lt;code class=&quot;highlighter-rouge&quot;&gt;jnz&lt;/code&gt; instruction effectively tests to see if what’s in EAX is zero. If we just … didn’t call that function, EAX would contain a nonzero value from the &lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt; at address 0x402B2A, and the &lt;code class=&quot;highlighter-rouge&quot;&gt;jnz&lt;/code&gt; jump would be taken. All we need to do is &lt;code class=&quot;highlighter-rouge&quot;&gt;nop&lt;/code&gt; out the call, and the code will always take the jnz branch to the next phase of the malware.&lt;/p&gt;
+
+&lt;p&gt;The book specifically has a section on how to do this (see the patching section in my previous notes post). I right clicked the call instruction of the password checking function in Olly, and selected &lt;strong&gt;Binary -&amp;gt; Edit&lt;/strong&gt;. Now Olly displays the updated code in the disassembler. I then saved this patched version of the program.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch9sc/06_patched.PNG&quot; alt=&quot;patched&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;HA. Sick. It works.&lt;/p&gt;
+
+&lt;h4 id=&quot;getting-the-malware-to-install-itself&quot;&gt;Getting the malware to install itself&lt;/h4&gt;
+
+&lt;p&gt;To answer this question, I took a shot in the dark and assumed installing itself involved creating a service. I looked through the strings within Ida and found one, “ Manager Service”. Cross-referencing that leads to one use: within sub_402600. This function also does stuff with the registry. If we cross-reference this, we find that it’s used in two places.&lt;/p&gt;
+
+&lt;p&gt;My next observation came from this block of code here.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch9sc/07.PNG&quot; alt=&quot;07&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We see that it’s doing a string comparison after it passes the password check function. OllyDbg tells us that the comparison is done with the “-in” hardcoded string, and we can observe it’s comparing one of the command line arguments. Furthermore, if strcmp finds that two strings are the same, it returns 0. So, the &lt;code class=&quot;highlighter-rouge&quot;&gt;jnz&lt;/code&gt; will NOT be taken if the comparison results in finding a “-in” argument.&lt;/p&gt;
+
+&lt;p&gt;The red branch checks to see if there are a total of three arguments (say, perhaps, the program name, -in, and the password). If there are, the &lt;code class=&quot;highlighter-rouge&quot;&gt;jnz&lt;/code&gt; is again not taken due to the nature of how &lt;code class=&quot;highlighter-rouge&quot;&gt;cmp&lt;/code&gt; works. If we follow that red path, we arrive at…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/files/ch9sc/08.PNG&quot; alt=&quot;08&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;…a block of code that much closer to the install function. At this point, I think it’s safe to say one way to get this malware to install itself is by calling it as such:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;./lab09-01.exe -in asdf&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;realizations-made-after-reading-the-book-answers&quot;&gt;Realizations made after reading the book answers:&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;here&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;92&quot;&gt;9.2&lt;/h3&gt;
+
+&lt;p&gt;Analyze the malware using OllyDbg.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;What strings do you see statically in the binary?&lt;/p&gt;
+
+    &lt;p&gt;Answer here&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What happens when you run the binary?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How can you get this sample to run its malicious payload?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What’s happening at 0x401133?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What arguments are being passed to subroutine 0x401089?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What domain name does this malware use?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What encoding routine is being used to obfuscate the domain name?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is the significance of the &lt;code class=&quot;highlighter-rouge&quot;&gt;CreateProcessA&lt;/code&gt; call at 0x40106E?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;realizations-made-after-reading-the-book-answers-1&quot;&gt;Realizations made after reading the book answers:&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;here&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;93&quot;&gt;9.3&lt;/h3&gt;
+
+&lt;p&gt;Analyze the malware found in Lab09-03.exe using OllyDbg and Ida. The malware loads three included DLLs that are built to request the same memory load location, which means Ida will show differing memory addresses than Olly when loaded in each. This is done by design to give you experience going from Ida to Olly and back, when the addresses differ.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;What DLLs are imported by Lab09-03.exe?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What is the base address requested by DLL1.dll, DLL2.dll, and DLL3.dll?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When you use OllyDbg to debug Lab09-03.exe, what is the assigned base address for all three DLL files?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When Lab09-03.exe calls an import function from DLL1.dll, what does this import function do?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When the exe calls WriteFile, what is the filename it writes to?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When the exe creates a job using NetScheduleJobAdd, where does it get the data for the second parameter?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;While running or debugging th eprogram, you’ll see it prints out three piees of mystery data, one of each corresponding to each DLL. What are these pieces of mystery data?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;How can you load DLL2.dll into Ida so that it matches the load address used by OllyDbg?&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</summary></entry><entry><title type="html">PMA Ch.9 Notes: OllyDbg</title><link href="http://localhost:4000/notes/2018/10/12/ch9_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.9 Notes: OllyDbg" /><published>2018-10-12T14:31:00-06:00</published><updated>2018-10-12T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/10/12/ch9_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/10/12/ch9_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
@@ -203,122 +770,7 @@
       &lt;li&gt;As analysts, we don’t typically care about first-chance exceptions since it’s common that they are used to direct control flow. However, we do care about second-chance exceptions. There may be bugs in the malware, or it’s possible that the malware does not like the environment in which it’s running.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">PMA Ch.18 Notes: Packers and Unpacking</title><link href="http://localhost:4000/notes/2018/09/25/ch18_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.18 Notes: Packers and Unpacking" /><published>2018-09-25T14:31:00-06:00</published><updated>2018-09-25T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/25/ch18_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/25/ch18_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/li&gt;
-  &lt;li&gt;What are the three most important takeaways from this chapter?&lt;/li&gt;
-  &lt;li&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;overview-of-how-packing-works&quot;&gt;Overview of how packing works&lt;/h2&gt;
-&lt;p&gt;Packers generally follow the same pattern: they transform an executable to create a new executable that stores the transformed executable as data and contains an unpacking stub that is called by the OS. In order for the maliciously packed executable to run, there &lt;em&gt;must&lt;/em&gt; be some part of the executable that is unpacked, as the OS requires this to be able to run the program. This is what the unpacking stub is.&lt;/p&gt;
-
-&lt;p&gt;To maintain the functionality of the original program, a packing program needs to store the program’s import information. The information can be stored in any format, and there are several common strategies which will be discussed later.&lt;/p&gt;
-
-&lt;p&gt;Packers can pack the entire executable, including all data and the resource section, or they can pack only the code and data sections.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-unpacking-stub&quot;&gt;The Unpacking Stub&lt;/h2&gt;
-&lt;p&gt;The purpose of the unpacking stub is typically to load the packed packed program, unpack it, resolve imports of the original executable, and transfer execution to the original entry point. It need not unpack the entire executable. Understanding how the stub works is almost always crucial to understanding the malware.&lt;/p&gt;
-
-&lt;h2 id=&quot;resolving-imports&quot;&gt;Resolving imports&lt;/h2&gt;
-&lt;p&gt;Because the Windows loader cannot read import information that is packed, the unpacking stub must resolve the imports. There are a few approaches that can be taken to do this.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Most common: have the unpacking stub import &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt; functions. After the unpacking stub unpacks the original executable, it reads the original import information, uses &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; to load those libraries, and uses &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt; to get the address for functions in each library.&lt;/li&gt;
-  &lt;li&gt;Another approach: Keep the imports table intact.&lt;/li&gt;
-  &lt;li&gt;A third approach: keep one import function from each DLL in the original import table. In this case, &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; will not be needed, but the stub will still need to resolve the other functions.&lt;/li&gt;
-  &lt;li&gt;The final discussed approach is to remove all imports including &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt;. Then, the packer must find all functions needed from other libraries without using those functions, or it must find &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt; and then use them to load other libraries. This is the stealthiest method, but also the most difficult to implement.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;recognizing-packed-programs&quot;&gt;Recognizing packed programs&lt;/h2&gt;
-&lt;p&gt;There are often giveaways that are indicative of a packed program.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Program has few imports, and those imports are often just &lt;code class=&quot;highlighter-rouge&quot;&gt;LoadLibrary&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;GetProcAddress&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;When the program is opened in IDA, only a small amount of code is recognized by the automatic analysis.&lt;/li&gt;
-  &lt;li&gt;When the program is opened in OllyDbg, there is a warning that the program is packed.
-    &lt;ul&gt;
-      &lt;li&gt;How does OllyDbg identify this? Do we even care in 64-bit land?&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;The program shows section names that indicate a particular packer
-    &lt;ul&gt;
-      &lt;li&gt;What are section names typically for executables?&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;the program has abnormal section sizes, such as a &lt;code class=&quot;highlighter-rouge&quot;&gt;.text&lt;/code&gt; section that has a raw size of 0 but a virtual size of nonzero.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;entropy-calculation&quot;&gt;Entropy Calculation&lt;/h3&gt;
-&lt;p&gt;&lt;em&gt;Entropy Calculation&lt;/em&gt; is a technique where packed executables can be detected based on the randomness of the executable. Encrypted or otherwise packed programs usually have high entropy.&lt;/p&gt;
-
-&lt;h2 id=&quot;unpacking-executables&quot;&gt;Unpacking executables&lt;/h2&gt;
-&lt;p&gt;Three options:&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Automated static unpacking.&lt;/li&gt;
-  &lt;li&gt;Automated dynamic unpacking.&lt;/li&gt;
-  &lt;li&gt;Manual dynamic unpacking.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Manual static unpacking is completely infeasible.&lt;/p&gt;
-
-&lt;h3 id=&quot;automated-static-unpacking&quot;&gt;Automated static unpacking&lt;/h3&gt;
-&lt;p&gt;This is generally the best and fastest method, when it works, because it unpacks a program but does not run the unpacked program. Programs that perform automated static unpacking generally only work for one type of packer.&lt;/p&gt;
-
-&lt;h3 id=&quot;automated-dynamic-unpacking&quot;&gt;Automated dynamic unpacking&lt;/h3&gt;
-&lt;p&gt;These run the packed program and allow the unpacking stub to unpack the original executable code. Once the unpacking stub finishes, it writes the unpacked program to disk, and the unpacker reconstructs the import table.&lt;/p&gt;
-
-&lt;p&gt;The unpacking program must determine where the unpacking stub ends and where the original executable begins, which is difficult.&lt;/p&gt;
-
-&lt;p&gt;As of the time of this book’s writing, “there are no good publicly available automated dynamic unpackers.”&lt;/p&gt;
-
-&lt;h3 id=&quot;automated-static-unpacking-1&quot;&gt;Automated static unpacking&lt;/h3&gt;
-&lt;p&gt;There are two common approaches to manually unpacking a program.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Discover the packing algorithm and write a program to run it in reverse. This is generally less efficient, but may be useful if dealing with many different executables that are packed in the same manner.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Run the packed program up to the point where the unpacking stub finishes and does the work for you, and then dump the process out of memory and manually fix up the PE header so that the program is complete.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;manually-finding-the-oep-of-a-packed-program&quot;&gt;Manually finding the OEP of a packed program&lt;/h2&gt;
-
-&lt;p&gt;A &lt;em&gt;tail jump&lt;/em&gt; is the jump a packed program makes between wrapping up the unpacking stub’s code and beginning the unpacked executable’s code.&lt;/p&gt;
-
-&lt;p&gt;In order to&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;jumps that are very far away (think hundreds to thousands of bytes) are typically signs of being a tail jump.&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Idea: Determine the feasibility of writing a program or a plugin of sorts that looks for the tail jump to help manual unpacking, by statically analyzing all the transfer of execution instructions and looking for signs that could help cross them off the list of potential tail jump instructions. There’s only a finite number of them and a good chunk of them will be used in unpacking.&lt;/p&gt;
-
-&lt;p&gt;NEEDS:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;testing: a few packers, maybe a custom one&lt;/li&gt;
-  &lt;li&gt;A debugger for 64 bit programs (?). Thinking x64dbg is the current standard&lt;/li&gt;
-  &lt;li&gt;malware. if 32 bit works, then this’ll be developed as an ollydbg plugin and i’ll use my textbook as my
-  intro to ollydbg&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;terminology&quot;&gt;Terminology&lt;/h2&gt;
-
-&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;here
-    &lt;ul&gt;
-      &lt;li&gt;here&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;tools-discussed-in-this-section&quot;&gt;Tools discussed in this section&lt;/h2&gt;
-&lt;p&gt;here&lt;/p&gt;
-
-&lt;h2 id=&quot;questions-encountered-and-answers-if-found&quot;&gt;Questions encountered (and answers, if found)&lt;/h2&gt;
-&lt;p&gt;here&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. What are the three most important takeaways from this chapter? What problems does this chapter address? In other words, why should we care about this chapter?</summary></entry><entry><title type="html">PMA Ch.7 labs: Playing with Windows-specific malware</title><link href="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html" rel="alternate" type="text/html" title="PMA Ch.7 labs: Playing with Windows-specific malware" /><published>2018-09-12T14:31:00-06:00</published><updated>2018-09-12T14:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/12/PMA_ch7_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">PMA Ch.7 labs: Playing with Windows-specific malware</title><link href="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html" rel="alternate" type="text/html" title="PMA Ch.7 labs: Playing with Windows-specific malware" /><published>2018-09-12T14:31:00-06:00</published><updated>2018-09-12T14:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/12/PMA_ch7_labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/12/PMA_ch7_labs.html">&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
@@ -1039,561 +1491,4 @@ Alright, our first big boy malware sample! Apparently this malware was caught in
 
     &lt;p&gt;The same as previous samples, but upgraded grab MULTIPLE commands from the command and control server back home.&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</summary></entry><entry><title type="html">PMA Ch. 6 notes: Recognizing C Code Constructs in Assembly</title><link href="http://localhost:4000/notes/2018/09/08/ch6_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch. 6 notes: Recognizing C Code Constructs in Assembly" /><published>2018-09-08T14:31:00-06:00</published><updated>2018-09-08T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/08/ch6_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/08/ch6_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
-
-    &lt;p&gt;This chapter introduces how some common C code constructs look when implemented in assembly. Being able to understand what these constructs looks like is extremely helpful when analyzing malware as it’ll provide insight into the general functionality of the malware, more quickly.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
-
-    &lt;p&gt;Practice is the only thing that will help a new malware analyst recognize general semantics of a program.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
-
-    &lt;p&gt;This chapter provides exercises to quickly speed up analysis of executables by providing a foundation for understanding what common code constructs &lt;em&gt;generally&lt;/em&gt; look in assembly. It is, however, no substitute for practicing. Labs coming soon.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;terminology&quot;&gt;Terminology&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;code construct&lt;/strong&gt;: a code abstraction level that defines a functional property, but not the details of its implementation. 
-	* if statements, for loops, switches, linked lists, etc&lt;/p&gt;
-
-&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;This is the part of malware analysis in which it becomes easy to get bogged down with weeds. Keeping the overall picture in mind and not getting infatuated with unnecesary details is very important.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;global-vs-local-variables&quot;&gt;Global vs Local variables&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Global variables are referenced by memory address.&lt;/li&gt;
-  &lt;li&gt;Local variables are referenced relative to the stack.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;different-calling-conventions&quot;&gt;Different Calling Conventions&lt;/h3&gt;
-
-&lt;h4 id=&quot;cdecl&quot;&gt;cdecl&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;Parameters pushed ontothe stack from right to left.&lt;/li&gt;
-  &lt;li&gt;Caller cleans up stack when function is complete.&lt;/li&gt;
-  &lt;li&gt;Return value stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;eax.&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;stdcall&quot;&gt;stdcall&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;Similar to cdecl, except that stdcall requires the &lt;em&gt;callee&lt;/em&gt; to clean up the stack when the function is complete.&lt;/li&gt;
-  &lt;li&gt;Windows API uses stdcall by convention.
-    &lt;ul&gt;
-      &lt;li&gt;Any code calling API functions will therefore not need to clean up the stack, since that’s the responsibility of the DLL that implement code for the API functions.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;fastcall&quot;&gt;fastcall&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;The first few arguments (typically two) are passed in via registers (usually &lt;code class=&quot;highlighter-rouge&quot;&gt;edx&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;ecx&lt;/code&gt;). Additional arguments are loaded from right to left.&lt;/li&gt;
-  &lt;li&gt;Calling function is usually responsible for cleaning up the stack, if necessary.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;In general, you won’t know what your malware was compiled with, so you should know the concepts behind why the calling conventions work, so you can recognize the semantics of any calling convention.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;notes-on-specific-constructs&quot;&gt;Notes on specific constructs&lt;/h3&gt;
-
-&lt;h4 id=&quot;switch-statements&quot;&gt;Switch statements&lt;/h4&gt;
-&lt;p&gt;Switches are typically implemented in one of two ways: the if-style, or jump tables.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;If style: each case statement is compared to the switch conditional variable. Typically there are lots of jz’s and cmp’s in these.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Jump table style: Typically seen with large, contiguous switch statements, the compiler optimizes away lots of the comparisons. In this case, there is a lot of &lt;code class=&quot;highlighter-rouge&quot;&gt;dd offset loc_abcd&lt;/code&gt; statements following each other, and the switch variable is used as an index into that table to identify which block of code to hop to (i.e. which case to evaluate).&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;arrays&quot;&gt;Arrays&lt;/h4&gt;
-&lt;p&gt;Ararys are accessed using a base address as a starting point. The size of each element is not always obious, but it can be determined by seeing how the array is being indexed.&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.</summary></entry><entry><title type="html">PMA Ch.5 Lab: Ida Pro Practice</title><link href="http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs.html" rel="alternate" type="text/html" title="PMA Ch.5 Lab: Ida Pro Practice" /><published>2018-09-05T10:31:00-06:00</published><updated>2018-09-05T10:31:00-06:00</updated><id>http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs</id><content type="html" xml:base="http://localhost:4000/labs/2018/09/05/PMA_Ch5_Labs.html">&lt;p&gt;Use only Ida Pro to analyze Lab05-01.dll.&lt;/p&gt;
-
-&lt;h2 id=&quot;lab-summary-questions&quot;&gt;Lab summary questions&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?&lt;/p&gt;
-
-    &lt;p&gt;As important as the rest of the book thus far. Being able to use Ida to navigate through the binary and answer general questions about an executable is an imperative skill for malware analysts.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What did doing the lab exercises teach that was not gained from reading the chapter?&lt;/p&gt;
-
-    &lt;p&gt;Tons of practice using Ida. Also, it helped me appreciate how quickly it is to accedentally misrepresent certain portions of disassembly (via accedentally converting instructions to constants, or strings to code, or etc). However, this can usually be undone, and “undefining” the data is very helpful in a lot of cases. (&lt;strong&gt;U&lt;/strong&gt; undefines data.)&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;challenges-encountered-in-the-labs&quot;&gt;Challenges encountered in the labs&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Ida pro is needed for a couple of questions of this lab, and unfortunately, I don't have that.
-
-Furthermore, I struggled with the symbolic constant naming portion of the lab simply because a DLL referenced in the book didn't seem to exist within my virtual environment. The problem was sidestepped via looking directly at MSDN documentation. See below for details on where the problem was encountered. 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;lab-walkthrough-includes-answers&quot;&gt;Lab Walkthrough (includes answers!)&lt;/h2&gt;
-
-&lt;p&gt;First thing I did was change the settings to include addresses in graph mode, as was suggested by the authors of the book.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/files/ch5_sc/01_IdaOptionsForGraphMode.PNG&quot; alt=&quot;01_ida.PNG&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;51&quot;&gt;5.1&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;What is the address of &lt;code class=&quot;highlighter-rouge&quot;&gt;DllMain&lt;/code&gt;?&lt;/p&gt;
-
-    &lt;p&gt;This one is easy enough. Just look in the functions window, scroll down to DllMain, and click it.&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;0x1000D02E&lt;/code&gt;.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/02_DllMain.PNG&quot; alt=&quot;02_DllMain&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Use the Imports window to browse to &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt;. Where is the import located?&lt;/p&gt;
-
-    &lt;p&gt;Imports is a tab at the top of the disassembly window. Going in there and hitting &lt;strong&gt;ctrl+f&lt;/strong&gt; to search for &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt; is how I arrived at this answer.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/03_gethostbyname.PNG&quot; alt=&quot;03_gethostbyname&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;How many functions call &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt;?&lt;/p&gt;
-
-    &lt;p&gt;Ah, we need to find all cross references to &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt; and count the number of unique functions in them. . Do this by hitting &lt;strong&gt;x&lt;/strong&gt; while &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt; is selected.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/04_xrefsGHBN.PNG&quot; alt=&quot;04_xrefsGHBN&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;I count &lt;strong&gt;5&lt;/strong&gt; unique functions.&lt;/p&gt;
-
-    &lt;p&gt;This looks like good information, but what’s that strange letter in the second column? What do the letters stand for? This helpful &lt;a href=&quot;https://resources.infosecinstitute.com/ida-cross-references-xrefs/#gref&quot;&gt;post&lt;/a&gt; provided me insight into the three types of cross references.&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;r: read&lt;/li&gt;
-      &lt;li&gt;w: write&lt;/li&gt;
-      &lt;li&gt;p: pointer&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Focusing on the call to &lt;code class=&quot;highlighter-rouge&quot;&gt;gethostbyname&lt;/code&gt; located at 0x100001757, can you figure out which DNS request will be made?&lt;/p&gt;
-
-    &lt;p&gt;I had a minor panic attack when I didn’t see address 10001757 above, but then I noticed if we do some simple math we find that 1001656 + 101 gives us that number. Woo, ADDITION&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/05_10001757.PNG&quot; alt=&quot;10001757.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt; is being pushed as a parameter. If you hover over the operand for mov, it says “[this is RDO]pics.practicalmalwareanalys…”. Then 0xD is added to this, which pushes the offset to the beginning of the URL.&lt;/p&gt;
-
-    &lt;p&gt;&lt;strong&gt;pics.practicalmalwareanalysis.com&lt;/strong&gt; is the DNS request being made.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;How many local variables has IDA Pro recognized for the subroutine at 0x10001656?&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/06_10001656.PNG&quot; alt=&quot;10001656.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;Let’s count em! I believe every variable in the list is a local variable, and there are &lt;strong&gt;24&lt;/strong&gt; of these. But wait! One of the elements of this list is lpThreadParameter, which is actually a parameter. So, 24-1=&lt;strong&gt;23&lt;/strong&gt; local variables.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;How many parameters has IDA Pro recognized for the subroutine at 0x10001656?&lt;/p&gt;
-
-    &lt;p&gt;Looking at how the function is called, I see one parameter: lpThreadParameter. &lt;strong&gt;1&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Use the Strings window to locate the string \cmd.exe /c in the disassembly. Where is it located?&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/08_stringscmd.PNG&quot; alt=&quot;08_stringscmd.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;strong&gt;0x10095B34&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What is happening in the area of code that references \cmd.exe /c?&lt;/p&gt;
-
-    &lt;p&gt;Double click the string, then click the address of this string in the disassembler and find cross references. Find that there is only one:&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/09_xrefcmd.PNG&quot; alt=&quot;09_xrefcmd.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;Proceed to click this reference to see what’s going on and Ida helps us identify quickly that it’s a check to see whether cmd.exe or command.exe is the correct command to run command prompt on whatever version of Windows this malware is attacking.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/10_cmdorcommand.PNG&quot; alt=&quot;10_cmdorcommand.PNG&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;In the same area, at 0x100101C8, it looks like dword_1008E5C4 is a global variable that helps decide which path to take. How does the malware set dword_1008E5C4? (Hint: Use dword_1008E5C4’s cross-references.)&lt;/p&gt;
-
-    &lt;p&gt;If we look at the xrefs of this, there are three. Two are reads, and one is a write. The write is the one we are interested in because writing the variable implies that’s where it’s set to something. So if we look at where that happens…:&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/11_xref1008e5c4.PNG&quot; alt=&quot;11_xref1008e5c4.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;So, that area is populated with whatever is in &lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt; after function &lt;code class=&quot;highlighter-rouge&quot;&gt;sub_10003695&lt;/code&gt; runs. Usually &lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt; contains return values, so we want to investigate what this function does.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/12_sub_10003695.PNG&quot; alt=&quot;12_sub_10003695.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;This function is a wrapper for the Microsoft function GetVersionExA, which can quickly be identified (via a google search) as a function that returns the operating system version running on the machine.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;A few hundred lines into the subroutine at 0x1000FF58, a series of comparisons use memcmp to compare strings. What happens if the string comparison to robotwork is successful (when memcmp returns 0)?&lt;/p&gt;
-
-    &lt;p&gt;Look at the strings, identify where “robotwork” is, cross reference it, find it’s used here:&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/13_robotwork.PNG&quot; alt=&quot;13_robotwork.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;So if the comparison returns 0, then eax will be 0. Test sets the flags, and then JNZ jumps if not zero, meaning the jump will be taken (the green path) if the zero flag is NOT set. The question asks what happens if memcmp returns 0, which would result in the zero flag being set, which means this jump will NOT be taken, so we follow the red path.&lt;/p&gt;
-
-    &lt;p&gt;The red path takes us to a guaranteed calling of sub_100052A2 with parameter “s”. This function appears to query a registry key to find some data value labeled as Robot_Worktime.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What does the export PSLIST do?&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/14_pslist.PNG&quot; alt=&quot;14_pslist.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;After briefly looking over the functions called from within PSLIST I believe PSLIST is looking through a set of processes trying to find one to inject code with.  (I see “OpenProcess” in each function guaranteed to be called from within PSLIST).&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Use the graph mode to graph the cross-references from sub_10004E79. Which API functions could be called by entering this function? Based on the API functions alone, what could you rename this function?&lt;/p&gt;
-
-    &lt;p&gt;After finding the function and getting its disassembly onscreen, I went to &lt;strong&gt;view -&amp;gt; graphs -&amp;gt; Xrefs from:&lt;/strong&gt; and obtained this graph.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/15_xrefFrom.PNG&quot; alt=&quot;15_xrefFrom.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;strong&gt;strlen, sprintf, GetSystemDefaultLangId, malloc, send, free&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;I’d name it something like &lt;code class=&quot;highlighter-rouge&quot;&gt;SendSystemLanguage&lt;/code&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;How many Windows API functions does DllMain call directly? How many at a depth of 2?&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/16_dllMainXrefs.PNG&quot; alt=&quot;16_dllMainXrefs.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;Four direct calls: &lt;strong&gt;Strncpy, createThread, strlen, _strnicmp&lt;/strong&gt;.&lt;/p&gt;
-
-    &lt;p&gt;In order to view calls at a depth of two, we can go to &lt;strong&gt;view -&amp;gt; graphs -&amp;gt; User Xref chart&lt;/strong&gt; and choose a recurive depth of 2. However, this doesn’t seem to have any affect on Ida demo and i’m not sure why. The information could be derived manually, however, from doing xref charts on each of the above listed functions, so I’m not going to spend more time on it.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;At 0x10001358, there is a call to Sleep (an API function that takes one parameter containing the number of milliseconds to sleep). Looking backward through the code, how long will the program sleep if this code executes?&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/17_sleep.PNG&quot; alt=&quot;17_sleep.PNG&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;A pointer to the string “[This is CTI]30” is moved into &lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt;. Then, 0xD is added to it, which moves forward the address to point directly to the “30” part of the string. Then, atoi converts it to a number and stores it in &lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt;. Up next, 0x3E8 is multiplied into the 30 in &lt;code class=&quot;highlighter-rouge&quot;&gt;eax&lt;/code&gt;. I clicked this hex number and hit &lt;strong&gt;h&lt;/strong&gt; to turn it into a decimal number, which is 1000. So, 30*1000 is 30,000 milliseconds, which is &lt;strong&gt;30 seconds.&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;At 0x10001701 is a call to socket. What are the three parameters?&lt;/p&gt;
-
-    &lt;p&gt;Do a ‘goto’ and go to that address. Ida lists what the three parameters are:&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;Protocol: 6&lt;/li&gt;
-      &lt;li&gt;Type: 1&lt;/li&gt;
-      &lt;li&gt;af: 2&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;All we need to do is identify what those numbers refer to. Pull up the microsoft documentation for &lt;code class=&quot;highlighter-rouge&quot;&gt;socket&lt;/code&gt; and we find that:&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;Protocol of 6 refers to IPPROTO_TCP, which (shockingly) configures the socket to use the TCP protocol.&lt;/li&gt;
-      &lt;li&gt;Type of 1 means SOCK_STREAM, which is ‘a socket type that provides sequenced, reliable, two-way connection-based byte streams with an OOB data transmission mechanism.’&lt;/li&gt;
-      &lt;li&gt;af (address family) of 2 means AF_INET– IPv4 address families.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Using the MSDN page for socket and the named symbolic constants functionality in IDA Pro, can you make the parameters more meaningful? What are the parameters after you apply changes?&lt;/p&gt;
-
-    &lt;p&gt;We can make the parameters more meaningful, &lt;em&gt;if Ida Demo actually found the right library to load.&lt;/em&gt; It’s slightly inconvenient to look at MSDN documentation, but it gets the job done, so I’m going to move on.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Search for usage of the in instruction (opcode 0xED). This instruction is used with a magic string VMXh to perform VMware detection. Is that in use in this malware? Using the cross-references to the function that executes the in instruction, is there further evidence of VMware detection?&lt;/p&gt;
-
-    &lt;p&gt;If we do a &lt;strong&gt;search -&amp;gt; text&lt;/strong&gt; and click &lt;strong&gt;find all occurances&lt;/strong&gt; and search for the text &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt;, we find that in the resulting list there is only one &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt; instruction. If we go to that location and cross reference the function that contains the instruction, we find that three functions call it: InstallRT, InstallSA, and InstallSB. The functions all look very similar. There certainly is evidence of VMWare detection.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/18_vmwaredetect.PNG&quot; alt=&quot;18_vmwaredetect&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Jump your cursor to 0x1001D988. What do you find?&lt;/p&gt;
-
-    &lt;p&gt;We find information interpreted as characters by Ida.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/files/ch5_sc/19_1001d988.PNG&quot; alt=&quot;1001d988&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;If you have the IDA Python plug-in installed (included with the commercial version of IDA Pro), run Lab05-01.py, an IDA Pro Python script provided with the malware for this book. (Make sure the cursor is at 0x1001D988.) What happens after you run the script?&lt;/p&gt;
-
-    &lt;p&gt;I don’t have Ida Pro :/&lt;/p&gt;
-
-    &lt;p&gt;But the book states that the obfuscated string would be decoded to reveal a backdoor.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;With the cursor in the same location, how do you turn this data into a single ASCII string?&lt;/p&gt;
-
-    &lt;p&gt;You’d hit the A key to turn it into a readable string after running the plugin.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Open the script with a text editor. How does it work?&lt;/p&gt;
-
-    &lt;p&gt;I’ll omit this question since I cannot figure it out without doing the above two parts legitimately.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">Use only Ida Pro to analyze Lab05-01.dll.</summary></entry><entry><title type="html">PMA Ch.5 notes: IDA Pro</title><link href="http://localhost:4000/notes/2018/09/04/ch5_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch.5 notes: IDA Pro" /><published>2018-09-04T18:32:00-06:00</published><updated>2018-09-04T18:32:00-06:00</updated><id>http://localhost:4000/notes/2018/09/04/ch5_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/04/ch5_PMA_notes.html">&lt;p&gt;There is a HUGE amount of content to know about IDA, and these notes hardly puts a dent in covering the helpful content.&lt;/p&gt;
-
-&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
-
-    &lt;p&gt;This chapter introduces Ida Pro, which is one of the most important tools in the market.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
-
-    &lt;p&gt;Ida is an extremely powerful tool, and the information in the chapter is just barely enough to &lt;em&gt;get started&lt;/em&gt;. More will be provided as the book continues.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
-
-    &lt;p&gt;This chapter is more of a flyover tutorial than a conceptually dense section of the book. As such, we should care because it provides tips and tricks to get a novice reverser up and running with Ida.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;terminology&quot;&gt;Terminology&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Rebasing&lt;/strong&gt;: PE files are compiled to load at a preferred base address. If the Windows loader cannot use this address (say, because it’s taken up by another program), then &lt;em&gt;rebasing&lt;/em&gt; may occur. It’s not explicitly defined in this chapter, but they do mention that if DLLs appear to be loading into processes different than what Ida says, the DLL may be being rebased, and this can be fixed by clicking the &lt;em&gt;Manual Load&lt;/em&gt; checkbox on the load file window.&lt;/p&gt;
-
-&lt;h2 id=&quot;ida-cheatsheet&quot;&gt;Ida Cheatsheet&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;switch between graph mode and text mode: &lt;strong&gt;space&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Cross references are things that help you find where certain names are used. Think of it as the opposite of clicking a link– it goes the other direction. Find cross references with &lt;strong&gt;x&lt;/strong&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Jumping to a virtual address can be done with &lt;strong&gt;g&lt;/strong&gt;. GOTO, of course!
-    &lt;ul&gt;
-      &lt;li&gt;Jumping to a raw offset is possible too with &lt;strong&gt;jump -&amp;gt; jump to file offset&lt;/strong&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Has Ida failed to identify some code as a function? Create it by pressing &lt;strong&gt;p&lt;/strong&gt;.
-    &lt;ul&gt;
-      &lt;li&gt;Has Ida also failed to identify a EBP-based stack frame, and thus not abstracted away some simple changes that add for readability (like putting variable names into assembly instruction operand spots)? Try &lt;strong&gt;Alt+p&lt;/strong&gt;, select &lt;strong&gt;BP based frame&lt;/strong&gt;, and specify &lt;strong&gt;4 bytes for saved registers.&lt;/strong&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Add your own comments to places by putting the cursor on a line of a disassembly and hitting &lt;strong&gt;:&lt;/strong&gt;. OR BETTER YET: put a comment on an address that has cross-references to it, and have the comment be repeated: hit &lt;strong&gt;;&lt;/strong&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Sometimes Ida mislabels numbers to be addresses, or vice versa, since everything’s a number under the hood anyway. Change numbers to cross-referencable addresses and back via &lt;strong&gt;O&lt;/strong&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;To represent highlighted bytes as code: &lt;strong&gt;C&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;To represent defined code as not a function, code, or data: &lt;strong&gt;U&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;ida-tips-and-tricks&quot;&gt;Ida Tips and Tricks&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;When Idaing, you may find a few keystrokes suddenly causes the interface to become impossible to navigate (imagine the first couple times you used Vim). Reset the interface with &lt;strong&gt;Windows -&amp;gt; reset desktop.&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Similarly, if you love your current desktop configuration, do a &lt;strong&gt;Windows -&amp;gt; save desktop&lt;/strong&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Graph mode excludes certain helpful info, such as line numbers and op codes. Change this:
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;Options -&amp;gt; general -&amp;gt; select &lt;code class=&quot;highlighter-rouge&quot;&gt;line prefixes&lt;/code&gt;&lt;/strong&gt; and set number of opcode bytes to 6. Most instructions are 6 or less bytes, so setting this to 6 will allow one to see the memory locations and opcode values for each instruction in the code listing.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Auto Comments&lt;/strong&gt; can help aid analysis via adding assembly comments throughout the disassembly window. Go to &lt;strong&gt;Options -&amp;gt; General&lt;/strong&gt; and click the &lt;strong&gt;Auto Comments&lt;/strong&gt; checkbox.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;For information on plugins for Ida, see page 103. I’m not good enough to appreciate that yet, so I’m putting this subsection on the backburner for now.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;useful-analysis-windows&quot;&gt;Useful Analysis Windows&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;Functions Window&lt;/em&gt;: lists all functions in the executable and each function’s length.&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Names window&lt;/em&gt;: Lists every address with a name, including functions, named code, named data, and strings.&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Strings window&lt;/em&gt;: Shows all strings. Default is ASCII only; longer than 5 characters.
-    &lt;ul&gt;
-      &lt;li&gt;Can change this by right-clicking in the strings window and selecting setup.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Imports/Exports windows&lt;/em&gt;: self-explanatory. The exports window is helpful when analyzing DLLs (since DLLs provide exports).&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;em&gt;Structures window&lt;/em&gt;: Lists the layout of all active data structures.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;In general, double clicking stuff in windows will link back to the disassembly window.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;searching&quot;&gt;Searching&lt;/h3&gt;
-&lt;p&gt;The Search functionality in the disassembly window is helpful. See p.94 for more details about common searches (if they aren’t self explanatory in Ida). (Search -&amp;gt; next code, search -&amp;gt; test, search-&amp;gt; sequence of bytes for starters)&lt;/p&gt;
-
-&lt;h3 id=&quot;graphing-options&quot;&gt;Graphing Options&lt;/h3&gt;
-&lt;p&gt;Graphing options help provide insight into the control flow of the program. However, due to how they are used, it  wouldn’t be very helpful for me to annotate this section as it’s so diagram dependent. Look at page 98 for graphing options information.&lt;/p&gt;
-
-&lt;h3 id=&quot;enhancing-the-disassembly&quot;&gt;Enhancing the disassembly&lt;/h3&gt;
-
-&lt;h4 id=&quot;renaming-locations&quot;&gt;Renaming Locations&lt;/h4&gt;
-&lt;p&gt;Should be doable by right clicking names of things like sub_400699. Changes propogate throughout the program.&lt;/p&gt;
-
-&lt;h4 id=&quot;comments&quot;&gt;Comments&lt;/h4&gt;
-&lt;p&gt;Add your own comments to places by putting the cursor on a line of a disassembly and hitting &lt;strong&gt;:&lt;/strong&gt;. OR BETTER YET: put a comment on an address that has cross-references to it, and have the comment be repeated: hit &lt;strong&gt;;&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;h4 id=&quot;formatting-operands&quot;&gt;Formatting operands&lt;/h4&gt;
-&lt;p&gt;You can right click constants and represent the data there in a plethora of ways (binary, octal, hex, decimal).&lt;/p&gt;
-
-&lt;p&gt;Imagine &lt;code class=&quot;highlighter-rouge&quot;&gt;stdin.&lt;/code&gt; What number comes straight to mind? 0, of course! &lt;code class=&quot;highlighter-rouge&quot;&gt;stdin&lt;/code&gt; is a named constant of sorts. Ida can help reverse where a compiler plugged in a number for a named constant in the initial source code. The option to do so is given in the same menu as the above options.&lt;/p&gt;
-
-&lt;p&gt;If the constants don’t show up, then the proper libraries that correspond to those function calls may not be loaded in Ida. Do a &lt;strong&gt;View -&amp;gt; open subviews -&amp;gt; type libraries&lt;/strong&gt; to get to the submenu to change that.&lt;/p&gt;
-
-&lt;h4 id=&quot;loading-symbolic-constants&quot;&gt;Loading symbolic constants&lt;/h4&gt;
-&lt;p&gt;If you have random looking numbers being passed to Windows API functions, you can have Ida identify what constants those numbers refer to. Go to &lt;strong&gt;View -&amp;gt; Open Subviews -&amp;gt; Type Libraries&lt;/strong&gt; and then right click and load a new library. Look for &lt;code class=&quot;highlighter-rouge&quot;&gt;ntapi&lt;/code&gt; and load it. (I presume this will work assuming &lt;code class=&quot;highlighter-rouge&quot;&gt;ntapi&lt;/code&gt; shows up, which, in my case, it does &lt;em&gt;not&lt;/em&gt;.)&lt;/p&gt;
-
-&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;When loading a program, Ida maps the file into memory in a similar fashion to how the OS does it.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;When loading a file into Ida, you can choose to interpret the file as raw data. This can be helpful in the case that malware has additional stuff appended to the end of the executable. This extra stuff would normally not be loaded into memory.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Jump arrow color key:
-    &lt;ul&gt;
-      &lt;li&gt;&lt;em&gt;red&lt;/em&gt;: Jump not taken&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;green&lt;/em&gt;: Jump taken&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;blue&lt;/em&gt;: unconditional jump&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Ida provides a &lt;em&gt;Navigation band.&lt;/em&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Light blue is library code recognized by Ida’s super cool ‘FLIRT’ technology.&lt;/li&gt;
-      &lt;li&gt;Red is compiler generated code.&lt;/li&gt;
-      &lt;li&gt;Dark blue is user-written code.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">There is a HUGE amount of content to know about IDA, and these notes hardly puts a dent in covering the helpful content.</summary></entry><entry><title type="html">PMA Ch. 4 notes: A Crash Course in x86 Disassembly</title><link href="http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html" rel="alternate" type="text/html" title="PMA Ch. 4 notes: A Crash Course in x86 Disassembly" /><published>2018-09-03T14:31:00-06:00</published><updated>2018-09-03T14:31:00-06:00</updated><id>http://localhost:4000/notes/2018/09/03/ch4_PMA_notes</id><content type="html" xml:base="http://localhost:4000/notes/2018/09/03/ch4_PMA_notes.html">&lt;h2 id=&quot;chapter-summary-questions&quot;&gt;Chapter summary questions&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;In two sentences or less, provide an overview of what this chapter is about.&lt;/p&gt;
-
-    &lt;p&gt;This chapter lays the foundation of assembly and computer architecture required for effective malware analysis.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What are the three most important takeaways from this chapter?&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;How the stack works and how functions utilize it&lt;/li&gt;
-      &lt;li&gt;What information is contained in which parts of RAM (see the Computer Architecture subsection below)&lt;/li&gt;
-      &lt;li&gt;Which registers do what. I presume that’s known upon reading this section, but just in case it isn’t, this chapter cover sit.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;What problems does this chapter address? In other words, why should we care about this chapter?&lt;/p&gt;
-
-    &lt;p&gt;Without this information, one won’t even have a foundation for being able to understand what 90% of malware analysis is about– assembly instructions and how they’re used.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;page-to-page-notes&quot;&gt;Page-to-page notes&lt;/h2&gt;
-
-&lt;h3 id=&quot;levels-of-abstraction&quot;&gt;Levels of Abstraction&lt;/h3&gt;
-
-&lt;p&gt;There are six levels of abstraction in a computer system. From lowest to highest:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;em&gt;Hardware.&lt;/em&gt; This is the actual circuitry of the system.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;em&gt;Microcode.&lt;/em&gt; This is the firmware of the system. It operates &lt;em&gt;only&lt;/em&gt; on the exact circuitry for which it was designed.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;em&gt;Machine code.&lt;/em&gt; The machine code level consists of &lt;em&gt;opcodes&lt;/em&gt;, which are hex digits that tell the processor what to do. Machine code is the result of the compilation process.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;em&gt;Low-level languages.&lt;/em&gt; Assembly and the like is what is found here, and is generally accepted as the lowest-level human-readable abstraction level. There are several dialects of assembly, among which include x86, which is what is taught in this book. &lt;strong&gt;Assembly is the highest level language that can be reliably and consistently recovered from machine code when the high level source code is unavailable (as it usually is.)&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;em&gt;High-level languages.&lt;/em&gt; Things like C, C++, etc.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;em&gt;Interpreted languages.&lt;/em&gt; Languages like Java, C#, Perl, .NET. Interpreted languages are not compiled but are instead translated into &lt;em&gt;bytecode&lt;/em&gt;, which is an intermediate representation specific to the programming language. It executes within an &lt;em&gt;interpreter&lt;/em&gt;, which translates bytecode into executable machine code on the fly at runtime.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;computer-architecture&quot;&gt;Computer Architecture&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;RAM contains the Stack, Heap, Code, and Data of a program.&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;em&gt;Data&lt;/em&gt;. Contains the data section, which contain values put in place when a program is initially loaded. These are static values (opposite of dynamic values which are contained within the heap), or they are global values since they’re available to any part of the program.&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Code.&lt;/em&gt; Instructions for the CPU are here.&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Heap.&lt;/em&gt; Used for dynamic memory during program execution.&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Stack.&lt;/em&gt; Used for local variables and parameters for functions, and to help control program flow. More on this later.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Operands&lt;/em&gt; take one of three forms.
-    &lt;ul&gt;
-      &lt;li&gt;&lt;em&gt;Immediates&lt;/em&gt;: fixed values. Ex: &lt;code class=&quot;highlighter-rouge&quot;&gt;0x42&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Registers&lt;/em&gt;: refer to registers. Self-explanatory. Ex: &lt;code class=&quot;highlighter-rouge&quot;&gt;eax, esp, ah&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Memory addresses&lt;/em&gt;: refer to memory addresses which in turn could point to locations in memory or registers. Ex: &lt;code class=&quot;highlighter-rouge&quot;&gt;[eax]&lt;/code&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Registers&lt;/em&gt; are small amounts of data storage available to the CPU. We have four different kinds of registers.
-    &lt;ul&gt;
-      &lt;li&gt;&lt;em&gt;General&lt;/em&gt; registers are used by the CPU during execution.&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Segment&lt;/em&gt; registers are used to track sections of memory.&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Status flags&lt;/em&gt; are used to make decisions and are modified by certain instructions.&lt;/li&gt;
-      &lt;li&gt;&lt;em&gt;Instruction pointers&lt;/em&gt; point to the next instruction to execute.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;notes-on-specific-assembly-instructions&quot;&gt;Notes on specific assembly instructions&lt;/h3&gt;
-&lt;p&gt;The book uses Intel syntax, which follows a &lt;code class=&quot;highlighter-rouge&quot;&gt;dest, src&lt;/code&gt; notation.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;LEA &lt;em&gt;dest, src&lt;/em&gt; is used as a quick way to calculate an effective address. For example, &lt;code class=&quot;highlighter-rouge&quot;&gt;lea eax, [ebx + 8]&lt;/code&gt; puts the value specified within ebx, +8, into eax.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;SUB will subtract into the destination register.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;MUL and DIV always operate on EAX.
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MUL *value*&lt;/code&gt; will calculate EDX:EAX = EAX * value&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;DIV *value*&lt;/code&gt; will calculate EDX:EAX (treating the two as a compound register) by value, and store the quotient (division) in eax, and the remainder (modulus) in edx.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;XOR is a common instruction used to zero things out. &lt;code class=&quot;highlighter-rouge&quot;&gt;XOR eax, eax&lt;/code&gt; =&amp;gt; eax is 0 now.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;TEST and CMP are used to set flags. They do not affect operands. See p80 for a little table that helps make sense of what cmp sets under what conditions.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;The REP family of instructions are used for manipulating data buffers. I won’t bother with understanding these in too much depth at the moment, as it’s something that can be easily looked up when I’m face-to-face with a rep instruction later on. See page 81.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;stack-details&quot;&gt;Stack Details&lt;/h3&gt;
-&lt;p&gt;It’s very important to know how the stack is used to conduct function calls, as it is frequently abused.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Arguments are &lt;code class=&quot;highlighter-rouge&quot;&gt;push&lt;/code&gt;ed onto the stack.&lt;/li&gt;
-  &lt;li&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;call [functionName]&lt;/code&gt; occurs. FunctionName is simply a pointer to some code.
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; is a compound instruction– that is, it is an instruction that combines two others. In this case, those two instructions are &lt;code class=&quot;highlighter-rouge&quot;&gt;push eip&lt;/code&gt; followed by &lt;code class=&quot;highlighter-rouge&quot;&gt;mov eip, functionName&lt;/code&gt;. In this manner, the return address is saved onto the stack.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Function prologue stuff (i.e. boiler plate stuff) happens now. Space is allocated on the stack for local variables, and &lt;code class=&quot;highlighter-rouge&quot;&gt;ebp&lt;/code&gt; is pushed onto the stack. Pushing &lt;code class=&quot;highlighter-rouge&quot;&gt;ebp&lt;/code&gt; ‘saves the context’ of the stack as it was before the function was called, which is important as we need that context back after the function completes.&lt;/li&gt;
-  &lt;li&gt;The function does its work.&lt;/li&gt;
-  &lt;li&gt;Now, the stack is restored to the state in which it was before the function was called, via a function epilogue. &lt;code class=&quot;highlighter-rouge&quot;&gt;ebp&lt;/code&gt; is restored to what it was. &lt;code class=&quot;highlighter-rouge&quot;&gt;leave&lt;/code&gt; is often used to restore the stack as &lt;code class=&quot;highlighter-rouge&quot;&gt;leave&lt;/code&gt; does a &lt;code class=&quot;highlighter-rouge&quot;&gt;mov esp, ebp&lt;/code&gt; followed by a &lt;code class=&quot;highlighter-rouge&quot;&gt;pop ebp&lt;/code&gt;, which is all that needs to happen to set the stack back to what it was– as long as things weren’t modified by the function.&lt;/li&gt;
-  &lt;li&gt;The function returns by calling &lt;code class=&quot;highlighter-rouge&quot;&gt;ret&lt;/code&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;ret&lt;/code&gt; does a &lt;code class=&quot;highlighter-rouge&quot;&gt;pop eip&lt;/code&gt;, which transfers control back to the calling function.&lt;/li&gt;
-  &lt;li&gt;The stack is adjusted to remove arguments that were sent, unless they’ll be sent again later.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Diagrams are great for visualing the stack. Due to fear of copyright stuff, I’ll just tell you that a great diagram can be found on p79.&lt;/p&gt;
-
-&lt;p&gt;Note that the stack grows upward (i.e. as things are pushed onto the stack, memory addresses of ‘higher’ items are lower in value than memory addresses of ‘lower’ items.&lt;/p&gt;
-
-&lt;p&gt;Finally, note that function &lt;em&gt;arguments&lt;/em&gt; are going to be at a positive offset relative to EBP, while &lt;em&gt;local variables&lt;/em&gt; are going to be at a negative offset relative to EBP.&lt;/p&gt;</content><author><name></name></author><summary type="html">Chapter summary questions In two sentences or less, provide an overview of what this chapter is about. This chapter lays the foundation of assembly and computer architecture required for effective malware analysis.</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</summary></entry></feed>

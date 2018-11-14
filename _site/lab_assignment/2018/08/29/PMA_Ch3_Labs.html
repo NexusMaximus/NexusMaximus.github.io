@@ -175,7 +175,7 @@
 
     <p><img src="/files/ch3_sc2/3.3.2svchostcall.PNG" alt="3.3.2svchostcall.PNG" /></p>
 
-    <p>Yet, it appears to be querying the entire registry. I don’t think this is svchost.exe’s main function. This smells like process injection, which could be what ends up causing the Windows error when this malware arrives at the functionality that is supposed to come after the registry querying. Further, process injection often works only for specific builds of Windows (i.e. injecting a process in Windows 7 may not work the same way as injecting a process in Windows XP). I think that’s why we receive a runtime error when runnign this in Windows 7.</p>
+    <p>Yet, it appears to be querying the entire registry. I don’t think this is svchost.exe’s main function. This smells like process injection, which could be what ends up causing the Windows error when this malware arrives at the functionality that is supposed to come after the registry querying. Further, process injection often works only for specific builds of Windows (i.e. injecting a process in Windows 7 may not work the same way as injecting a process in Windows XP). I think that’s why we receive a runtime error when running this in Windows 7.</p>
   </li>
   <li>
     <p>Can you identify any live memory modifications?</p>
@@ -220,7 +220,7 @@
   <li>
     <p>Are there other ways to run this program?</p>
 
-    <p>If we running the program on the command line (i.e. cmd.exe) we can easily pass in more arguments. However, without doing a deeper dive into what sorts of arguments it may require/need, we can’t further process what this program does. I suspect we’ll return to this program shortly after the Ida chapter.</p>
+    <p>If we run the program on the command line (i.e. cmd.exe) we can easily pass in more arguments. However, without doing a deeper dive into what sorts of arguments it may require/need, we can’t further process what this program does. I suspect we’ll return to this program shortly after the Ida chapter.</p>
   </li>
 </ol>
 
