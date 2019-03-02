@@ -43,7 +43,7 @@ Services ran at startup: ``HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run``
 
 
 ### Running DLLs
-*rundll32.exe* is what we use to run functions or ordinals from DLL files. Syntax:
+*rundll32.exe* is what we use to run functions or ordinals from DLL assets/images/posts. Syntax:
 
 ```
 C:\rundll32.exe DLLname, export arguments

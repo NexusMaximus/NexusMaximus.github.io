@@ -20,7 +20,7 @@ Let's get started.
 ## Chapter summary questions
 1. In two sentences or less, provide an overview of what this chapter is about.
 	
-	This chapter discusses basic static analysis of executable files and provides a slew of tools used to do so. Static analysis of a file is analysis that does NOT involve running the file, such as by examining the header of the file and looking for strings contained within. 
+	This chapter discusses basic static analysis of executable assets/images/posts and provides a slew of tools used to do so. Static analysis of a file is analysis that does NOT involve running the file, such as by examining the header of the file and looking for strings contained within. 
 
 
 2. What are the three most important takeaways from this chapter?
@@ -65,15 +65,15 @@ These section names are convention; Windows doesn't require them to be labeled a
 [Dependency Walker](http://dependencywalker.com/) is a free utility that scans Windows executables and builds a hierarchical tree diagram of all dependent modules. 
 P16 discusses a bit about how to use it.
 
-PeID: support was discontinued in 2011, but it is still helpful for detecting packed files.
+PeID: support was discontinued in 2011, but it is still helpful for detecting packed assets/images/posts.
 
 [PEview](http://wjradburn.com/software/): used to view executable file metadata (i.e. information in the headers of an executable).
 
-[Resource Hacker](http://angusj.com/): browses the .rsrc section of an executable. P25 discusses usage of this tool. It also enables one to extract embedded files from within executable files. 
+[Resource Hacker](http://angusj.com/): browses the .rsrc section of an executable. P25 discusses usage of this tool. It also enables one to extract embedded assets/images/posts from within executable assets/images/posts. 
 
 [PEBrowse Professional](http://www.smidgeonsoft.prohosting.com/pebrowse-pro-file-viewer.html) is similar to PEview and allows you to look at the bytes from each section. It does a good job of presenting info from the resource (.rsrc) section.
 
-[PE Explorer](http://heaventools.com/) has a rich GUI that allows one to navigate through the various parts of a PE file. It permits editing files, too. RIP if you don't have money to pay for it, though. 
+[PE Explorer](http://heaventools.com/) has a rich GUI that allows one to navigate through the various parts of a PE file. It permits editing assets/images/posts, too. RIP if you don't have money to pay for it, though. 
 
 
 

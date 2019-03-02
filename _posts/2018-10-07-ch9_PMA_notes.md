@@ -30,7 +30,7 @@ You can also attach OllyDbg to a running process using **File -> attach**. When 
 
 ### Understanding Olly's GUI
 
-![n1.PNG](/files/ch9sc/n1.PNG)
+![n1.PNG](/assets/images/posts/ch9sc/n1.PNG)
 
 Upon opening a program with OllyDbg (in my case, Lab09-01.exe), we have four different windows. 
 
@@ -72,7 +72,7 @@ You can generally select what breakpoints you want to use by right-clicking and 
 Click the M box or click **View -> Memory** to display all memory blocks allocated by the debugged program. This is a great way to see how a program is laid out in memory. All DLLs and their code sections are also visible. You cna double-click any row in the memory map to show a memory dump of that section, or you can send the data in a memory dump to the disassembler window by right-clicking and selecting **View in Disassembler.** **This seems very helpful for obfuscated malware.**
 
 ### DLLs
-OllyDbg can debug DLL files. Since DLLs cannot be executed directly, OllyDbg uses a dummy program called *loaddll.exe* to load them. By default, OllyDbg breaks at the DLL entry point (dllmain) when the DLL is loaded.
+OllyDbg can debug DLL assets/images/posts. Since DLLs cannot be executed directly, OllyDbg uses a dummy program called *loaddll.exe* to load them. By default, OllyDbg breaks at the DLL entry point (dllmain) when the DLL is loaded.
 
 To call exported functions with arguments inside the debugged DLL:
 1. Load the DLL
@@ -110,7 +110,7 @@ See the step by step process on p196. All I would do in these notes is copy that
 
 
 ## Rebasing
-This occurs when a module in Windows is not loaded at its preferred *base address.* All PE files in Windows have a preferred base address, known as the *image base* defined in the PE header. Most executables are designed to be loaded at ``0x400000``, which is probably why so many variables and functions in Ida are named using 0x400000 or some close number in some fashion. 
+This occurs when a module in Windows is not loaded at its preferred *base address.* All PE assets/images/posts in Windows have a preferred base address, known as the *image base* defined in the PE header. Most executables are designed to be loaded at ``0x400000``, which is probably why so many variables and functions in Ida are named using 0x400000 or some close number in some fashion. 
 
 Of course, this is a preferred address, but it doesn't guarantee a program will be loaded there. For example, if a program has two DLLs and they each have the same base address, they can't both be loaded at the same address. 
 

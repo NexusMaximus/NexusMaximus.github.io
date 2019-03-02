@@ -21,7 +21,7 @@ I'll also answer the following general questions in an attempt to keep the big p
 
 2. What did doing the lab exercises teach that was not gained from reading the chapter?
 
-	* Look **very** carefully at the strings of the file-- specifically at the names of .dll files! 
+	* Look **very** carefully at the strings of the file-- specifically at the names of .dll assets/images/posts! 
 	* Modification time and compilation time are definitely not the same thing. Compilation time can be found by putting the file into PEView and going to IMAGE_NT_HEADERS -> IMAGE_FILE_HEADER -> Time Date Stamp.
 	* Virtual vs. raw sizes, identifiable using PEiD (at least for 32 bit exes) can be an indicator of packing. Per this [post](http://www.asmcommunity.net/forums/topic/?id=29605):
 	  * Raw size: exactly the size of the section's data *in the file*
@@ -44,21 +44,21 @@ I'll also answer the following general questions in an attempt to keep the big p
 
 	Indeed!
 
-	![1.1.1dll](/files/ch1_sc/1.1.1dll.PNG "yee")
+	![1.1.1dll](/assets/images/posts/ch1_sc/1.1.1dll.PNG "yee")
 
-	![1.1.1exe](/files/ch1_sc/1.1.1exe.PNG)
+	![1.1.1exe](/assets/images/posts/ch1_sc/1.1.1exe.PNG)
 
-2. When were these files compiled?
+2. When were these assets/images/posts compiled?
 
 	Not positive on how to find the exact date using a tool, but just viewing file properties and looking at the "last modified" entry gives the right answer for the .exe. Alternatively, this info is also provided by CFFExplorer.
 
 	After reading answers: see question 2 of the above section
 
-3. Are there any indicators that these files are packed or obfuscated? If so, what are the indicators?
+3. Are there any indicators that these assets/images/posts are packed or obfuscated? If so, what are the indicators?
 
 	I argue no:
 	* The .exe and .dll disassemble successfully in IDA Demo
-	* There are several imports identifiable by CFFExplorer which would otherwise be obfuscated ![1.1.3dll](/files/ch1_sc/1.1.3dll.PNG)
+	* There are several imports identifiable by CFFExplorer which would otherwise be obfuscated ![1.1.3dll](/assets/images/posts/ch1_sc/1.1.3dll.PNG)
 
 4. Do the imports hint at what the malware does?
 
@@ -66,7 +66,7 @@ I'll also answer the following general questions in an attempt to keep the big p
 	  * CreateProcess indicates it runs something.
 	  * from the book: WS2_32.dll provides network functions. So perhaps it's exfiltrating stuff-n-things
 	* Lab1.exe: 
-	  * CreateFileA/FindFileA: maybe it's creating a log file, or checking for its own existence, or searching for specific files on a system (like SAM files)
+	  * CreateFileA/FindFileA: maybe it's creating a log file, or checking for its own existence, or searching for specific assets/images/posts on a system (like SAM assets/images/posts)
 
 5. Any other host-based indicators? 
 
@@ -76,9 +76,9 @@ I'll also answer the following general questions in an attempt to keep the big p
 	
 	Running strings on the .dll yields an IP address: 127.26.152.13. So look for traffic going to that IP address
 
-7. Guess as to the purpose of the files:
+7. Guess as to the purpose of the assets/images/posts:
 
-	Search for certain files (and/or create them) and exfil them to an external site. My guess is it's a keylogger or it's seeking password files or something of the like. 
+	Search for certain assets/images/posts (and/or create them) and exfil them to an external site. My guess is it's a keylogger or it's seeking password assets/images/posts or something of the like. 
 
 
 #### After reading the book:
@@ -109,13 +109,13 @@ I'll also answer the following general questions in an attempt to keep the big p
 4. Indicators!
 
 	First, I unpacked the file using CFFExplorer and then put it back into Ida to discover, with Ida's strings utility: 
-	* Host-based: strings shows "MalService" in our presence, and that string is passed as a parameter to CreateService: ![malservice](/files/ch1_sc/1.2.4malservice.PNG) This would be a great indicator (albeit not reflective of what real malware might actually do (probably)). Further, there is a strange string "HGL345" used as a parameter to CreateMutex, which suggests if a mutex named HGL345 is on the system, we know this malware probably ran. ![HGL345](/files/ch1_sc/1.2.4HGL345.PNG)
+	* Host-based: strings shows "MalService" in our presence, and that string is passed as a parameter to CreateService: ![malservice](/assets/images/posts/ch1_sc/1.2.4malservice.PNG) This would be a great indicator (albeit not reflective of what real malware might actually do (probably)). Further, there is a strange string "HGL345" used as a parameter to CreateMutex, which suggests if a mutex named HGL345 is on the system, we know this malware probably ran. ![HGL345](/assets/images/posts/ch1_sc/1.2.4HGL345.PNG)
 	* Network-based: strings yet again comes in clutch to show the presence of "http://malwareanalysisbook.com". 
 
 
 #### After reading the book:
 
-* PEiD can be used to identify virtual vs. raw sizes of sections in memory. Therefore, a raw size of 0 but a virtual size of >0 is strong evidence of shenanigans. ![peid](/files/ch1_sc/1.2.4peid.PNG "Raw size: 0; yet virtual size=0x4000? HMMMMMMM")
+* PEiD can be used to identify virtual vs. raw sizes of sections in memory. Therefore, a raw size of 0 but a virtual size of >0 is strong evidence of shenanigans. ![peid](/assets/images/posts/ch1_sc/1.2.4peid.PNG "Raw size: 0; yet virtual size=0x4000? HMMMMMMM")
 
 ### 1.3
 
@@ -155,7 +155,7 @@ I'll also answer the following general questions in an attempt to keep the big p
 4. Imports hinting as to functionality?
 	
 	* GetProcAddress/LoadLibraryA: searching for external code to run
-	* CreateFile/MoveFile/WriteFile: It's got the ability to create and write files. Keylogger? Reverse shell? 
+	* CreateFile/MoveFile/WriteFile: It's got the ability to create and write assets/images/posts. Keylogger? Reverse shell? 
 	* CreateRemoteThread: has ability to execute code in other programs. Process injection? 
 	* LookupPrivilegeValue: looking to see what permissions its running with perhaps?
 	All this, combined with the antivirus vendor tags that say "backdoor", tell me this is probably a backdoor into a machine that will give an adversary control. 
@@ -168,9 +168,9 @@ I'll also answer the following general questions in an attempt to keep the big p
 
 6. one resource in the resource section. Use ResourceHacker to examine it, and then to extract it. What does the resource tell us?
 
-	![resource](/files/ch1_sc/1.4.6resource.PNG) 
+	![resource](/assets/images/posts/ch1_sc/1.4.6resource.PNG) 
 	This appears to be another executable file. Saving it and submitting the hash resulted in interestingness:
-	![resource2](/files/ch1_sc/1.4.6resourceVT.PNG)
+	![resource2](/assets/images/posts/ch1_sc/1.4.6resourceVT.PNG)
 
 	Cool-- we get TWO malware samples for the price of ONE! My guess is that this sample drops a second executable and names it one of the above things (perhaps winup.exe). 
 

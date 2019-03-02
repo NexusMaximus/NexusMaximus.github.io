@@ -35,7 +35,7 @@ categories: notes
 
 
 ### Special Files
-**Special File**: one that can be accessed much like other files, but are not accessed by their drive letter and path. They can be hidden to directory listings. 
+**Special File**: one that can be accessed much like other assets/images/posts, but are not accessed by their drive letter and path. They can be hidden to directory listings. 
 
 #### Shared Files
 
@@ -193,12 +193,12 @@ You can write scripts that interact with the registry. Files with the .reg exten
 * CreateService: adds a new service to the SCM. Caller specifies if the service is to be ran at startup or not. 
 * StartService: You guessed it! It starts a service. It's used only if the service is not configured to start automatically (or, say, if you just freshly installed the malware on a system and it hasn't rebooted the machine yet). 
 
-## Transferring execution among files
+## Transferring execution among assets/images/posts
 
-### DLL files
+### DLL assets/images/posts
 DLLs export functions and cannot be ran on their own. They must run their code via an executable of some form. 
 * They only needed to be loaded into memory once. Then they can be used by multiple programs (unlike static libraries, which would need to be loaded on a per-exectuable-instance basis). 
-* DLLs look extremely similar to exectuable files-- they use the same format as an execuable (the PE file format).A single flag differentiates the two. 
+* DLLs look extremely similar to exectuable assets/images/posts-- they use the same format as an execuable (the PE file format).A single flag differentiates the two. 
 * DLLs contain DllMain()-- a function that has no label and isn't an export in the DLL, but is specified in the PE header as the file's entry point. It's called to notify the DLL when a process loads or unloads the library, creates a new thread, or finishes an existing thread. This allows the DLL to manage any per-process or per-thread resources. 
 
 

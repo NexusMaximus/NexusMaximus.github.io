@@ -21,7 +21,7 @@ There is a HUGE amount of content to know about IDA, and these notes hardly puts
 	This chapter is more of a flyover tutorial than a conceptually dense section of the book. As such, we should care because it provides tips and tricks to get a novice reverser up and running with Ida. 
 
 ## Terminology
-**Rebasing**: PE files are compiled to load at a preferred base address. If the Windows loader cannot use this address (say, because it's taken up by another program), then *rebasing* may occur. It's not explicitly defined in this chapter, but they do mention that if DLLs appear to be loading into processes different than what Ida says, the DLL may be being rebased, and this can be fixed by clicking the *Manual Load* checkbox on the load file window. 
+**Rebasing**: PE assets/images/posts are compiled to load at a preferred base address. If the Windows loader cannot use this address (say, because it's taken up by another program), then *rebasing* may occur. It's not explicitly defined in this chapter, but they do mention that if DLLs appear to be loading into processes different than what Ida says, the DLL may be being rebased, and this can be fixed by clicking the *Manual Load* checkbox on the load file window. 
 
 
 
