@@ -5,9 +5,9 @@
     <description>This is an organized hub for everything technical that I write, set up, or figure out over the course of my last year as a Masters student.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 01 Mar 2019 18:03:14 -0700</pubDate>
-    <lastBuildDate>Fri, 01 Mar 2019 18:03:14 -0700</lastBuildDate>
-    <generator>Jekyll v3.4.0</generator>
+    <pubDate>Fri, 01 Mar 2019 18:22:04 -0700</pubDate>
+    <lastBuildDate>Fri, 01 Mar 2019 18:22:04 -0700</lastBuildDate>
+    <generator>Jekyll v3.8.5</generator>
     
       <item>
         <title>Cryptomining Malware Sample Analysis 1: 31ADF</title>
@@ -252,12 +252,11 @@ Furthermore, to limit the amount of code that can be found by following control-
 &lt;h4 id=&quot;call-stack-tampering&quot;&gt;Call-stack Tampering&lt;/h4&gt;
 
 &lt;p&gt;One can semantically generate a &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; instruction with a &lt;code class=&quot;highlighter-rouge&quot;&gt;push [value], ret&lt;/code&gt; combination, since &lt;code class=&quot;highlighter-rouge&quot;&gt;ret&lt;/code&gt; pops and jumps. ASProtect does this frequently. Furthermore, you could have this series of instructions:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pop ebp
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pop ebp
 inc ebp
 push ebp
 ret
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;This would jump to an area immediately after a call, offset by +1 bytes, which would totally break the assumption that code &lt;strong&gt;immediately&lt;/strong&gt; following a &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; is valid, since the valid code is now offset by an amount.&lt;/p&gt;
 
@@ -383,10 +382,9 @@ ret
 &lt;h3 id=&quot;182&quot;&gt;18.2&lt;/h3&gt;
 
 &lt;p&gt;Upon first opening this sample with Ida, we get a warning that said&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Truncated section &quot; at file offsets 0x1000..0x2000 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Truncated section &quot; at file offsets 0x1000..0x2000 
 Will read 0x290 bytes
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;which I don’t understand, but that’s okay for now.&lt;/p&gt;
 
 &lt;p&gt;Furthermore, when opening the file with OllyDbg, we get this message:&lt;/p&gt;
