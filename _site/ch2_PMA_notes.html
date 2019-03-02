@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+        <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>PMA Ch.2 notes: Malware Analysis in Virtual Machines | KyleTheReverser</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="PMA Ch.2 notes: Malware Analysis in Virtual Machines" />
+<meta name="author" content="Kyle" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Chapter summary questions In two sentences or less, provide an overview of what this chapter is about." />
+<meta property="og:description" content="Chapter summary questions In two sentences or less, provide an overview of what this chapter is about." />
+<link rel="canonical" href="http://localhost:4000/ch2_PMA_notes" />
+<meta property="og:url" content="http://localhost:4000/ch2_PMA_notes" />
+<meta property="og:site_name" content="KyleTheReverser" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-08-22T14:31:00-06:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@Kyle" />
+<script type="application/ld+json">
+{"description":"Chapter summary questions In two sentences or less, provide an overview of what this chapter is about.","author":{"@type":"Person","name":"Kyle"},"@type":"BlogPosting","url":"http://localhost:4000/ch2_PMA_notes","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"},"name":"Kyle"},"headline":"PMA Ch.2 notes: Malware Analysis in Virtual Machines","dateModified":"2018-08-22T14:31:00-06:00","datePublished":"2018-08-22T14:31:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/ch2_PMA_notes"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+
+    <!-- Site Favicon -->
+    <link rel="shortcut icon" href="http://localhost:4000/assets/images/favicon.ico" type="image/png" />
+
+    <!-- Font Embed Code -->
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,400i,700,700i" rel="stylesheet" />
+
+    <!-- CSS Styles -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+</head>
+
+
+
+<body class="layout-post">
+    <div id="page" class="site">
+
+        
+        <header id="masthead" class="site-header outer">
+    <div class="site-header-inside">
+        <div class="site-branding">
+            
+                <p class="site-logo"><a href="/" rel="home"><img src="/assets/images/logo.png" alt="KyleTheReverser" /></a></p>
+                <h1 class="site-title screen-reader-text"><a href="" rel="home"></a></h1>
+            
+        </div><!-- .site-branding -->
+        <nav id="main-navigation" class="site-navigation" aria-label="Primary Navigation">
+            <ul class="menu">
+            
+                <li class="menu-item"><a href="/about/">About</a></li>
+            
+            </ul>
+            <button id="sidebar-show" class="sidebar-toggle"><span class="screen-reader-text">Open Sidebar</span><span class="icon-more" aria-hidden="true"></span></button>
+        </nav><!-- .site-navigation -->
+    </div><!-- .site-header-inside -->
+</header><!-- .site-header -->
+        
+
+        <div id="content" class="site-content fadeInDown delay_075s">
+    <main id="main" class="site-main outer">
+        <article class="post-full inner">
+            <header class="post-header">
+                <div class="post-meta">
+                    <time class="post-date" datetime="2018-08-22">August 22,
+                        2018</time>
+                </div><!-- .post-meta -->
+                <h1 class="posttitle">PMA Ch.2 notes: Malware Analysis in Virtual Machines</h1>
+            </header><!-- .post-header -->
+            
+            <div class="post-content">
+                <h2 id="chapter-summary-questions">Chapter summary questions</h2>
+<ol>
+  <li>
+    <p>In two sentences or less, provide an overview of what this chapter is about.</p>
+
+    <p>This short chapter discusses how to create a virtual environment to analyze malware in. It explains details about the author’s preferred tool, VMWare Workstation, and details how to create/configure a virtual machine, including details about virtual networking, snapshotting, using peripheral devices, VMWare’s record/replay feature, and provides discussion on the risks that must be considered when analyzing malware in ANY case.</p>
+  </li>
+  <li>
+    <p>What are the three most important takeaways from this chapter?</p>
+
+    <p>There is always some risk inherent with the field of malware analysis, but using the right tools can help attenuate the risk to an acceptable level.</p>
+  </li>
+  <li>
+    <p>What problems does this chapter address? In other words, why should we care about this chapter?</p>
+
+    <p>This chapter provides the key information behind how to set up the analysis environment used in the rest of the book.</p>
+  </li>
+</ol>
+
+<h1 id="page-to-page-notes">Page-to-page notes</h1>
+<ul>
+  <li>Structure of a VM: pg30</li>
+  <li><em>Snapshotting</em> is the act of saving the state of a VM and being able to revert back to it within seconds. THIS IS WHY VMWARE WORKSTATION IS NECESSARY. Player does not support this feature. Now’s the time when you agree and go buy workstation. :)</li>
+  <li>Configuring virtual networks using services machines such as Remnux: pg33</li>
+  <li><strong>connecting malware to the internet is generally a bad plan. it can:</strong>
+    <ul>
+      <li>spread around</li>
+      <li>Notify the author that it’s on a machine</li>
+      <li>drop more malware</li>
+      <li>
+        <p>etc etc</p>
+
+        <p>so NEVER connect malware to the internet without first doing some analysis to determine what it might do when it connects. Then, use your best judgement to determine whether or not it’s worth it to connect the malware to the internet.</p>
+      </li>
+    </ul>
+  </li>
+  <li>Malware can detect if it’s running in a virtual machine, and it can behave differently if it is. Of course, at the end of the day, it’s just running instructions, and those can be checked for and modified by the analyst, but it all takes time.</li>
+  <li><strong>There is ALWAYS an inherent risk from running malware even with a virtual environment. Good practices can help attenuate the risk, but will never make the risk 0.</strong></li>
+</ul>
+
+<h2 id="tools-discussed-in-this-section">Tools discussed in this section</h2>
+<p><a href="https://www.vmware.com/products/workstation-pro.html">VMWare Workstation</a>: potentially the most important piece of software for malware analysis.</p>
+<ul>
+  <li>Record and replay seemed especially neat and potentially useful. It records <em>every</em> instruction executed in the process of a recording session. I’m sure there are uses for this.</li>
+</ul>
+
+
+            </div>
+            <footer class="post-footer">
+                
+                <div class="post-share">
+                    <span class="post-share-title">Share:</span>
+                    <a target="_blank" href="https://twitter.com/share?text=PMA+Ch.2+notes%3A+Malware+Analysis+in+Virtual+Machines&amp;url=https://nexusmaximus.github.ioch2_PMA_notes">Twitter</a>
+                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nexusmaximus.github.ioch2_PMA_notes">Facebook</a>
+                </div><!-- .share-post -->
+            </footer>
+            <div class="author-box">
+                <div class="author-avatar"><img src="/assets/images/authorimage.jpg" alt="Kyle's Picture"
+                        class="avatar"></div>
+                <div class="author-details">
+                    <h2 class="author-title">About Kyle</h2>
+                    <p class="author-description">bio here</p>
+                </div>
+            </div>
+            
+
+        </article>
+        
+        <section class="read-next inner">
+            <h2 class="read-next-title">Read Next</h2>
+            
+            <article class="post">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <time class="published" datetime="July 31, 2018">July 31, 2018</time>
+                    </div>
+                    <h3 class="post-title"><a href="/PMA_Ch1_Labs">PMA Ch.1 Labs: Basic Static Analysis</a></h3>
+                    <p class="post-tags">
+                        
+                    </p>
+                </header>
+                
+                
+            </article>
+            
+            
+            <article class="post">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <time class="published" datetime="August 22, 2018">August 22, 2018</time>
+                    </div>
+                    <h3 class="post-title"><a href="/ch3_PMA_notes">PMA Ch.3 notes: Basic Dynamic Analysis</a></h3>
+                    <p class="post-tags">
+                        
+                    </p>
+                </header>
+                
+                
+            </article>
+            
+        </section><!-- .read-next -->
+    </main><!-- .site-main -->
+</div><!-- .site-content -->
+
+        
+
+        
+
+        <footer id="colophon" class="site-footer outer">
+            <div class="site-footer-inside">
+                <p class="social-links">
+    
+    <a href="https://twitter.com/KyleTheReverser" target="_blank">
+        <span class="fa-twitter fa" aria-hidden="true"></span>
+        <span class="screen-reader-text">Twitter</span>
+    </a>
+    
+    
+    
+    <a href="https://github.com/NexusMaximus" target="_blank">
+        <span class="fa-github fa" aria-hidden="true"></span>
+        <span class="screen-reader-text">GitHub</span>
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+</p>
+                <p class="site-info">
+                    <a href="#">KyleTheReverser</a> &copy; 2019 . Horace theme by
+                    <a target="_blank" href="https://justgoodthemes.com/">JustGoodThemes</a>. <br />
+                    Powered by <a target="_blank" href="https://jekyllrb.com/">Jekyll</a>.
+                </p>
+                <p class="back-to-top">
+                    <a id="top-button" class="top-button" href="#page">
+                        <span class="icon-arrow-up" aria-hidden="true"></span>
+                        <span class="screen-reader-text">Back to top</span>
+                    </a>
+                </p>
+            </div><!-- .site-footer-inside -->
+        </footer><!-- .site-footer -->
+    </div><!-- .site -->
+    <div id="site-overlay" class="site-overlay"></div>
+    <aside id="sidebar" class="sidebar">
+	<div class="sidebar-scrollable">
+		<div class="sidebar-inside">
+			<button id="sidebar-hide" class="sidebar-toggle"><span class="screen-reader-text">Close Sidebar</span><span
+				    aria-hidden="true" class="icon-close"></span></button>
+			<nav id="sidebar-navigation" class="widget site-navigation">
+				<h2 class="widget-title">Explore Site</h2>
+				<ul class="menu">
+					
+						<li class="menu-item"><a href="/about/">About</a></li>
+					
+				</ul>
+			</nav>
+			
+<section class="widget widget-text">
+    <h2 class="widget-title">About KyleTheReverser</h2>
+    <p>This is an organized hub for everything technical that I write, set up, or figure out over the course of my last year as a Masters student.</p>
+</section>
+
+
+<section class="widget widget-recent-posts">
+    <h2 class="widget-title">Recent Articles</h2>
+    <ul>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">February 19, 2019</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/Cryptomining_malware_1_31adf">Cryptomining Malware Sample Analysis 1: 31ADF</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">December 13, 2018</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/binary_instrumentation">Notes on Binary Instrumentation and Intel PIN</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">November 10, 2018</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/binary-code_obfs_paper_review">Paper review: Binary-Code Obfuscations in Prevalent Packer Tools</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+    </ul>
+</section>
+
+<!-- Create a sorted array of tags -->
+ 
+<section class="widget widget-tagcloud">
+    <h2 class="widget-title">Tags</h2>
+    <div class="tagcloud">
+        
+        <a href='https://nexusmaximus.github.iotag/development/'>Development</a>
+        
+        <a href='https://nexusmaximus.github.iotag/javascript/'>JavaScript</a>
+        
+        <a href='https://nexusmaximus.github.iotag/jekyll/'>Jekyll</a>
+        
+        <a href='https://nexusmaximus.github.iotag/node/'>Node</a>
+        
+        <a href='https://nexusmaximus.github.iotag/startup/'>Startup</a>
+        
+        <a href='https://nexusmaximus.github.iotag/startups/'>Startups</a>
+        
+        <a href='https://nexusmaximus.github.iotag/tips/'>Tips</a>
+        
+    </div>
+</section>
+
+
+		</div><!-- .sidebar-inside -->
+	</div><!-- .sidebar-scrollable -->
+</aside><!-- .sidebar -->
+    
+    <!-- Javascript Assets -->
+    <script src="/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="/assets/js/plugins.js"></script>
+    <script src="/assets/js/custom.js"></script>
+
+</body>
+
+</html>

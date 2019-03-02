@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+        <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Paper review: Binary-Code Obfuscations in Prevalent Packer Tools | KyleTheReverser</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Paper review: Binary-Code Obfuscations in Prevalent Packer Tools" />
+<meta name="author" content="Kyle" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Abstract" />
+<meta property="og:description" content="Abstract" />
+<link rel="canonical" href="http://localhost:4000/binary-code_obfs_paper_review" />
+<meta property="og:url" content="http://localhost:4000/binary-code_obfs_paper_review" />
+<meta property="og:site_name" content="KyleTheReverser" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-11-10T10:31:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@Kyle" />
+<script type="application/ld+json">
+{"description":"Abstract","author":{"@type":"Person","name":"Kyle"},"@type":"BlogPosting","url":"http://localhost:4000/binary-code_obfs_paper_review","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"},"name":"Kyle"},"headline":"Paper review: Binary-Code Obfuscations in Prevalent Packer Tools","dateModified":"2018-11-10T10:31:00-07:00","datePublished":"2018-11-10T10:31:00-07:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/binary-code_obfs_paper_review"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+
+    <!-- Site Favicon -->
+    <link rel="shortcut icon" href="http://localhost:4000/assets/images/favicon.ico" type="image/png" />
+
+    <!-- Font Embed Code -->
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,400i,700,700i" rel="stylesheet" />
+
+    <!-- CSS Styles -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+</head>
+
+
+
+<body class="layout-post">
+    <div id="page" class="site">
+
+        
+        <header id="masthead" class="site-header outer">
+    <div class="site-header-inside">
+        <div class="site-branding">
+            
+                <p class="site-logo"><a href="/" rel="home"><img src="/assets/images/logo.png" alt="KyleTheReverser" /></a></p>
+                <h1 class="site-title screen-reader-text"><a href="" rel="home"></a></h1>
+            
+        </div><!-- .site-branding -->
+        <nav id="main-navigation" class="site-navigation" aria-label="Primary Navigation">
+            <ul class="menu">
+            
+                <li class="menu-item"><a href="/about/">About</a></li>
+            
+            </ul>
+            <button id="sidebar-show" class="sidebar-toggle"><span class="screen-reader-text">Open Sidebar</span><span class="icon-more" aria-hidden="true"></span></button>
+        </nav><!-- .site-navigation -->
+    </div><!-- .site-header-inside -->
+</header><!-- .site-header -->
+        
+
+        <div id="content" class="site-content fadeInDown delay_075s">
+    <main id="main" class="site-main outer">
+        <article class="post-full inner">
+            <header class="post-header">
+                <div class="post-meta">
+                    <time class="post-date" datetime="2018-11-10">November 10,
+                        2018</time>
+                </div><!-- .post-meta -->
+                <h1 class="posttitle">Paper review: Binary-Code Obfuscations in Prevalent Packer Tools</h1>
+            </header><!-- .post-header -->
+            
+            <div class="post-content">
+                <h2 id="abstract">Abstract</h2>
+
+<p>Security analysts’ understanding of malware samples depends on the ability to build high-level analysis products from the raw bytes of program binaries. As such, the first step to analyzing defensive malware samples is understanding what obfuscations are present in these binaries, and how the obfuscations hinder analysis. This paper provides details on those techniques.</p>
+
+<p>Section 2 is all about the methodology and tools used to perform the study. Section 3 is a taxonomy of the obfuscation techniques, along with current approaches to dealing with the techniques. Section 4 provides a summary table of the obfuscation techniques that shows their relative prevalence in real-world malware.</p>
+
+<h2 id="section-2-methodology">Section 2: Methodology</h2>
+
+<p>– to be written, maybe –</p>
+
+<h2 id="section-3-obfuscation-techniques">Section 3: Obfuscation techniques</h2>
+
+<h3 id="binary-code-extraction">Binary code extraction</h3>
+<p>This is the ultimate goal of analysis– to extract the code from a sample so it can be analyzed. On unpacked/nondefensive binaries, this is trivial, as we simply need to read from the executable portions of the binary file. It gets more challenging with programs that create code or self-modify at runtime.</p>
+
+<p>In practice, most malware authors create an unpacked executable and then pack it with a packer tool to create a packed version. Most packers can be thought of as elaborations on UPX’s packing scheme.</p>
+
+<h4 id="how-upx-works">How UPX works</h4>
+
+<p>UPX (or almost any other packing tool) sets the executable’s entry point to the entry point of the bootstrap code that unpacks the payload and then transfers control to the payload’s OEP. When the bootstrap code unrolls packed code and data, it places them at the same memory addresses that they occupied in the original binary, so that position-dependant instructions do not move and data accesses find the data in their expected locations.</p>
+
+<p>UPX also packs the PE’s Import Table and Import Address Table data structures. These tables list functions to import from other shared libraries. They are packed because just knowing these functions can reveal significant information about the payload code (and also because the tables are highly amenable to compression).</p>
+
+<h4 id="building-on-this-technique">Building on this technique</h4>
+
+<p>The most common elaboration of this basic recipe is one in which portions of the packer’s bootstrap code itself are also packed. Most packers use a small unpacking loop to decompress a more sophisticated decompression or decryption algorithm that unpacks the actual payload. For example, ASProtect unpacks 99% of its unpacking code, in addition to the program payload itself.</p>
+
+<h4 id="the-x-ray-technique-perriot-and-ferrie-2004">The X-Ray technique [Perriot and Ferrie 2004]</h4>
+
+<p>This technique statically analyzes the program binary with the aim of seeing through the compression and encryption transformation with which the payload code is packed. It leverages statistical properties of packed code to recognize compression algorithms and uses <em>known cipher-text attacks</em> to crack weak encryption schemes. Weakness: ineffective against strong encryption and multiple layers of compression or encryption. Further work has been done to improve the technique, but it hasn’t yet been shown to work on a broad collection of samples (as of when this paper was written, in 2013).</p>
+
+<h4 id="identifying-written-then-executed-code">Identifying written-then-executed code</h4>
+
+<p>This technique is used by a host of dynamic analysis tools. They detect and capture unpacked code bytes by tracing the program’s execution at a fine granularity and logging memory writes to identify written-then-executed code. Some leverage the Qemu whole-system emulator and the Xen virtual machine monitor respectively, which allows them to observe execution of monitored malware without being easily detected. [2007ish time frame– Renovo and EtherUnpack]</p>
+
+<p>There exist unpacker tools that run packed programs either for a certain timeout period, or until they exhibit behavior that could indicate that they are done unpacking. The primary limitations of fine-grained monitoring techniques are that they only identify code bytes that are actually executed and they incur orders of magnitude slowdowns in execution time (those conditional breakpoints tho). This technique is good for antivirus products, but the coarse memory-page granularity means they cannot identify the actual code bytes on unpacked code pages and they cannot identify or capture overwritten code bytes.</p>
+
+<h4 id="code-overwriting">Code Overwriting</h4>
+
+<p>Self-modifying programs move beyond unpacking by overwriting existing code with new code at runtime. Code overwriting often occurs in small amounts, affecting just a single instruction or even just a single instruction operand. For example, ASPack modifies the push operand of a <code class="highlighter-rouge">push 0, ret</code> instruction sequence at runtime to plug in the OEP address onto the call stack. UPack, however, has a second unpacking loop that overwrites the first one, removing several basic blocks at once from the function currently executing.</p>
+
+<p>Packers surveyed in this paper only overwrite their own metacode, but it’s possible to have more complex overwriting scenarios. Packers generally probably only overwrite their own code in an effort to maintain correctness and to be able to be used in a general case (i.e. for any malicious binary passed to it). An example of more complex unpackers: the MoleBox packer tool and the DarkParanoid virus repeatedly unpack sensitive code into a buffer, so only one buffer-full of the protected code is exposed to the analyst at any given time. This approach is sufficiently hard to implement, however, according to a paper in 2002.</p>
+
+<p>Self-modifying code presents a problem to all approaches of anlaysis because there is no point in time in which all of the program’s code is present in the binary. The only way to account for this is to take snapshots of basic blocks (i.e those without jumps in our out) as soon as the basic blocks execute.</p>
+
+<h3 id="disassembly">Disassembly</h3>
+
+<p>Once code bytes have been captured, static analysis techniques can accurately disassemble most of the code in compiler-generated program binaries, even when those binaries have been stripped of all symbol information. The general technique employed by disassembly tools is to disassemble the binary code starting from known entry points into the program.</p>
+
+<p><em>Linear-sweep parsing</em> disassembles sequentially from the beginning of the code section and assumes that the section contains nothing but code. The problem with this is the code section frequently contains non-code bytes such as string data and padding.</p>
+
+<p>The <em>recursive-traversal approach</em> finds instructions by following all statically traversable paths through the program’s control flow starting from known function addresses. While more accurate, this technique misses control-transfer targets of instrucions that determine their targets dynamically based on register values and memory contents. 
+Binaries stripped of symbol information can still have machine learning techniques applied to them to identify enough function entry points (by recognizing compiler-generated boiler plate code) to help recursive-traversal parsing. 
+Of course, the weakness behind this approach is that the malware author would only need to modify the boiler-plate code of the compiler to trick the machine learning algorithms expecting a specific instruction pattern. 
+Furthermore, to limit the amount of code that can be found by following control-transfer edges from the entry point (which must be left visible in the binary, or the OS can’t begin executing it), one can handwrite extremely irregular assembly code that a parser will have significant trouble interpreting.</p>
+
+<p>Here are some techniques that hide code, followed by techniques that corrupt analysis with non-code bytes or uncover errors in the disassembler.</p>
+
+<h4 id="non-returning-calls">Non-returning Calls</h4>
+
+<p>A <code class="highlighter-rouge">call</code> instruction is basically a glorified <code class="highlighter-rouge">jmp</code> instruction. Its job is to push a return location onto the stack, and then jump to another section of code. It is intended to be used with a corresponding <code class="highlighter-rouge">ret</code> instruction, which pops the previously-pushed value into a register or area in memory and unconditionally jumps to it. This can be abused by, well, using the instructions in unconventional ways. This causes problems for analysis tools in three ways.</p>
+
+<ol>
+  <li>Recursive-traversal parsers assume that bytes following a non-returning call represent a valid instruction, because they presume the call will return execution to the area immediately after the call, but it doesn’t need to.</li>
+  <li>The attack breaks an important assumption made by code parsers for identifying function boundaries; namely, that the target of a call belongs to a different function than that of the call itself. There’s no reason why you can’t use a call to transfer execution somewhere else in the current function.</li>
+  <li>A binary instrumenter cannot move the call instruction of a call-pop sequence without changing the PC-relative address that the pop stores into a general-purpose register. Moving the call instruction without compensating for this change usually results in incorrect program execution, as packer metacode frequently uses the PC-relative address as a base pointer from which to access data.</li>
+</ol>
+
+<p>Researchers have proposed removing the assumption that there is valid code at the fall-through address of each call instruction, but doing so drastically reduces the percentage of code that the parser can find, presumably since it can no longer be assumed that any code after a call is actually code. Kruegel et al. compensate by speculatively parsing after call instructions and use a statistical model of real code sequences to determine whether the speculatively parsed instruction sequences are valid. However, this technique was done by researchers in an attempt to just handle one kind of obfuscator, and made assumptions that were valid only for that obfuscator.</p>
+
+<h4 id="call-stack-tampering">Call-stack Tampering</h4>
+
+<p>One can semantically generate a <code class="highlighter-rouge">jmp</code> instruction with a <code class="highlighter-rouge">push [value], ret</code> combination, since <code class="highlighter-rouge">ret</code> pops and jumps. ASProtect does this frequently. Furthermore, you could have this series of instructions:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pop ebp
+inc ebp
+push ebp
+ret
+</code></pre></div></div>
+
+<p>This would jump to an area immediately after a call, offset by +1 bytes, which would totally break the assumption that code <strong>immediately</strong> following a <code class="highlighter-rouge">call</code> is valid, since the valid code is now offset by an amount.</p>
+
+<p>The authors of this paper implement a technique to deal with this. They apply static analysis techniques to a <code class="highlighter-rouge">ret</code> target prediction, which allows them to improve coverage and accuracy of pre-execution analyses. They use backwards slices at return instructions to determine whether a  <code class="highlighter-rouge">ret</code> jumps to a function’s return address as expected or to another address, and falls back on dynamic analysis if static analysis fails.</p>
+
+<h4 id="obfuscated-control-transfer-targets">Obfuscated control-transfer targets</h4>
+
+<p>Using indirect versions of the <code class="highlighter-rouge">call</code> and <code class="highlighter-rouge">jmp</code> instructions obfuscates control-transfer targets by using register or memory values to determine their targets at runtime. Furthermore, it provides some space savings, which is significant motivation for small packers. Obfuscation is also a considerable motivating factor as static analysis tools often let these jumps go unresolved. Single indirect jumps can have multiple targets as well over the course of an unpacker’s runtime lifetime.</p>
+
+<p>Static analysis of indirect control-transfer targets is particularly difficult in packed binaries, as they frequently use instructions whose targets depend on register values. Value-set analyses [Balakrishnan and Reps 2004] can theoretically reveal all possible targets for such indirect control-transfer instructions, but this requires knowing all the code in the binary, which is not a satisfiable condition in the realm of packed binaries. Dynamic analysis trivially discovers targets of indirect control transfers that execute, but may leave a significant fraction of code unexecuted. There has been research done on forcing program execution down multiple execution paths [Babic et. al. 2011; Moser et al. 2007] but these are extremely resource-intensive techniques and do not acheive perfect code coverage.</p>
+
+<h4 id="exception-based-control-transfers">Exception-based control transfers</h4>
+<p>Signal- and exception-handling mechanisms allow for the creation of obfuscated control transfers whose source instruction and target address are well-hidden from static analysis techniques. Statically identifying sources of control transfers such as these requires predicting which instructions will raise exceptions, which is difficult in theory and practice [Muth and Debray 2000]. This means current disassembly algorithms wil usually parse through fault-raising instructions into what may be non-code bytes that’ll never execute. Furthermore, at least on Windows, it is hard to find exception handlers, since they can be registered on the call stack at runtime with no need to perform any Windows API or system calls.</p>
+
+<p>Using a debugger is the easiest way to detect exception-based control transfers, as it informs the debugger process of any fault-raising instructions and identifies all registered exception handlers whenever a fault occurs. However, use of a debugger interface can be detectd unless extensive precautions are taken.</p>
+
+<h4 id="ambiguous-code-and-data">Ambiguous code and data</h4>
+
+<p>Yet another form of control flow obfuscation involves using conditional branches to introduce a fork in the program’s control flow with only one path that ever executes, while junk code (fake code bytes or non-code) populates the other path.</p>
+
+<p>Using current techniques, the only way to identify code with perfect exclusion of data is to disassemble only those instruction sthat appear in an execution trace of a program.</p>
+
+<h4 id="disassembler-fuzz-testing">Disassembler Fuzz Testing</h4>
+<p>Fuzz testing refers to the practice of stress testing a software component by feeding it large quantities of unusual inputs int eh hope of detecting a case that the component hadles incorrectly. By fuzz testing binary-code disassemblers, packer tools can cause the diassembler to misparse instructions or mistake valid instructions for invalid ones.</p>
+
+
+            </div>
+            <footer class="post-footer">
+                
+                <div class="post-share">
+                    <span class="post-share-title">Share:</span>
+                    <a target="_blank" href="https://twitter.com/share?text=Paper+review%3A+Binary-Code+Obfuscations+in+Prevalent+Packer+Tools&amp;url=https://nexusmaximus.github.iobinary-code_obfs_paper_review">Twitter</a>
+                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nexusmaximus.github.iobinary-code_obfs_paper_review">Facebook</a>
+                </div><!-- .share-post -->
+            </footer>
+            <div class="author-box">
+                <div class="author-avatar"><img src="/assets/images/authorimage.jpg" alt="Kyle's Picture"
+                        class="avatar"></div>
+                <div class="author-details">
+                    <h2 class="author-title">About Kyle</h2>
+                    <p class="author-description">bio here</p>
+                </div>
+            </div>
+            
+
+        </article>
+        
+        <section class="read-next inner">
+            <h2 class="read-next-title">Read Next</h2>
+            
+            <article class="post">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <time class="published" datetime="November 3, 2018">November 3, 2018</time>
+                    </div>
+                    <h3 class="post-title"><a href="/getting_around_section_hop">Evading OllyDump's 'Find OEP by Section Hop' feature</a></h3>
+                    <p class="post-tags">
+                        
+                    </p>
+                </header>
+                
+                
+            </article>
+            
+            
+            <article class="post">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <time class="published" datetime="December 13, 2018">December 13, 2018</time>
+                    </div>
+                    <h3 class="post-title"><a href="/binary_instrumentation">Notes on Binary Instrumentation and Intel PIN</a></h3>
+                    <p class="post-tags">
+                        
+                    </p>
+                </header>
+                
+                
+            </article>
+            
+        </section><!-- .read-next -->
+    </main><!-- .site-main -->
+</div><!-- .site-content -->
+
+        
+
+        
+
+        <footer id="colophon" class="site-footer outer">
+            <div class="site-footer-inside">
+                <p class="social-links">
+    
+    <a href="https://twitter.com/KyleTheReverser" target="_blank">
+        <span class="fa-twitter fa" aria-hidden="true"></span>
+        <span class="screen-reader-text">Twitter</span>
+    </a>
+    
+    
+    
+    <a href="https://github.com/NexusMaximus" target="_blank">
+        <span class="fa-github fa" aria-hidden="true"></span>
+        <span class="screen-reader-text">GitHub</span>
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+</p>
+                <p class="site-info">
+                    <a href="#">KyleTheReverser</a> &copy; 2019 . Horace theme by
+                    <a target="_blank" href="https://justgoodthemes.com/">JustGoodThemes</a>. <br />
+                    Powered by <a target="_blank" href="https://jekyllrb.com/">Jekyll</a>.
+                </p>
+                <p class="back-to-top">
+                    <a id="top-button" class="top-button" href="#page">
+                        <span class="icon-arrow-up" aria-hidden="true"></span>
+                        <span class="screen-reader-text">Back to top</span>
+                    </a>
+                </p>
+            </div><!-- .site-footer-inside -->
+        </footer><!-- .site-footer -->
+    </div><!-- .site -->
+    <div id="site-overlay" class="site-overlay"></div>
+    <aside id="sidebar" class="sidebar">
+	<div class="sidebar-scrollable">
+		<div class="sidebar-inside">
+			<button id="sidebar-hide" class="sidebar-toggle"><span class="screen-reader-text">Close Sidebar</span><span
+				    aria-hidden="true" class="icon-close"></span></button>
+			<nav id="sidebar-navigation" class="widget site-navigation">
+				<h2 class="widget-title">Explore Site</h2>
+				<ul class="menu">
+					
+						<li class="menu-item"><a href="/about/">About</a></li>
+					
+				</ul>
+			</nav>
+			
+<section class="widget widget-text">
+    <h2 class="widget-title">About KyleTheReverser</h2>
+    <p>This is an organized hub for everything technical that I write, set up, or figure out over the course of my last year as a Masters student.</p>
+</section>
+
+
+<section class="widget widget-recent-posts">
+    <h2 class="widget-title">Recent Articles</h2>
+    <ul>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">February 19, 2019</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/Cryptomining_malware_1_31adf">Cryptomining Malware Sample Analysis 1: 31ADF</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">December 13, 2018</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/binary_instrumentation">Notes on Binary Instrumentation and Intel PIN</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">November 10, 2018</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/binary-code_obfs_paper_review">Paper review: Binary-Code Obfuscations in Prevalent Packer Tools</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+    </ul>
+</section>
+
+<!-- Create a sorted array of tags -->
+ 
+<section class="widget widget-tagcloud">
+    <h2 class="widget-title">Tags</h2>
+    <div class="tagcloud">
+        
+        <a href='https://nexusmaximus.github.iotag/development/'>Development</a>
+        
+        <a href='https://nexusmaximus.github.iotag/javascript/'>JavaScript</a>
+        
+        <a href='https://nexusmaximus.github.iotag/jekyll/'>Jekyll</a>
+        
+        <a href='https://nexusmaximus.github.iotag/node/'>Node</a>
+        
+        <a href='https://nexusmaximus.github.iotag/startup/'>Startup</a>
+        
+        <a href='https://nexusmaximus.github.iotag/startups/'>Startups</a>
+        
+        <a href='https://nexusmaximus.github.iotag/tips/'>Tips</a>
+        
+    </div>
+</section>
+
+
+		</div><!-- .sidebar-inside -->
+	</div><!-- .sidebar-scrollable -->
+</aside><!-- .sidebar -->
+    
+    <!-- Javascript Assets -->
+    <script src="/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="/assets/js/plugins.js"></script>
+    <script src="/assets/js/custom.js"></script>
+
+</body>
+
+</html>

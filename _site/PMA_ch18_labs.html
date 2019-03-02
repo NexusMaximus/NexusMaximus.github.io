@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+        <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>PMA Ch.18 Labs: Packed Malware | KyleTheReverser</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="PMA Ch.18 Labs: Packed Malware" />
+<meta name="author" content="Kyle" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?" />
+<meta property="og:description" content="Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?" />
+<link rel="canonical" href="http://localhost:4000/PMA_ch18_labs" />
+<meta property="og:url" content="http://localhost:4000/PMA_ch18_labs" />
+<meta property="og:site_name" content="KyleTheReverser" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-10-28T12:31:00-06:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@Kyle" />
+<script type="application/ld+json">
+{"description":"Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?","author":{"@type":"Person","name":"Kyle"},"@type":"BlogPosting","url":"http://localhost:4000/PMA_ch18_labs","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"},"name":"Kyle"},"headline":"PMA Ch.18 Labs: Packed Malware","dateModified":"2018-10-28T12:31:00-06:00","datePublished":"2018-10-28T12:31:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/PMA_ch18_labs"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+
+    <!-- Site Favicon -->
+    <link rel="shortcut icon" href="http://localhost:4000/assets/images/favicon.ico" type="image/png" />
+
+    <!-- Font Embed Code -->
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,400i,700,700i" rel="stylesheet" />
+
+    <!-- CSS Styles -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+</head>
+
+
+
+<body class="layout-post">
+    <div id="page" class="site">
+
+        
+        <header id="masthead" class="site-header outer">
+    <div class="site-header-inside">
+        <div class="site-branding">
+            
+                <p class="site-logo"><a href="/" rel="home"><img src="/assets/images/logo.png" alt="KyleTheReverser" /></a></p>
+                <h1 class="site-title screen-reader-text"><a href="" rel="home"></a></h1>
+            
+        </div><!-- .site-branding -->
+        <nav id="main-navigation" class="site-navigation" aria-label="Primary Navigation">
+            <ul class="menu">
+            
+                <li class="menu-item"><a href="/about/">About</a></li>
+            
+            </ul>
+            <button id="sidebar-show" class="sidebar-toggle"><span class="screen-reader-text">Open Sidebar</span><span class="icon-more" aria-hidden="true"></span></button>
+        </nav><!-- .site-navigation -->
+    </div><!-- .site-header-inside -->
+</header><!-- .site-header -->
+        
+
+        <div id="content" class="site-content fadeInDown delay_075s">
+    <main id="main" class="site-main outer">
+        <article class="post-full inner">
+            <header class="post-header">
+                <div class="post-meta">
+                    <time class="post-date" datetime="2018-10-28">October 28,
+                        2018</time>
+                </div><!-- .post-meta -->
+                <h1 class="posttitle">PMA Ch.18 Labs: Packed Malware</h1>
+            </header><!-- .post-header -->
+            
+            <div class="post-content">
+                <h2 id="lab-summary-questions">Lab summary questions</h2>
+<ol>
+  <li>
+    <p>Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</p>
+  </li>
+  <li>
+    <p>What did doing the lab exercises teach that was not gained from reading the chapter?</p>
+  </li>
+</ol>
+
+<h2 id="challenges-encountered-in-the-labs">Challenges encountered in the labs</h2>
+
+<h2 id="lab-walkthrough-includes-answers">Lab Walkthrough (includes answers!)</h2>
+
+<p>The goal of each of these labs is to unpack the code for further analysis so that other static techniques can be used. Try to avoid using automated unpackers and use the skills taught in this chapter. Each lab is a packed version of a previous lab.</p>
+
+<h3 id="181">18.1</h3>
+
+<p>I opened the file in OllyDbg and Ida, and just tried OllyDump’s “Find OEP by section hop (trace over)” option. You can verify that the program is progressing by clicking in the registers window. If the registers update when you click, you know the plugin is working.</p>
+
+<p>After waiting about a minute, OllyDbg broke due to a conditional breakpoint: “EIP outside the range 407000…409FFF (i.e. a hop outside of that section). The code points directly to what looks like a function now located at 40154F.</p>
+
+<p><img src="/assets/images/posts/ch18sc/1_01unpacked.PNG" alt="1_01unpacked.PNG" /></p>
+
+<p>I used OllyDbg to dump the process (** plugins -&gt; OllyDump -&gt; Dump debugged process **) (no changes to the dump options screen) and loaded the new exe into Ida, and it appears to be a good-looking, unpacked sample.</p>
+
+<h3 id="182">18.2</h3>
+
+<p>Upon first opening this sample with Ida, we get a warning that said</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Truncated section " at file offsets 0x1000..0x2000 
+Will read 0x290 bytes
+</code></pre></div></div>
+<p>which I don’t understand, but that’s okay for now.</p>
+
+<p>Furthermore, when opening the file with OllyDbg, we get this message:</p>
+
+<p><img src="/assets/images/posts/ch18sc/2_02open.PNG" alt="2_02open.PNG" /></p>
+
+<p>Stepping through the code a few times yields a pretty obfuscated seeming loop pattern. I’m not sure what it’s doing or how it’s doing it, but the classic approach is to let Olly do that for you. So I did, and it broke here.</p>
+
+<p><img src="/assets/images/posts/ch18sc/3_wat.PNG" alt="3_wat.PNG" /></p>
+
+<p>This looks like data. Or perhaps it’s just in the data section of the executable. These are just bytes; let’s get Olly to interpret it as code: <strong>right click in the disassembly window -&gt; analysis -&gt; analyse code</strong> and boom, there we are. A function.</p>
+
+<p><img src="/assets/images/posts/ch18sc/4_02unpacked.PNG" alt="4_02unpacked.PNG" /></p>
+
+<p>I dumped the program (default options) and opened the new executable in Ida, and it revealed something that looked similar to a ch7 sample analyzed earlier. Specifically the second lab.</p>
+
+<p><img src="/assets/images/posts/ch18sc/5_0702.PNG" alt="5_0702.PNG" /></p>
+
+<h3 id="183">18.3</h3>
+
+<p>I ran this file in OllyDbg and observed a pattern: it’s unpacking some code into another section, and then calling it, and that code unpacks some code into another section and then calls it, and etc. I bet this will mess with the <code class="highlighter-rouge">Find OEP by Section Hop</code> functionality– at least the “step over” part, since calls don’t return to the right place (as that’s how it transfers execution– by pushing a new variable onto the stack and then calling a ‘ret’ (I believe)).</p>
+
+<p>Sections: 40Axxx, 407xxx, and some kernel calls. Arriving in these sections triggers OllyDump’s plugin to stop execution.</p>
+
+<p>And, after attempting to find the OEP by section hop, I discovered it does indeed render the technique much less helpful. I sort of stumbled through and kept trying it and it would run to the next point in the code that was out of the current section. Theoretically, I can keep doing this until I finally hit a breakpoint that doesn’t look like unpacking code, but I don’t know if this is the most helpful strategy. I continued trying to resume the code for a while (i.e. using OllyDump’s trace into feature and then OllyDbg’s execute until user code feature), and it beame clear to me that this strategy isn’t very feasible.</p>
+
+<p>I was hesitant to try the other “find section hop by jumping over” as I believe this code transfers execution by modifying where “ret” transfers execution to. In other words, we may have calls that never return to the instruction immediately after the call. Either way, I tried it, and it took me to a section that looks like data. I got Olly to treat it as code and disassemble it in the same way I did for the previous problem.</p>
+
+<p>As it turns out, this was indeed the entry point– 0x401577. I am wondering if using a combination of section jumps with trace over and with trace into is a viable strategy.</p>
+
+<p><img src="/assets/images/posts/ch18sc/6_ollyEntry3.PNG" alt="6_ollyEntry3.PNG" /></p>
+
+<p>Interestingly, after exporting the file with the EIP at this location, the imports section is still destroyed according to Ida, and furthermore, Ida’s disassembly code differs slightly (but makes more sense) than Olly’s.</p>
+
+<p><img src="/assets/images/posts/ch18sc/7_idaUnpacked3.PNG" alt="7_idaUnpacked3.PNG" /></p>
+
+<p>In either case, after looking around this file with Ida, it appears to look much more like non-unpacking code, which further confirms my suspicion that this is the payload we’re after.</p>
+
+<h4 id="after-reading-the-book-answers">After reading the book answers…</h4>
+
+<p>The book acknowledges a pushf and a pusha at the very, very beginning of the file. It suggests that a packer will likely have corresponding popa and popf instructions at the end of the unpacking loop, and suggests putting a breakpoint on access of that pushed memory. I tried this, and it worked great.</p>
+
+
+            </div>
+            <footer class="post-footer">
+                
+                <div class="post-share">
+                    <span class="post-share-title">Share:</span>
+                    <a target="_blank" href="https://twitter.com/share?text=PMA+Ch.18+Labs%3A+Packed+Malware&amp;url=https://nexusmaximus.github.ioPMA_ch18_labs">Twitter</a>
+                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nexusmaximus.github.ioPMA_ch18_labs">Facebook</a>
+                </div><!-- .share-post -->
+            </footer>
+            <div class="author-box">
+                <div class="author-avatar"><img src="/assets/images/authorimage.jpg" alt="Kyle's Picture"
+                        class="avatar"></div>
+                <div class="author-details">
+                    <h2 class="author-title">About Kyle</h2>
+                    <p class="author-description">bio here</p>
+                </div>
+            </div>
+            
+
+        </article>
+        
+        <section class="read-next inner">
+            <h2 class="read-next-title">Read Next</h2>
+            
+            <article class="post">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <time class="published" datetime="October 15, 2018">October 15, 2018</time>
+                    </div>
+                    <h3 class="post-title"><a href="/ch18_PMA_notes">PMA Ch.18 Notes: Packers and Unpacking</a></h3>
+                    <p class="post-tags">
+                        
+                    </p>
+                </header>
+                
+                
+            </article>
+            
+            
+            <article class="post">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <time class="published" datetime="November 3, 2018">November 3, 2018</time>
+                    </div>
+                    <h3 class="post-title"><a href="/getting_around_section_hop">Evading OllyDump's 'Find OEP by Section Hop' feature</a></h3>
+                    <p class="post-tags">
+                        
+                    </p>
+                </header>
+                
+                
+            </article>
+            
+        </section><!-- .read-next -->
+    </main><!-- .site-main -->
+</div><!-- .site-content -->
+
+        
+
+        
+
+        <footer id="colophon" class="site-footer outer">
+            <div class="site-footer-inside">
+                <p class="social-links">
+    
+    <a href="https://twitter.com/KyleTheReverser" target="_blank">
+        <span class="fa-twitter fa" aria-hidden="true"></span>
+        <span class="screen-reader-text">Twitter</span>
+    </a>
+    
+    
+    
+    <a href="https://github.com/NexusMaximus" target="_blank">
+        <span class="fa-github fa" aria-hidden="true"></span>
+        <span class="screen-reader-text">GitHub</span>
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+</p>
+                <p class="site-info">
+                    <a href="#">KyleTheReverser</a> &copy; 2019 . Horace theme by
+                    <a target="_blank" href="https://justgoodthemes.com/">JustGoodThemes</a>. <br />
+                    Powered by <a target="_blank" href="https://jekyllrb.com/">Jekyll</a>.
+                </p>
+                <p class="back-to-top">
+                    <a id="top-button" class="top-button" href="#page">
+                        <span class="icon-arrow-up" aria-hidden="true"></span>
+                        <span class="screen-reader-text">Back to top</span>
+                    </a>
+                </p>
+            </div><!-- .site-footer-inside -->
+        </footer><!-- .site-footer -->
+    </div><!-- .site -->
+    <div id="site-overlay" class="site-overlay"></div>
+    <aside id="sidebar" class="sidebar">
+	<div class="sidebar-scrollable">
+		<div class="sidebar-inside">
+			<button id="sidebar-hide" class="sidebar-toggle"><span class="screen-reader-text">Close Sidebar</span><span
+				    aria-hidden="true" class="icon-close"></span></button>
+			<nav id="sidebar-navigation" class="widget site-navigation">
+				<h2 class="widget-title">Explore Site</h2>
+				<ul class="menu">
+					
+						<li class="menu-item"><a href="/about/">About</a></li>
+					
+				</ul>
+			</nav>
+			
+<section class="widget widget-text">
+    <h2 class="widget-title">About KyleTheReverser</h2>
+    <p>This is an organized hub for everything technical that I write, set up, or figure out over the course of my last year as a Masters student.</p>
+</section>
+
+
+<section class="widget widget-recent-posts">
+    <h2 class="widget-title">Recent Articles</h2>
+    <ul>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">February 19, 2019</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/Cryptomining_malware_1_31adf">Cryptomining Malware Sample Analysis 1: 31ADF</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">December 13, 2018</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/binary_instrumentation">Notes on Binary Instrumentation and Intel PIN</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">November 10, 2018</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/binary-code_obfs_paper_review">Paper review: Binary-Code Obfuscations in Prevalent Packer Tools</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+    </ul>
+</section>
+
+<!-- Create a sorted array of tags -->
+ 
+<section class="widget widget-tagcloud">
+    <h2 class="widget-title">Tags</h2>
+    <div class="tagcloud">
+        
+        <a href='https://nexusmaximus.github.iotag/development/'>Development</a>
+        
+        <a href='https://nexusmaximus.github.iotag/javascript/'>JavaScript</a>
+        
+        <a href='https://nexusmaximus.github.iotag/jekyll/'>Jekyll</a>
+        
+        <a href='https://nexusmaximus.github.iotag/node/'>Node</a>
+        
+        <a href='https://nexusmaximus.github.iotag/startup/'>Startup</a>
+        
+        <a href='https://nexusmaximus.github.iotag/startups/'>Startups</a>
+        
+        <a href='https://nexusmaximus.github.iotag/tips/'>Tips</a>
+        
+    </div>
+</section>
+
+
+		</div><!-- .sidebar-inside -->
+	</div><!-- .sidebar-scrollable -->
+</aside><!-- .sidebar -->
+    
+    <!-- Javascript Assets -->
+    <script src="/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="/assets/js/plugins.js"></script>
+    <script src="/assets/js/custom.js"></script>
+
+</body>
+
+</html>

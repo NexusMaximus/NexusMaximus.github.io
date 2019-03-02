@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+        <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>PMA Ch.1: Basic Static Analysis Techniques | KyleTheReverser</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="PMA Ch.1: Basic Static Analysis Techniques" />
+<meta name="author" content="Kyle" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments." />
+<meta property="og:description" content="As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments." />
+<link rel="canonical" href="http://localhost:4000/ch1_PMA_notes" />
+<meta property="og:url" content="http://localhost:4000/ch1_PMA_notes" />
+<meta property="og:site_name" content="KyleTheReverser" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-07-31T14:11:00-06:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@Kyle" />
+<script type="application/ld+json">
+{"description":"As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.","author":{"@type":"Person","name":"Kyle"},"@type":"BlogPosting","url":"http://localhost:4000/ch1_PMA_notes","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"},"name":"Kyle"},"headline":"PMA Ch.1: Basic Static Analysis Techniques","dateModified":"2018-07-31T14:11:00-06:00","datePublished":"2018-07-31T14:11:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/ch1_PMA_notes"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+
+    <!-- Site Favicon -->
+    <link rel="shortcut icon" href="http://localhost:4000/assets/images/favicon.ico" type="image/png" />
+
+    <!-- Font Embed Code -->
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,400i,700,700i" rel="stylesheet" />
+
+    <!-- CSS Styles -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+</head>
+
+
+
+<body class="layout-post">
+    <div id="page" class="site">
+
+        
+        <header id="masthead" class="site-header outer">
+    <div class="site-header-inside">
+        <div class="site-branding">
+            
+                <p class="site-logo"><a href="/" rel="home"><img src="/assets/images/logo.png" alt="KyleTheReverser" /></a></p>
+                <h1 class="site-title screen-reader-text"><a href="" rel="home"></a></h1>
+            
+        </div><!-- .site-branding -->
+        <nav id="main-navigation" class="site-navigation" aria-label="Primary Navigation">
+            <ul class="menu">
+            
+                <li class="menu-item"><a href="/about/">About</a></li>
+            
+            </ul>
+            <button id="sidebar-show" class="sidebar-toggle"><span class="screen-reader-text">Open Sidebar</span><span class="icon-more" aria-hidden="true"></span></button>
+        </nav><!-- .site-navigation -->
+    </div><!-- .site-header-inside -->
+</header><!-- .site-header -->
+        
+
+        <div id="content" class="site-content fadeInDown delay_075s">
+    <main id="main" class="site-main outer">
+        <article class="post-full inner">
+            <header class="post-header">
+                <div class="post-meta">
+                    <time class="post-date" datetime="2018-07-31">July 31,
+                        2018</time>
+                </div><!-- .post-meta -->
+                <h1 class="posttitle">PMA Ch.1: Basic Static Analysis Techniques</h1>
+            </header><!-- .post-header -->
+            
+            <div class="post-content">
+                <p>As I walk through the Practical Malware Analysis book, I’ll be doing two posts per studied chapter: one that acts as a brief overview of what I think is the most helpful content from the chapter, and one that walks through my analysis of the lab assignments.</p>
+
+<p>In addition to including technical details inscribed within the chapter, I’ll be answering the following questions in an attempt to keep in mind the big picture of the chapter.</p>
+
+<ol>
+  <li>In two sentences or less, provide an overview of what this chapter is about.</li>
+  <li>What are the three most important takeaways from this chapter?</li>
+  <li>What problems does this chapter address? In other words, why should we care about this chapter?</li>
+</ol>
+
+<p>Let’s get started.</p>
+
+<h2 id="chapter-summary-questions">Chapter summary questions</h2>
+<ol>
+  <li>
+    <p>In two sentences or less, provide an overview of what this chapter is about.</p>
+
+    <p>This chapter discusses basic static analysis of executable assets/images/posts and provides a slew of tools used to do so. Static analysis of a file is analysis that does NOT involve running the file, such as by examining the header of the file and looking for strings contained within.</p>
+  </li>
+  <li>
+    <p>What are the three most important takeaways from this chapter?</p>
+
+    <ul>
+      <li>Static analysis is one tool in the toolbox for identifying malware, but there are ways to make static analysis virtually useless.</li>
+      <li>Section names are merely convention. They can be renamed to be misleading.</li>
+      <li>There are three kinds of linking: <em>static</em>, <em>runtime</em>, and <em>dynamic</em>. Malware more frequently makes use of runtime linking due to how it’s easier to conceal runtime behavior using this version.</li>
+    </ul>
+  </li>
+  <li>
+    <p>What problems does this chapter address? In other words, why should we care about this chapter?</p>
+
+    <p>Static analysis is the first step in analyzing any executable, and you should do it. It can provide clues that will pave the way for productive dynamic analysis.</p>
+  </li>
+</ol>
+
+<h2 id="page-to-page-notes">Page-to-page notes</h2>
+<ul>
+  <li>Ascii strings use 1 byte per char; Unicode strings use two per char.</li>
+  <li>
+    <p>Packed and otherwise obfuscated code will usually include library functions “GetProcAddress” and “LoadLibrary” as those two are typically used to decrypt/deobfuscate other functions. <strong>These two functions can be used to access any function in any library on the system.</strong></p>
+  </li>
+  <li>Linking is used to connect code in libraries to an executable. There are three kinds of linking:
+    <ul>
+      <li><em>Static:</em> the library code is copied ver batim into the executable. Common in malware due to how it can be obfuscated; rare in goodware as there’s little purpose to do it other than to hide meaning of a program.</li>
+      <li><em>Runtime:</em> Library code is searched for only when needed within a program, as opposed to at the beginning of execution of a program (see dynamic linking). It’s popular with malware writers as the imports can be concealed at the beginning of the program’s execution and revealed at some point in the runtie of the program, making static analysis harder.</li>
+      <li><em>Dynamic:</em> The host OS searches for necessary libraries only when the program is loaded. When executing library code, the code executed is within the library’s space (i.e. it’s not copied somewhere and executed there).</li>
+    </ul>
+  </li>
+  <li>Appendix A contains lots of DLLs of high interest to malware analysts.</li>
+</ul>
+
+<h4 id="a-little-about-the-pe-file-format">A little about the PE file format</h4>
+
+<p>Consists of a header followed by a series of sections:</p>
+<ul>
+  <li><strong>.text</strong>: Contains instructions that the CPU executes</li>
+  <li><strong>.rdata</strong>: typically contains import and export information, which is the same info available from Dependency Walker (a tool) and PEViEW (a slightly out of date tool).</li>
+  <li><strong>.data</strong>: Contains program’s global data, accessable from anywhere in the program.</li>
+  <li><strong>.rsrc</strong>: includes resources used by the executable that are not ocnsidered part of the executable (such as icons, images, menus, and strings). Strings are usually (but not necessarily) stored here for multilanguage support.</li>
+</ul>
+
+<p>These section names are convention; Windows doesn’t require them to be labeled as above. It determines what section is what based on info in the PE header.</p>
+
+<h2 id="tools-discussed-in-this-section">Tools discussed in this section</h2>
+<p><a href="http://dependencywalker.com/">Dependency Walker</a> is a free utility that scans Windows executables and builds a hierarchical tree diagram of all dependent modules. 
+P16 discusses a bit about how to use it.</p>
+
+<p>PeID: support was discontinued in 2011, but it is still helpful for detecting packed assets/images/posts.</p>
+
+<p><a href="http://wjradburn.com/software/">PEview</a>: used to view executable file metadata (i.e. information in the headers of an executable).</p>
+
+<p><a href="http://angusj.com/">Resource Hacker</a>: browses the .rsrc section of an executable. P25 discusses usage of this tool. It also enables one to extract embedded assets/images/posts from within executable assets/images/posts.</p>
+
+<p><a href="http://www.smidgeonsoft.prohosting.com/pebrowse-pro-file-viewer.html">PEBrowse Professional</a> is similar to PEview and allows you to look at the bytes from each section. It does a good job of presenting info from the resource (.rsrc) section.</p>
+
+<p><a href="http://heaventools.com/">PE Explorer</a> has a rich GUI that allows one to navigate through the various parts of a PE file. It permits editing assets/images/posts, too. RIP if you don’t have money to pay for it, though.</p>
+
+<h2 id="questions-encountered-and-answers-if-found">Questions encountered (and answers, if found)</h2>
+
+<p><em>Ascii  representation of “BAD”:</em>
+0x42 0x41 0x44 0x00</p>
+
+<p><em>Unicode representation of “BAD”:</em>
+0x42 0x00 0x41 0x00 0x44 0x00 0x00 0x00</p>
+
+<p>What are the extra null terminators after each character typically used for?</p>
+
+<h6 id="la-ur-18-27643">LA-UR-18-27643</h6>
+
+
+            </div>
+            <footer class="post-footer">
+                
+                <div class="post-share">
+                    <span class="post-share-title">Share:</span>
+                    <a target="_blank" href="https://twitter.com/share?text=PMA+Ch.1%3A+Basic+Static+Analysis+Techniques&amp;url=https://nexusmaximus.github.ioch1_PMA_notes">Twitter</a>
+                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nexusmaximus.github.ioch1_PMA_notes">Facebook</a>
+                </div><!-- .share-post -->
+            </footer>
+            <div class="author-box">
+                <div class="author-avatar"><img src="/assets/images/authorimage.jpg" alt="Kyle's Picture"
+                        class="avatar"></div>
+                <div class="author-details">
+                    <h2 class="author-title">About Kyle</h2>
+                    <p class="author-description">bio here</p>
+                </div>
+            </div>
+            
+
+        </article>
+        
+        <section class="read-next inner">
+            <h2 class="read-next-title">Read Next</h2>
+            
+            <article class="post">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <time class="published" datetime="July 24, 2018">July 24, 2018</time>
+                    </div>
+                    <h3 class="post-title"><a href="/frame">Markdown Cheatsheet for Github Pages/Jekyll Blog Posts</a></h3>
+                    <p class="post-tags">
+                        
+                    </p>
+                </header>
+                
+                
+            </article>
+            
+            
+            <article class="post">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <time class="published" datetime="July 31, 2018">July 31, 2018</time>
+                    </div>
+                    <h3 class="post-title"><a href="/PMA_Ch1_Labs">PMA Ch.1 Labs: Basic Static Analysis</a></h3>
+                    <p class="post-tags">
+                        
+                    </p>
+                </header>
+                
+                
+            </article>
+            
+        </section><!-- .read-next -->
+    </main><!-- .site-main -->
+</div><!-- .site-content -->
+
+        
+
+        
+
+        <footer id="colophon" class="site-footer outer">
+            <div class="site-footer-inside">
+                <p class="social-links">
+    
+    <a href="https://twitter.com/KyleTheReverser" target="_blank">
+        <span class="fa-twitter fa" aria-hidden="true"></span>
+        <span class="screen-reader-text">Twitter</span>
+    </a>
+    
+    
+    
+    <a href="https://github.com/NexusMaximus" target="_blank">
+        <span class="fa-github fa" aria-hidden="true"></span>
+        <span class="screen-reader-text">GitHub</span>
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+</p>
+                <p class="site-info">
+                    <a href="#">KyleTheReverser</a> &copy; 2019 . Horace theme by
+                    <a target="_blank" href="https://justgoodthemes.com/">JustGoodThemes</a>. <br />
+                    Powered by <a target="_blank" href="https://jekyllrb.com/">Jekyll</a>.
+                </p>
+                <p class="back-to-top">
+                    <a id="top-button" class="top-button" href="#page">
+                        <span class="icon-arrow-up" aria-hidden="true"></span>
+                        <span class="screen-reader-text">Back to top</span>
+                    </a>
+                </p>
+            </div><!-- .site-footer-inside -->
+        </footer><!-- .site-footer -->
+    </div><!-- .site -->
+    <div id="site-overlay" class="site-overlay"></div>
+    <aside id="sidebar" class="sidebar">
+	<div class="sidebar-scrollable">
+		<div class="sidebar-inside">
+			<button id="sidebar-hide" class="sidebar-toggle"><span class="screen-reader-text">Close Sidebar</span><span
+				    aria-hidden="true" class="icon-close"></span></button>
+			<nav id="sidebar-navigation" class="widget site-navigation">
+				<h2 class="widget-title">Explore Site</h2>
+				<ul class="menu">
+					
+						<li class="menu-item"><a href="/about/">About</a></li>
+					
+				</ul>
+			</nav>
+			
+<section class="widget widget-text">
+    <h2 class="widget-title">About KyleTheReverser</h2>
+    <p>This is an organized hub for everything technical that I write, set up, or figure out over the course of my last year as a Masters student.</p>
+</section>
+
+
+<section class="widget widget-recent-posts">
+    <h2 class="widget-title">Recent Articles</h2>
+    <ul>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">February 19, 2019</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/Cryptomining_malware_1_31adf">Cryptomining Malware Sample Analysis 1: 31ADF</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">December 13, 2018</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/binary_instrumentation">Notes on Binary Instrumentation and Intel PIN</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">November 10, 2018</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/binary-code_obfs_paper_review">Paper review: Binary-Code Obfuscations in Prevalent Packer Tools</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+    </ul>
+</section>
+
+<!-- Create a sorted array of tags -->
+ 
+<section class="widget widget-tagcloud">
+    <h2 class="widget-title">Tags</h2>
+    <div class="tagcloud">
+        
+        <a href='https://nexusmaximus.github.iotag/development/'>Development</a>
+        
+        <a href='https://nexusmaximus.github.iotag/javascript/'>JavaScript</a>
+        
+        <a href='https://nexusmaximus.github.iotag/jekyll/'>Jekyll</a>
+        
+        <a href='https://nexusmaximus.github.iotag/node/'>Node</a>
+        
+        <a href='https://nexusmaximus.github.iotag/startup/'>Startup</a>
+        
+        <a href='https://nexusmaximus.github.iotag/startups/'>Startups</a>
+        
+        <a href='https://nexusmaximus.github.iotag/tips/'>Tips</a>
+        
+    </div>
+</section>
+
+
+		</div><!-- .sidebar-inside -->
+	</div><!-- .sidebar-scrollable -->
+</aside><!-- .sidebar -->
+    
+    <!-- Javascript Assets -->
+    <script src="/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="/assets/js/plugins.js"></script>
+    <script src="/assets/js/custom.js"></script>
+
+</body>
+
+</html>

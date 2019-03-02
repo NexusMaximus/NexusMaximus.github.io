@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+        <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>PMA Ch9 Lab: Using OllyDbg | KyleTheReverser</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="PMA Ch9 Lab: Using OllyDbg" />
+<meta name="author" content="Kyle" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?" />
+<meta property="og:description" content="Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?" />
+<link rel="canonical" href="http://localhost:4000/PMA_ch9_labs" />
+<meta property="og:url" content="http://localhost:4000/PMA_ch9_labs" />
+<meta property="og:site_name" content="KyleTheReverser" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-10-12T16:28:00-06:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@Kyle" />
+<script type="application/ld+json">
+{"description":"Lab summary questions Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?","author":{"@type":"Person","name":"Kyle"},"@type":"BlogPosting","url":"http://localhost:4000/PMA_ch9_labs","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/images/logo.png"},"name":"Kyle"},"headline":"PMA Ch9 Lab: Using OllyDbg","dateModified":"2018-10-12T16:28:00-06:00","datePublished":"2018-10-12T16:28:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/PMA_ch9_labs"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    
+
+    <!-- Site Favicon -->
+    <link rel="shortcut icon" href="http://localhost:4000/assets/images/favicon.ico" type="image/png" />
+
+    <!-- Font Embed Code -->
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,400i,700,700i" rel="stylesheet" />
+
+    <!-- CSS Styles -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+</head>
+
+
+
+<body class="layout-post">
+    <div id="page" class="site">
+
+        
+        <header id="masthead" class="site-header outer">
+    <div class="site-header-inside">
+        <div class="site-branding">
+            
+                <p class="site-logo"><a href="/" rel="home"><img src="/assets/images/logo.png" alt="KyleTheReverser" /></a></p>
+                <h1 class="site-title screen-reader-text"><a href="" rel="home"></a></h1>
+            
+        </div><!-- .site-branding -->
+        <nav id="main-navigation" class="site-navigation" aria-label="Primary Navigation">
+            <ul class="menu">
+            
+                <li class="menu-item"><a href="/about/">About</a></li>
+            
+            </ul>
+            <button id="sidebar-show" class="sidebar-toggle"><span class="screen-reader-text">Open Sidebar</span><span class="icon-more" aria-hidden="true"></span></button>
+        </nav><!-- .site-navigation -->
+    </div><!-- .site-header-inside -->
+</header><!-- .site-header -->
+        
+
+        <div id="content" class="site-content fadeInDown delay_075s">
+    <main id="main" class="site-main outer">
+        <article class="post-full inner">
+            <header class="post-header">
+                <div class="post-meta">
+                    <time class="post-date" datetime="2018-10-12">October 12,
+                        2018</time>
+                </div><!-- .post-meta -->
+                <h1 class="posttitle">PMA Ch9 Lab: Using OllyDbg</h1>
+            </header><!-- .post-header -->
+            
+            <div class="post-content">
+                <h2 id="lab-summary-questions">Lab summary questions</h2>
+<ol>
+  <li>
+    <p>Considering malware analysis as a whole, how important is it to a general aspiring analyst to complete this chapter’s exercises?</p>
+  </li>
+  <li>
+    <p>What did doing the lab exercises teach that was not gained from reading the chapter?</p>
+  </li>
+</ol>
+
+<h2 id="challenges-encountered-in-the-labs">Challenges encountered in the labs</h2>
+
+<h2 id="lab-walkthrough-includes-answers">Lab Walkthrough (includes answers!)</h2>
+
+<h3 id="91">9.1</h3>
+
+<p>Analyze the malware found in Lab09-01.exe using OllyDbg and IDA Pro to answer the following questions. Note that this malware was initially analyzed in the Chapter 3 labs using basic static and dynamic techniques. (Uh oh…)</p>
+
+<h4 id="questions-to-answer">Questions to answer</h4>
+
+<ol>
+  <li>
+    <p>How can you get this malware to install itself?</p>
+
+    <p>One way (of at least two) is to call it as such: <code class="highlighter-rouge">./Lab09-01.exe -in abcd</code> (90% confidence)</p>
+  </li>
+  <li>
+    <p>What are the command-line options for the program? What is the password requirement?</p>
+
+    <p>The last command-line argument of the program is the password. The password must be ‘abcd’.</p>
+  </li>
+  <li>
+    <p>How can you use OllyDbg to permanently patch this malware, so it doesn’t require the special command-line password?</p>
+
+    <p>Simply overwrite the function call to the password checking program with NOPs.</p>
+  </li>
+  <li>
+    <p>What are the host-based indicators of this program?</p>
+
+    <ul>
+      <li>A service called “ Manager Service”.</li>
+    </ul>
+  </li>
+  <li>
+    <p>What are the different actions this malware can be instructed to take via the network?</p>
+  </li>
+  <li>
+    <p>Are there any useful network-based signatures for this malware?</p>
+  </li>
+</ol>
+
+<h4 id="walkthrough-process">Walkthrough process</h4>
+
+<p><strong>NOTE</strong>: Before running this program or beginning to analyze it with Ida or OllyDbg, I recommend making a couple copies of it for backup purposes.</p>
+
+<p>First, I opened the assets/images/posts in OllyDbg and Ida. I looked through main() on Ida to see what sorts of things we could expect to see, and did a little bit of initial commenting.</p>
+
+<p><img src="/assets/images/posts/ch9sc/01_startup.PNG" alt="01_initial.PNG" /></p>
+
+<p>I opened up sub_402510 to discover a big mess of movs and some repne scasbs and other things. After putting about 5 minutes of effort into trying to understand how all this worked, I realized it would be a lot brighter to, you know, use the tool I just learned about. I migrated over to Olly with the mindset that I wanted to watch how sub_402510 works, since I believe this function is what determines if the malware will install, or delete itself.</p>
+
+<p>Upon first looking at this new tool’s interface, I noticed OllyDbg broke at _start, while Ida starts up at main(). So, I stepped through code in Olly until I hit where main was called. As I walked through code and matched where Olly was vs. where we were in Ida, I discovered/confirmed:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">ctrl + g</code> is how you do goto address in OllyDbg</li>
+  <li>Return back after going somewhere by using <code class="highlighter-rouge">-</code>. It doesn’t necessarily go “back” mind you… but that hasn’t gotten in the way enough for me to put time into it, yet.</li>
+  <li>Place a breakpoint by hitting F2.</li>
+  <li>To change the contents of some registers, you just right click it and choose the appropriate option. EIP doesn’t follow this convention. To change EIP, you must goto the location you want EIP to execute next, right click it, and choose <strong>New Origin Here</strong>.</li>
+  <li>To rename a memory label in Olly (such as for a call instruction), goto that address and then right click the first instruction at that address and type “:” or right-click the address and click <strong>label</strong>, and type the new name. This will have all references to that address propogate with the new name. In this way, I made the functions I named in Ida have the same names in Olly, which is very helpful when I’m switching between both programs so much.</li>
+  <li>Double clicking an address will make all addresses around it appear with numbers relative to the one you clicked. This can be helpful for finding out how far away two instructions or bits of data in memory are.</li>
+</ul>
+
+<p>In the first run of this program where there are no command line arguments, the argument passed to sub_402510 is the program’s path.</p>
+
+<p>Let’s look into the function that processes the last command line argument.</p>
+
+<h4 id="is-this-the-password-checking-function">Is this the password checking function?</h4>
+
+<p><img src="/assets/images/posts/ch9sc/02_processArgvLast.PNG" alt="processArgvLast" /></p>
+
+<p>It contains a <code class="highlighter-rouge">repne scasb</code> instruction. This instruction is not something I know off the top of my head, so I checked out a <a href="https://reverseengineering.stackexchange.com/questions/2774/what-does-the-assembly-instruction-repne-scas-byte-ptr-esedi">post on the reverse engineering stackexchange</a> that explains how the command breaks down.</p>
+
+<ul>
+  <li>repne: repeat while not equal.</li>
+  <li>scas: SCan A String. It compares values in a string (the one pointed to by the ES:[EDI] register) to the value in the accumulator register (<code class="highlighter-rouge">EAX</code>) until it finds a match.
+    <ul>
+      <li>ES: a segment register. These are used to derive memory addresses. How? I’m not sure, and I am not sure it matters for purposes of this assignment yet. WEEDS</li>
+      <li>EDI: contains a pointer to the string. Why yes, OllyDbg is indeed reporting that the string is in EDI!</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Overall, it scans the string until it finds an element in it equal to the element in the accumulator. So, in this case, since EAX is 0, it’s looking for the null terminator.</p>
+
+<p>Hitting F7 (i.e. step into) shows how the string in EDI shrinks one by one from the left side, and each time that happens, ECX is decremented. (ECX was 0xFFFFFFFF at the beginning). (Just to be clear, it’s not that the string is “shrinking”… We are just changing the pointer in EDI to look one character ahead, and that is what gives the illusion that the string is shrinking.)</p>
+
+<p>ECX is manipulated to contain the string length!</p>
+
+<p>Moving on, we see that a comparison of the string length to 4 happens. Since the string length is not 4, it leaves the function. Clearly, it’s looking for something that is a 4 character argument. I reran the program with the argument “asdf” by clicking Olly’s black X in the top left corner, opening a file, and putting “asdf” in the arguments field, and then I stepped through until at the same block of code discussed right above.</p>
+
+<p>CL, the lower byte of ECX, had moved into it the first letter of the argument being processed by this function. That was then moved into var_4. So, what Ida labeled as var_4 is actually the first character of the command line parameter.  We can tell by reading the assembly in Ida that a comparison of 61 (hex) happens shortly after, and the code leaves if it detects the comparison is not equal. 61 is an ‘a’ in ascii. How convenient. The first guess takes us to step 2 of the checking process.</p>
+
+<p>Step two (starting at memory location 402563) threw me off for a little, until I just ran it in Olly and observed what happened.</p>
+
+<p><img src="/assets/images/posts/ch9sc/03_step2.PNG" alt="step2" /></p>
+
+<p>It did a bunch of pointer math, and compared to 1 shortly after. Instead of spending too much time trying to know exactly what the assembly was doing, I just ran the code up to 0x40255A, and discovered that with “asdf”, the value resulting in ECX after the pointer math occurs was 0x12. I also noticed that 0x12 is just about the value that results if you subtract the second character of my current password from the first– s - a = 12. So, this step checks to see if the second character is one more than the first– i.e. ‘b’. So I reran the code with the password ‘abcd’.</p>
+
+<p><img src="/assets/images/posts/ch9sc/04_step3and4.PNG" alt="step3and4" /></p>
+
+<p>Step three employs more strange pointer math. We’ll notice that, however, at 0x402566, 63h (i.e. ‘c’) is moved into dl. After skipping past all but one of the movs, we see an <code class="highlighter-rouge">[ecx + 2]</code> is part of the final mov. This is probably somehow referencing the third char of our string (the second, if we refer to the characters in a zero-indexed fashion). Either way, 0x63 is compared to 0x63 with my password of ‘abcd’, and the code moves on to check four.</p>
+
+<p>Step 4 takes the current char ‘c’ and adds 1 to it. That makes a ‘d’! Stepping through yields a comparison of ‘d’ to ‘d’, and we know that the password is now ‘abcd’ as a 1 is put into eax and we return.</p>
+
+<h4 id="we-have-the-password-but-how-can-we-patch-the-program-to-not-require-one-at-all-question-3">We have the password, but how can we patch the program to not require one at all (question 3)?</h4>
+
+<p><img src="/assets/images/posts/ch9sc/05_prePatchingObservation.PNG" alt="prePatchingObservation" /></p>
+
+<p>If the password checking function runs successfully, it puts the value ‘1’ into EAX. Otherwise, it zeroes EAX. The <code class="highlighter-rouge">test</code> instruction combined with a <code class="highlighter-rouge">jnz</code> instruction effectively tests to see if what’s in EAX is zero. If we just … didn’t call that function, EAX would contain a nonzero value from the <code class="highlighter-rouge">mov</code> at address 0x402B2A, and the <code class="highlighter-rouge">jnz</code> jump would be taken. All we need to do is <code class="highlighter-rouge">nop</code> out the call, and the code will always take the jnz branch to the next phase of the malware.</p>
+
+<p>The book specifically has a section on how to do this (see the patching section in my previous notes post). I right clicked the call instruction of the password checking function in Olly, and selected <strong>Binary -&gt; Edit</strong>. Now Olly displays the updated code in the disassembler. I then saved this patched version of the program.</p>
+
+<p><img src="/assets/images/posts/ch9sc/06_patched.PNG" alt="patched" /></p>
+
+<p>HA. Sick. It works.</p>
+
+<h4 id="getting-the-malware-to-install-itself">Getting the malware to install itself</h4>
+
+<p>To answer this question, I took a shot in the dark and assumed installing itself involved creating a service. I looked through the strings within Ida and found one, “ Manager Service”. Cross-referencing that leads to one use: within sub_402600. This function also does stuff with the registry. If we cross-reference this, we find that it’s used in two places.</p>
+
+<p>My next observation came from this block of code here.</p>
+
+<p><img src="/assets/images/posts/ch9sc/07.PNG" alt="07" /></p>
+
+<p>We see that it’s doing a string comparison after it passes the password check function. OllyDbg tells us that the comparison is done with the “-in” hardcoded string, and we can observe it’s comparing one of the command line arguments. Furthermore, if strcmp finds that two strings are the same, it returns 0. So, the <code class="highlighter-rouge">jnz</code> will NOT be taken if the comparison results in finding a “-in” argument.</p>
+
+<p>The red branch checks to see if there are a total of three arguments (say, perhaps, the program name, -in, and the password). If there are, the <code class="highlighter-rouge">jnz</code> is again not taken due to the nature of how <code class="highlighter-rouge">cmp</code> works. If we follow that red path, we arrive at…</p>
+
+<p><img src="/assets/images/posts/ch9sc/08.PNG" alt="08" /></p>
+
+<p>…a block of code that much closer to the install function. At this point, I think it’s safe to say one way to get this malware to install itself is by calling it as such:</p>
+
+<p><code class="highlighter-rouge">./lab09-01.exe -in asdf</code></p>
+
+<h4 id="realizations-made-after-reading-the-book-answers">Realizations made after reading the book answers:</h4>
+
+<ul>
+  <li>here</li>
+</ul>
+
+<h3 id="92">9.2</h3>
+
+<p>Analyze the malware using OllyDbg.</p>
+
+<ol>
+  <li>
+    <p>What strings do you see statically in the binary?</p>
+
+    <p>Answer here</p>
+  </li>
+  <li>
+    <p>What happens when you run the binary?</p>
+  </li>
+  <li>
+    <p>How can you get this sample to run its malicious payload?</p>
+  </li>
+  <li>
+    <p>What’s happening at 0x401133?</p>
+  </li>
+  <li>
+    <p>What arguments are being passed to subroutine 0x401089?</p>
+  </li>
+  <li>
+    <p>What domain name does this malware use?</p>
+  </li>
+  <li>
+    <p>What encoding routine is being used to obfuscate the domain name?</p>
+  </li>
+  <li>
+    <p>What is the significance of the <code class="highlighter-rouge">CreateProcessA</code> call at 0x40106E?</p>
+  </li>
+</ol>
+
+<h4 id="realizations-made-after-reading-the-book-answers-1">Realizations made after reading the book answers:</h4>
+
+<ul>
+  <li>here</li>
+</ul>
+
+<h3 id="93">9.3</h3>
+
+<p>Analyze the malware found in Lab09-03.exe using OllyDbg and Ida. The malware loads three included DLLs that are built to request the same memory load location, which means Ida will show differing memory addresses than Olly when loaded in each. This is done by design to give you experience going from Ida to Olly and back, when the addresses differ.</p>
+
+<ol>
+  <li>
+    <p>What DLLs are imported by Lab09-03.exe?</p>
+  </li>
+  <li>
+    <p>What is the base address requested by DLL1.dll, DLL2.dll, and DLL3.dll?</p>
+  </li>
+  <li>
+    <p>When you use OllyDbg to debug Lab09-03.exe, what is the assigned base address for all three DLL assets/images/posts?</p>
+  </li>
+  <li>
+    <p>When Lab09-03.exe calls an import function from DLL1.dll, what does this import function do?</p>
+  </li>
+  <li>
+    <p>When the exe calls WriteFile, what is the filename it writes to?</p>
+  </li>
+  <li>
+    <p>When the exe creates a job using NetScheduleJobAdd, where does it get the data for the second parameter?</p>
+  </li>
+  <li>
+    <p>While running or debugging th eprogram, you’ll see it prints out three piees of mystery data, one of each corresponding to each DLL. What are these pieces of mystery data?</p>
+  </li>
+  <li>
+    <p>How can you load DLL2.dll into Ida so that it matches the load address used by OllyDbg?</p>
+  </li>
+</ol>
+
+
+            </div>
+            <footer class="post-footer">
+                
+                <div class="post-share">
+                    <span class="post-share-title">Share:</span>
+                    <a target="_blank" href="https://twitter.com/share?text=PMA+Ch9+Lab%3A+Using+OllyDbg&amp;url=https://nexusmaximus.github.ioPMA_ch9_labs">Twitter</a>
+                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://nexusmaximus.github.ioPMA_ch9_labs">Facebook</a>
+                </div><!-- .share-post -->
+            </footer>
+            <div class="author-box">
+                <div class="author-avatar"><img src="/assets/images/authorimage.jpg" alt="Kyle's Picture"
+                        class="avatar"></div>
+                <div class="author-details">
+                    <h2 class="author-title">About Kyle</h2>
+                    <p class="author-description">bio here</p>
+                </div>
+            </div>
+            
+
+        </article>
+        
+        <section class="read-next inner">
+            <h2 class="read-next-title">Read Next</h2>
+            
+            <article class="post">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <time class="published" datetime="October 12, 2018">October 12, 2018</time>
+                    </div>
+                    <h3 class="post-title"><a href="/ch9_PMA_notes">PMA Ch.9 Notes: OllyDbg</a></h3>
+                    <p class="post-tags">
+                        
+                    </p>
+                </header>
+                
+                
+            </article>
+            
+            
+            <article class="post">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <time class="published" datetime="October 15, 2018">October 15, 2018</time>
+                    </div>
+                    <h3 class="post-title"><a href="/ch18_PMA_notes">PMA Ch.18 Notes: Packers and Unpacking</a></h3>
+                    <p class="post-tags">
+                        
+                    </p>
+                </header>
+                
+                
+            </article>
+            
+        </section><!-- .read-next -->
+    </main><!-- .site-main -->
+</div><!-- .site-content -->
+
+        
+
+        
+
+        <footer id="colophon" class="site-footer outer">
+            <div class="site-footer-inside">
+                <p class="social-links">
+    
+    <a href="https://twitter.com/KyleTheReverser" target="_blank">
+        <span class="fa-twitter fa" aria-hidden="true"></span>
+        <span class="screen-reader-text">Twitter</span>
+    </a>
+    
+    
+    
+    <a href="https://github.com/NexusMaximus" target="_blank">
+        <span class="fa-github fa" aria-hidden="true"></span>
+        <span class="screen-reader-text">GitHub</span>
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+</p>
+                <p class="site-info">
+                    <a href="#">KyleTheReverser</a> &copy; 2019 . Horace theme by
+                    <a target="_blank" href="https://justgoodthemes.com/">JustGoodThemes</a>. <br />
+                    Powered by <a target="_blank" href="https://jekyllrb.com/">Jekyll</a>.
+                </p>
+                <p class="back-to-top">
+                    <a id="top-button" class="top-button" href="#page">
+                        <span class="icon-arrow-up" aria-hidden="true"></span>
+                        <span class="screen-reader-text">Back to top</span>
+                    </a>
+                </p>
+            </div><!-- .site-footer-inside -->
+        </footer><!-- .site-footer -->
+    </div><!-- .site -->
+    <div id="site-overlay" class="site-overlay"></div>
+    <aside id="sidebar" class="sidebar">
+	<div class="sidebar-scrollable">
+		<div class="sidebar-inside">
+			<button id="sidebar-hide" class="sidebar-toggle"><span class="screen-reader-text">Close Sidebar</span><span
+				    aria-hidden="true" class="icon-close"></span></button>
+			<nav id="sidebar-navigation" class="widget site-navigation">
+				<h2 class="widget-title">Explore Site</h2>
+				<ul class="menu">
+					
+						<li class="menu-item"><a href="/about/">About</a></li>
+					
+				</ul>
+			</nav>
+			
+<section class="widget widget-text">
+    <h2 class="widget-title">About KyleTheReverser</h2>
+    <p>This is an organized hub for everything technical that I write, set up, or figure out over the course of my last year as a Masters student.</p>
+</section>
+
+
+<section class="widget widget-recent-posts">
+    <h2 class="widget-title">Recent Articles</h2>
+    <ul>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">February 19, 2019</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/Cryptomining_malware_1_31adf">Cryptomining Malware Sample Analysis 1: 31ADF</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">December 13, 2018</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/binary_instrumentation">Notes on Binary Instrumentation and Intel PIN</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+        <li>
+            <div class="post-header">
+                <div class="post-meta">
+                    <time class="published" datetime="??">November 10, 2018</time>
+                </div>
+                <div class="post-title">
+                    <a href="http://localhost:4000/binary-code_obfs_paper_review">Paper review: Binary-Code Obfuscations in Prevalent Packer Tools</a>
+                </div>
+            </div>
+            
+            
+        </li>
+        
+    </ul>
+</section>
+
+<!-- Create a sorted array of tags -->
+ 
+<section class="widget widget-tagcloud">
+    <h2 class="widget-title">Tags</h2>
+    <div class="tagcloud">
+        
+        <a href='https://nexusmaximus.github.iotag/development/'>Development</a>
+        
+        <a href='https://nexusmaximus.github.iotag/javascript/'>JavaScript</a>
+        
+        <a href='https://nexusmaximus.github.iotag/jekyll/'>Jekyll</a>
+        
+        <a href='https://nexusmaximus.github.iotag/node/'>Node</a>
+        
+        <a href='https://nexusmaximus.github.iotag/startup/'>Startup</a>
+        
+        <a href='https://nexusmaximus.github.iotag/startups/'>Startups</a>
+        
+        <a href='https://nexusmaximus.github.iotag/tips/'>Tips</a>
+        
+    </div>
+</section>
+
+
+		</div><!-- .sidebar-inside -->
+	</div><!-- .sidebar-scrollable -->
+</aside><!-- .sidebar -->
+    
+    <!-- Javascript Assets -->
+    <script src="/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="/assets/js/plugins.js"></script>
+    <script src="/assets/js/custom.js"></script>
+
+</body>
+
+</html>
